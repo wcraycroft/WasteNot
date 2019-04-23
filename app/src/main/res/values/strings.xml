@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">FoodWaste</string>
+    <string name="add">Add Donation</string>
+    <string name="weight">Enter the approximate weight (oz)</string>
+    <string name="description">Enter item(s) description</string>
+    <string name="date">Select the expiration date</string>
+    <string name="create_account">Create an Account</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="existing_user">Already a user? Click here to sign in.</string>
+
+    <string-array name="food_types">
+        <item>Select the type of donation</item>
+        <item>Beverages</item>
+        <item>Baked Goods</item>
+        <item>Canned Foods</item>
+        <item>Dairy Products</item>
+        <item>Frozen Foods</item>
+        <item>Grain/Pasta</item>
+        <item>Pet Food</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="app_uses">
+        <item>How would you like to use this app?</item>
+        <item>Make a donation</item>
+        <item>Claim a donation</item>
+        <item>Volunteer Driver</item>
+    </string-array>
+</resources>
