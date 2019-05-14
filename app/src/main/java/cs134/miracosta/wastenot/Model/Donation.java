@@ -40,7 +40,7 @@ public class Donation {
         this.pickupEndTime = pickupEndTime;
     }
 
-    public Donation() {
+    public Donation(Donor donor, Object o, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime) {
     }
 
     public String getKey() {

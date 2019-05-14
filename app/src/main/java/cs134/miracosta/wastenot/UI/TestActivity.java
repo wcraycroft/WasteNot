@@ -99,7 +99,7 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        allUserKeys.clear();
+        /*allUserKeys.clear();
         mDB.getAllUserKeys(new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {
@@ -110,6 +110,7 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void DataIsProcessed() { }
         });
+        */
 
     }
 

@@ -25,7 +25,7 @@
 
 package cs134.miracosta.wastenot.Model;
 
-import android.provider.ContactsContract;
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -49,10 +49,12 @@ public class FirebaseDBHelper {
     // Collection Paths
     public static final String USER_COLLECTION = "USERS";
     public static final String DONATION_COLLECTION = "DONATIONS";
+    public static final String MAKES_COLLECTION = "MAKES";
 
     // Database references
     private CollectionReference mUserDB;
     private CollectionReference mDonationDB;
+    private CollectionReference mMakesDB;
 
     // Public interface used to link asynchronous listeners to calling classes
     public interface DataStatus {
@@ -95,7 +97,11 @@ public class FirebaseDBHelper {
                 if (task.isSuccessful()) {
                     Log.i(TAG, "Document was added successfully. Key = " + task.getResult().getId());
                     // Set the new user's key (note it will still be the old value in DB)
-                    focusedUser.setKey(task.getResult().getId());
+                    String key = task.getResult().getId();
+                    focusedUser.setKey(key);
+                    // Set the key field of the same user
+                    mUserDB.document(key).set(focusedUser);
+
                     dataStatus.DataIsProcessed();
                 }
                 else {
@@ -172,6 +178,7 @@ public class FirebaseDBHelper {
                     // Send the Data via interface
                     List<Object> items = new ArrayList<>();
                     items.add(focusedUser);
+                    // Send data through interface
                     dataStatus.DataIsRead(items);
                 }
             } // end of onSuccess
