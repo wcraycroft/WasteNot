@@ -22,6 +22,7 @@
 //        Log.w(TAG, "Failed to read value.", error.toException());
 //    }
 //});
+
 package cs134.miracosta.wastenot.Model;
 
 import android.content.ContentValues;

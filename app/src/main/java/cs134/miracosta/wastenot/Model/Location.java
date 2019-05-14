@@ -21,6 +21,9 @@ public class Location implements Parcelable {
     private double mLatitude;
     private double mLongitude;
 
+    public Location() {
+    }
+
     public Location(long id, String name, String address, String city, String state, String zipCode, String phone, double latitude, double longitude) {
         mId = id;
         mName = name;

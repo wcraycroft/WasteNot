@@ -3,8 +3,10 @@ package cs134.miracosta.wastenot.Model;
 import java.sql.Time;
 import java.util.Objects;
 
-public abstract class Donation {
+public class Donation {
 
+    private String mKey;
+    private String mType;
     private Donor mDonor;
     private Claimer mClaimer;      // Null if has not been claimed yet
     private FoodType mFoodType;    // Enum class
@@ -25,7 +27,9 @@ public abstract class Donation {
      * @param readyTime
      * @param pickupEndTime
      */
-    public Donation(Donor donor, Claimer claimer, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime) {
+    public Donation(String type, Donor donor, Claimer claimer, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime) {
+        mKey = "void";
+        mType = type;
         mDonor = donor;
         mClaimer = claimer;
         mFoodType = foodType;
@@ -34,6 +38,25 @@ public abstract class Donation {
         this.otherInfo = otherInfo;
         this.readyTime = readyTime;
         this.pickupEndTime = pickupEndTime;
+    }
+
+    public Donation() {
+    }
+
+    public String getKey() {
+        return mKey;
+    }
+
+    public void setKey(String key) {
+        mKey = key;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public void setType(String type) {
+        mType = type;
     }
 
     public Donor getDonor() {
@@ -107,9 +130,10 @@ public abstract class Donation {
         Donation donation = (Donation) o;
         return mServings == donation.mServings &&
                 fitInCar == donation.fitInCar &&
+                Objects.equals(mKey, donation.mKey) &&
                 Objects.equals(mDonor, donation.mDonor) &&
                 Objects.equals(mClaimer, donation.mClaimer) &&
-                Objects.equals(mFoodType, donation.mFoodType) &&
+                mFoodType == donation.mFoodType &&
                 Objects.equals(otherInfo, donation.otherInfo) &&
                 Objects.equals(readyTime, donation.readyTime) &&
                 Objects.equals(pickupEndTime, donation.pickupEndTime);
@@ -117,12 +141,14 @@ public abstract class Donation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mDonor, mClaimer, mFoodType, mServings, fitInCar, otherInfo, readyTime, pickupEndTime);
+        return Objects.hash(mKey, mDonor, mClaimer, mFoodType, mServings, fitInCar, otherInfo, readyTime, pickupEndTime);
     }
 
     @Override
     public String toString() {
         return "Donation{" +
+                "Key = " + mKey +
+                "Type = " + mType +
                 "Donor=" + mDonor +
                 ", Claimer=" + mClaimer +
                 ", Food Type=" + mFoodType +
