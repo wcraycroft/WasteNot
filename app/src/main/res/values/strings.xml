@@ -12,6 +12,16 @@
     <string name="sign_in">Sign In</string>
     <string name="existing_user">Already a user? Click here to sign in.</string>
 
+
+    <string name="menu_donate">Donate Food</string>
+    <string name="menu_claim">Claim a Donation</string>
+    <string name="menu_deliver">Deliver Food</string>
+    <string name="menu_logout">Logout</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
     <string-array name="food_types">
         <item>Select the status of donation</item>
         <item>Beverages</item>
@@ -44,8 +54,6 @@
         completions."
     </string>
     <string name="title_activity_delivery">DeliveryActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>

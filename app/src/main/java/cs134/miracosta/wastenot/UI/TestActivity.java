@@ -57,10 +57,10 @@ public class TestActivity extends AppCompatActivity {
         String text = inputEditText.getText().toString();
 
 
-        Location testLoc = new Location("Test name 1", "123 Fake St", "Long Island",
-                "NY", "51611", "85858858", 100.0, 100.0);
+        Location testLoc = new Location("123 Fake St", "Long Island",
+                "NY", "51611");
 
-        testUser = new Claimer("key", "claimer", "Will", testLoc);
+        testUser = new User();
 
         mDB.addUser(testUser, new FirebaseDBHelper.DataStatus() {
             @Override
@@ -70,7 +70,7 @@ public class TestActivity extends AppCompatActivity {
                 mDB.getUser(testUser.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
-                        outputUser = (Claimer) items.get(0);
+                        outputUser = (User) items.get(0);
                         if (outputUser == null) {
                             outputTextView.setText("Null object");
                         } else {
