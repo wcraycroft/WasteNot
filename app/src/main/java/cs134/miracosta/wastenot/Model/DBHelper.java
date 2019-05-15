@@ -12,9 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,7 +197,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String phone = fields[6].trim();
                 double latitude = Double.parseDouble(fields[7].trim());
                 double longitude = Double.parseDouble(fields[8].trim());
-                addLocation(new Location(id, name, address, city, state, zipCode, phone, latitude, longitude));
+                addLocation(new Location(name, address, city, state, zipCode, phone, latitude, longitude));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,7 +1,16 @@
 package cs134.miracosta.wastenot.Model;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 
 /**
  * The <code>Location</code> class represents a place where one can get a caffeine fix, including
@@ -11,61 +20,45 @@ import android.os.Parcelable;
  */
 
 public class Location implements Parcelable {
-    private long mId;       // not needed
-    private String mName;   // not needed
+    private Context mContext;
     private String mAddress;
     private String mCity;
     private String mState;
     private String mZipCode;
-    private String mPhone;
     private double mLatitude;
     private double mLongitude;
 
     public Location() {
+
     }
 
-    public Location(long id, String name, String address, String city, String state, String zipCode, String phone, double latitude, double longitude) {
-        mId = id;
-        mName = name;
+    // TODO: delete this constructor if we don't end up using it
+    public Location(String address, String city, String state, String zipCode) {
         mAddress = address;
         mCity = city;
         mState = state;
         mZipCode = zipCode;
-        mPhone = phone;
-        mLatitude = latitude;
-        mLongitude = longitude;
+        mLatitude = 0.0;
+        mLongitude = 0.0;
     }
 
-    public Location(String name, String address, String city, String state, String zipCode, String phone, double latitude, double longitude) {
-        this(-1, name, address, city, state, zipCode, phone, latitude, longitude);
+    // This constructor will use the passed in context to set the latitude and longitude using Geocoder
+    public Location(Context context, String address, String city, String state, String zipCode) {
+        mContext = context;
+        mAddress = address;
+        mCity = city;
+        mState = state;
+        mZipCode = zipCode;
+        setLatLng(context);
     }
 
     protected Location(Parcel in) {
-        mId = in.readLong();
-        mName = in.readString();
         mAddress = in.readString();
         mCity = in.readString();
         mState = in.readString();
         mZipCode = in.readString();
-        mPhone = in.readString();
         mLatitude = in.readDouble();
         mLongitude = in.readDouble();
-    }
-
-    public long getId() {
-        return mId;
-    }
-
-    public void setId(long id) {
-        mId = id;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        mName = name;
     }
 
     public String getAddress() {
@@ -100,14 +93,6 @@ public class Location implements Parcelable {
         mZipCode = zipCode;
     }
 
-    public String getPhone() {
-        return mPhone;
-    }
-
-    public void setPhone(String phone) {
-        mPhone = phone;
-    }
-
     public double getLatitude() {
         return mLatitude;
     }
@@ -138,16 +123,39 @@ public class Location implements Parcelable {
         return latLng;
     }
 
+    /**
+     * Helper method uses google API to convert address into LatLng
+     * Note this requires a Context so it has to be called externally or pass it a context through
+     * the appropriate constructor
+     * TODO: figure out which context is safe to use here
+     */
+    public void setLatLng(Context c)
+    {
+        Geocoder geocoder = new Geocoder(c, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocationName(getFullAddress(), 1);
+            if (addresses.size() == 0)
+            {
+                Log.w("WasteNot Location", "Unable to resolve address.");
+                return;
+            }
+            Address address = addresses.get(0);
+            mLatitude = address.getLatitude();
+            mLongitude = address.getLongitude();
+            Log.i("WasteNot Location", "LatLng updated successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String toString() {
         return "Location{" +
-                "Id=" + mId +
-                ", Name='" + mName + '\'' +
                 ", Address='" + mAddress + '\'' +
                 ", City='" + mCity + '\'' +
                 ", State='" + mState + '\'' +
                 ", Zip Code='" + mZipCode + '\'' +
-                ", Phone='" + mPhone + '\'' +
                 ", Latitude=" + mLatitude +
                 ", Longitude=" + mLongitude +
                 '}';
@@ -161,13 +169,10 @@ public class Location implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(mId);
-        parcel.writeString(mName);
         parcel.writeString(mAddress);
         parcel.writeString(mCity);
         parcel.writeString(mState);
         parcel.writeString(mZipCode);
-        parcel.writeString(mPhone);
         parcel.writeDouble(mLatitude);
         parcel.writeDouble(mLongitude);
     }

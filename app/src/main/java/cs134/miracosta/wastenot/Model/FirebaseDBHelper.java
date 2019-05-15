@@ -242,7 +242,7 @@ public class FirebaseDBHelper {
             // Delete document
             mUserDB.document(key).delete();
         }
-        // For test purposes only, no DataStatus needed.
+        // If used for test purposes only, no DataStatus needed.
     }
 
     /***************************************************
@@ -319,19 +319,11 @@ public class FirebaseDBHelper {
                 if (documentSnapshot.exists())
                 {
                     //TODO: debug
-                    Log.i(TAG, "Found type: " + documentSnapshot.toObject(Donation.class).getType());
+                    Log.d(TAG, "Found type: " + documentSnapshot.toObject(Donation.class).getStatus());
                     // Which type of user determines what data Firestore will attempt to pull
-                    switch (documentSnapshot.toObject(User.class).getType())
-                    {
-                        case("claim"):
-                            focusedDonation = documentSnapshot.toObject((Claim.class));
-                            break;
-                        case("delivery"):
-                            focusedDonation = documentSnapshot.toObject((Delivery.class));
-                            break;
-                    }
+                    focusedDonation = documentSnapshot.toObject((Donation.class));
                     //TODO: debug
-                    Log.i(TAG, "Converted object: " + focusedDonation.toString());
+                    Log.d(TAG, "Converted object: " + focusedDonation.toString());
                     // Before returning the User, assign it the generated key
                     focusedDonation.setKey(focusedKey);
                     // Send the Data via interface
@@ -350,19 +342,12 @@ public class FirebaseDBHelper {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    // Loop through all documents in collection
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        switch (document.toObject(Donation.class).getType())
-                        {
-                            case("claim"):
-                                allDonationsList.add(document.toObject((Claim.class)));
-                                break;
-                            case("delivery"):
-                                allDonationsList.add(document.toObject((Delivery.class)));
-                                break;
-                        }
+                        allDonationsList.add(document.toObject((Donation.class)));
                     }
                 } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.w(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
@@ -381,7 +366,7 @@ public class FirebaseDBHelper {
                         allKeysList.add(document.getId());
                     }
                 } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.w(TAG, "Error getting documents: ", task.getException());
                 }
                 dataStatus.DataIsRead(allKeysList);
             }

@@ -13,7 +13,7 @@
     <string name="existing_user">Already a user? Click here to sign in.</string>
 
     <string-array name="food_types">
-        <item>Select the type of donation</item>
+        <item>Select the status of donation</item>
         <item>Beverages</item>
         <item>Baked Goods</item>
         <item>Canned Foods</item>

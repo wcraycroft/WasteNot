@@ -6,20 +6,19 @@ import java.util.Objects;
 public class Donation {
 
     private String mKey;
-    private String mType;
-    private Donor mDonor;
-    private Claimer mClaimer;      // Null if has not been claimed yet
+    private DonationStatus mStatus;
     private FoodType mFoodType;    // Enum class
     private int mServings;
     private boolean fitInCar;
-    private String otherInfo;
-    private Time readyTime;
-    private Time pickupEndTime;
+    private String mOtherInfo;
+    private Time mReadyTime;
+    private Time mPickupEndTime;
+    private Time mPickupTime;
+    private Time mDropoffEndTime;
 
     /**
      *
-     * @param donor
-     * @param claimer
+     * @param status
      * @param foodType
      * @param servings
      * @param fitInCar
@@ -27,20 +26,19 @@ public class Donation {
      * @param readyTime
      * @param pickupEndTime
      */
-    public Donation(String type, Donor donor, Claimer claimer, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime) {
+    public Donation(DonationStatus status, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime)
+    {
         mKey = "void";
-        mType = type;
-        mDonor = donor;
-        mClaimer = claimer;
+        mStatus = status;
         mFoodType = foodType;
         mServings = servings;
         this.fitInCar = fitInCar;
-        this.otherInfo = otherInfo;
-        this.readyTime = readyTime;
-        this.pickupEndTime = pickupEndTime;
+        this.mOtherInfo = otherInfo;
+        this.mReadyTime = readyTime;
+        this.mPickupEndTime = pickupEndTime;
     }
 
-    public Donation(Donor donor, Object o, FoodType foodType, int servings, boolean fitInCar, String otherInfo, Time readyTime, Time pickupEndTime) {
+    public Donation() {
     }
 
     public String getKey() {
@@ -51,28 +49,12 @@ public class Donation {
         mKey = key;
     }
 
-    public String getType() {
-        return mType;
+    public DonationStatus getStatus() {
+        return mStatus;
     }
 
-    public void setType(String type) {
-        mType = type;
-    }
-
-    public Donor getDonor() {
-        return mDonor;
-    }
-
-    public void setDonor(Donor donor) {
-        mDonor = donor;
-    }
-
-    public Claimer getClaimer() {
-        return mClaimer;
-    }
-
-    public void setClaimer(Claimer claimer) {
-        mClaimer = claimer;
+    public void setStatus(DonationStatus status) {
+        mStatus = status;
     }
 
     public FoodType getFoodType() {
@@ -100,27 +82,27 @@ public class Donation {
     }
 
     public String getOtherInfo() {
-        return otherInfo;
+        return mOtherInfo;
     }
 
     public void setOtherInfo(String otherInfo) {
-        this.otherInfo = otherInfo;
+        this.mOtherInfo = otherInfo;
     }
 
     public Time getReadyTime() {
-        return readyTime;
+        return mReadyTime;
     }
 
     public void setReadyTime(Time readyTime) {
-        this.readyTime = readyTime;
+        this.mReadyTime = readyTime;
     }
 
     public Time getPickupEndTime() {
-        return pickupEndTime;
+        return mPickupEndTime;
     }
 
     public void setPickupEndTime(Time pickupEndTime) {
-        this.pickupEndTime = pickupEndTime;
+        this.mPickupEndTime = pickupEndTime;
     }
 
     @Override
@@ -131,32 +113,33 @@ public class Donation {
         return mServings == donation.mServings &&
                 fitInCar == donation.fitInCar &&
                 Objects.equals(mKey, donation.mKey) &&
-                Objects.equals(mDonor, donation.mDonor) &&
-                Objects.equals(mClaimer, donation.mClaimer) &&
+                Objects.equals(mStatus, donation.mStatus) &&
                 mFoodType == donation.mFoodType &&
-                Objects.equals(otherInfo, donation.otherInfo) &&
-                Objects.equals(readyTime, donation.readyTime) &&
-                Objects.equals(pickupEndTime, donation.pickupEndTime);
+                Objects.equals(mOtherInfo, donation.mOtherInfo) &&
+                Objects.equals(mReadyTime, donation.mReadyTime) &&
+                Objects.equals(mPickupEndTime, donation.mPickupEndTime) &&
+                Objects.equals(mPickupTime, donation.mPickupTime) &&
+                Objects.equals(mDropoffEndTime, donation.mDropoffEndTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mKey, mDonor, mClaimer, mFoodType, mServings, fitInCar, otherInfo, readyTime, pickupEndTime);
+        return Objects.hash(mKey, mStatus, mFoodType, mServings, fitInCar, mOtherInfo, mReadyTime, mPickupEndTime, mPickupTime, mDropoffEndTime);
     }
 
     @Override
     public String toString() {
         return "Donation{" +
-                "Key = " + mKey +
-                "Type = " + mType +
-                "Donor=" + mDonor +
-                ", Claimer=" + mClaimer +
-                ", Food Type=" + mFoodType +
+                "Key='" + mKey + '\'' +
+                ", Status='" + mStatus + '\'' +
+                ", FoodType=" + mFoodType +
                 ", Servings=" + mServings +
-                ", Fit In Car=" + fitInCar +
-                ", Other Info='" + otherInfo + '\'' +
-                ", Ready Time=" + readyTime +
-                ", Pickup End Time=" + pickupEndTime +
+                ", fitInCar=" + fitInCar +
+                ", OtherInfo='" + mOtherInfo + '\'' +
+                ", ReadyTime=" + mReadyTime +
+                ", PickupEndTime=" + mPickupEndTime +
+                ", PickupTime=" + mPickupTime +
+                ", DropoffEndTime=" + mDropoffEndTime +
                 '}';
     }
 }
