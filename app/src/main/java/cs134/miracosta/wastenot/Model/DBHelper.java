@@ -1,4 +1,4 @@
-// TODO: For reference only. Delete when done, use FirebaseDBHelper.
+// TODO: For reference only. To do deleted. Use FirebaseDBHelper.
 
 
 

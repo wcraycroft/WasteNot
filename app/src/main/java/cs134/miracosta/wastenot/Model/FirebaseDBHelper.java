@@ -156,21 +156,8 @@ public class FirebaseDBHelper {
             {
                 if (documentSnapshot.exists())
                 {
-                    //TODO: debug
-                    Log.i(TAG, "Found type: " + documentSnapshot.toObject(User.class).getType());
                     // Which type of user determines what data Firestore will attempt to pull
-                    switch (documentSnapshot.toObject(User.class).getType())
-                    {
-                        case("claimer"):
-                            focusedUser = documentSnapshot.toObject((Claimer.class));
-                            break;
-                        case("donor"):
-                            focusedUser = documentSnapshot.toObject((Donor.class));
-                            break;
-                        case("driver"):
-                            focusedUser = documentSnapshot.toObject((Driver.class));
-                            break;
-                    }
+                    focusedUser = documentSnapshot.toObject((User.class));
                     //TODO: debug
                     Log.i(TAG, "Converted object: " + focusedUser.toString());
                     // Before returning the User, assign it the generated key
@@ -193,18 +180,7 @@ public class FirebaseDBHelper {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        switch (document.toObject(User.class).getType())
-                        {
-                            case("claimer"):
-                                allUsersList.add(document.toObject((Claimer.class)));
-                                break;
-                            case("donor"):
-                                allUsersList.add(document.toObject((Donor.class)));
-                                break;
-                            case("driver"):
-                                allUsersList.add(document.toObject((Driver.class)));
-                                break;
-                        }
+                        allUsersList.add(document.toObject((User.class)));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
