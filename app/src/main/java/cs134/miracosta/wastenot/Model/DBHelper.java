@@ -81,17 +81,17 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(FIELD_NAME, location.getName());
+        //values.put(FIELD_NAME, location.getName());
         values.put(FIELD_ADDRESS, location.getAddress());
         values.put(FIELD_CITY, location.getCity());
         values.put(FIELD_STATE, location.getState());
         values.put(FIELD_ZIP_CODE, location.getZipCode());
-        values.put(FIELD_PHONE, location.getPhone());
+        //values.put(FIELD_PHONE, location.getPhone());
         values.put(FIELD_LATITUDE, location.getLatitude());
         values.put(FIELD_LONGITUDE, location.getLongitude());
 
         long id = db.insert(LOCATIONS_TABLE, null, values);
-        location.setId(id);
+        //location.setId(id);
         // CLOSE THE DATABASE CONNECTION
         db.close();
     }
@@ -109,6 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //COLLECT EACH ROW IN THE TABLE
         if (cursor.moveToFirst()) {
             do {
+                /*
                 Location location =
                         new Location(cursor.getLong(0),
                                 cursor.getString(1),
@@ -120,6 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 cursor.getDouble(7),
                                 cursor.getDouble(8));
                 locationsList.add(location);
+                */
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -131,8 +133,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // DELETE THE TABLE ROW
-        db.delete(LOCATIONS_TABLE, LOCATIONS_KEY_FIELD_ID + " = ?",
-                new String[]{String.valueOf(location.getId())});
+        //db.delete(LOCATIONS_TABLE, LOCATIONS_KEY_FIELD_ID + " = ?",
+        //        new String[]{String.valueOf(location.getId())});
         db.close();
     }
 
@@ -154,6 +156,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
+        /*
         Location location =
                 new Location(cursor.getLong(0),
                         cursor.getString(1),
@@ -164,9 +167,11 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(6),
                         cursor.getDouble(7),
                         cursor.getDouble(8));
+                        */
         cursor.close();
         db.close();
-        return location;
+        //return location;
+        return null;
     }
 
     public boolean importLocationsFromCSV(String csvFileName) {
@@ -197,7 +202,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String phone = fields[6].trim();
                 double latitude = Double.parseDouble(fields[7].trim());
                 double longitude = Double.parseDouble(fields[8].trim());
-                addLocation(new Location(name, address, city, state, zipCode, phone, latitude, longitude));
+               // addLocation(new Location(name, address, city, state, zipCode, phone, latitude, longitude));
             }
         } catch (IOException e) {
             e.printStackTrace();
