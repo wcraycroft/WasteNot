@@ -1,3 +1,6 @@
+
+// Picasso Library for open source images
+
 package cs134.miracosta.wastenot.Model;
 
 import java.sql.Time;
