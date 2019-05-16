@@ -1,27 +1,4 @@
-// TODO: WIP just using as template
-// Firebase code
-
-// Write to DB
-// FirebaseDatabase database = FirebaseDatabase.getInstance();
-// DatabaseReference myRef = database.getReference("TestMessage");
-// myRef.setValue("Hello, World!");
-
-// Read from the database using event listener
-//myRef.addValueEventListener(new ValueEventListener() {
-//    @Override
-//    public void onDataChange(DataSnapshot dataSnapshot) {
-//        // This method is called once with the initial value and again
-//        // whenever data at this location is updated.
-//        String value = dataSnapshot.getValue(String.class);
-//        Log.d(TAG, "Value is: " + value);
-//    }
-//
-//    @Override
-//    public void onCancelled(DatabaseError error) {
-//        // Failed to read value
-//        Log.w(TAG, "Failed to read value.", error.toException());
-//    }
-//});
+// TODO: Add Makes Collection which will handle all interactions between Users and Donations
 
 package cs134.miracosta.wastenot.Model;
 
@@ -76,6 +53,7 @@ public class FirebaseDBHelper {
         // Instantiate references to each collection
         mUserDB = FirebaseFirestore.getInstance().collection(USER_COLLECTION);
         mDonationDB = FirebaseFirestore.getInstance().collection(DONATION_COLLECTION);
+        mMakesDB = FirebaseFirestore.getInstance().collection(MAKES_COLLECTION);
     }
 
 
@@ -225,7 +203,7 @@ public class FirebaseDBHelper {
      * FIRESTORE DONATION DATABASE METHODS
      ***************************************************/
 
-
+    // TODO: update key in DB
     public void addDonation(Donation newDonation, final DataStatus dataStatus)
     {
         // Store reference to Donation to set key
@@ -294,13 +272,9 @@ public class FirebaseDBHelper {
             {
                 if (documentSnapshot.exists())
                 {
-                    //TODO: debug
-                    Log.d(TAG, "Found type: " + documentSnapshot.toObject(Donation.class).getStatus());
-                    // Which type of user determines what data Firestore will attempt to pull
                     focusedDonation = documentSnapshot.toObject((Donation.class));
-                    //TODO: debug
-                    Log.d(TAG, "Converted object: " + focusedDonation.toString());
-                    // Before returning the User, assign it the generated key
+                    // TODO: remove key setter
+                    // Before returning the Donation, assign it the generated key
                     focusedDonation.setKey(focusedKey);
                     // Send the Data via interface
                     List<Donation> items = new ArrayList<>();

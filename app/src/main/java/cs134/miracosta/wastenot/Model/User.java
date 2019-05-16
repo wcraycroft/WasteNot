@@ -3,9 +3,12 @@
 
 package cs134.miracosta.wastenot.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
-public class User {
+public class User implements Parcelable {
 
     private String mKey;
     private String mFirstName;
@@ -25,6 +28,8 @@ public class User {
         mCompanyName = companyName;
         mLocation = location;
     }
+
+    // TODO: Parcelable constructor
 
     public String getKey() {
         return mKey;
@@ -102,5 +107,16 @@ public class User {
                 ", mCompanyName='" + mCompanyName + '\'' +
                 ", mLocation=" + mLocation +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // TODO
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

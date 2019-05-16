@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".UI.NavTest"
+            android:name=".UI.DonationListActivity"
+            android:label="@string/title_activity_donation_list"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,18 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.NavTest"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity android:name=".UI.SplashScreenActivity" />
         <activity android:name=".UI.TestActivity" />
-        <activity android:name=".UI.DonationDetailsActivity" />
-        <activity
-            android:name=".UI.DonationsListActivity"
-            android:label="@string/title_activity_donations_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.DeliveryDetailsActivity" />
-        <activity
-            android:name=".UI.DeliveryActivity"
-            android:label="@string/title_activity_delivery"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
