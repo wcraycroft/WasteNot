@@ -1,33 +1,20 @@
 package cs134.miracosta.wastenot.Model;
 
 public class UserNEW {
-    private String userType = "", firstName = "", lastName = "", email = "", password = "", nodeName = "";
+    private String key;
+    private String firstName = "";
+    private String lastName = "";
+    private String email = "";
+    private String companyName;
+    private Location location;
 
-    public UserNEW(String userType, String firstName, String lastName, String email, String password) {
-        this.userType = userType;
+    public UserNEW(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
     }
 
     public UserNEW() {
-    }
-
-    public String getNodeName() {
-        return nodeName;
-    }
-
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
     }
 
     public String getFirstName() {
@@ -54,11 +41,4 @@ public class UserNEW {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

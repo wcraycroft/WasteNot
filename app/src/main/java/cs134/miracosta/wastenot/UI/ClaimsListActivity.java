@@ -66,6 +66,9 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
      * method to get all claims
      */
     private void getAllClaims() {
+
+        // db.getAllClaims()
+
         loader.setVisibility(View.VISIBLE);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

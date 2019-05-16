@@ -1,5 +1,12 @@
 // TODO: Add Makes Collection which will handle all interactions between Users and Donations
 
+/**
+ *
+ *
+ *
+ *
+ */
+
 package cs134.miracosta.wastenot.Model;
 
 import android.support.annotation.NonNull;

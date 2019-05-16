@@ -62,9 +62,16 @@ public class TestActivity extends AppCompatActivity {
 
         testUser = new User();
 
+
+
+
+        // TODO: Example of FirebaseDBHelper Call
+
         mDB.addUser(testUser, new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsProcessed() {
+
+                // Put code here if you are not getting data back
                 Toast.makeText(TestActivity.this, "Claimer added successfully.", Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "Inside DataIsProcessed: " + testUser);
                 mDB.getUser(testUser.getKey(), new FirebaseDBHelper.DataStatus() {
@@ -86,6 +93,8 @@ public class TestActivity extends AppCompatActivity {
 
             @Override
             public void DataIsRead(List<?> items) {
+
+                // TODO: put code here if you are getting data back from DB (getters)
             }
         });
 

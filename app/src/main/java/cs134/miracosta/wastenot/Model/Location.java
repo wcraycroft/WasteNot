@@ -16,7 +16,7 @@ import java.util.Locale;
  * The <code>Location</code> class represents a place where one can get a caffeine fix, including
  * its name, address, phone number and latitude/longitude location.
  *
- * @author Michael Paulding
+ * @author Will Craycroft
  */
 
 public class Location implements Parcelable {
