@@ -2,7 +2,6 @@
 
 package cs134.miracosta.wastenot.Model;
 
-
 import android.support.annotation.NonNull;
 import android.util.Log;
 

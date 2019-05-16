@@ -1,3 +1,6 @@
+// TODO: Copy layout to a new unique nav drawer
+
+
 package cs134.miracosta.wastenot.UI;
 
 import android.os.Bundle;
@@ -24,28 +27,26 @@ public class NewDonationActivity extends AppCompatActivity
     public static final String TAG = "WasteNot";
 
     private FirebaseDBHelper db;
-    private List<Donation> donationsList;
-    private DonationListAdapter donationsListAdapter;
     // View elements
     private DrawerLayout drawer;
     private Toolbar toolbar;
-    private Button newDonationButton;
+    private Button addDonationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donation_list);
+        setContentView(R.layout.activity_new_donation);
 
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
         // Link View
-        toolbar = findViewById(R.id.donation_list_toolbar);
+        toolbar = findViewById(R.id.new_donation_toolbar);
         drawer = findViewById(R.id.donation_list_drawer_layout);
-        newDonationButton = findViewById(R.id.newDonationButton);
+        addDonationButton = findViewById(R.id.addDonationButton);
         setSupportActionBar(toolbar);
 
-        NavigationView navigationView = findViewById(R.id.donation_list_nav_view);
+        NavigationView navigationView = findViewById(R.id.new_donation_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,7 +57,6 @@ public class NewDonationActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.donation_list_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -71,7 +71,7 @@ public class NewDonationActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_donate:
-                // Do nothing
+                finish();
                 break;
             case R.id.nav_claim:
                 // TODO: Intent to Claim activity

@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UI.DonationListActivity"
-            android:label="@string/title_activity_donation_list"
+            android:label="@string/your_donations_title"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +24,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".UI.NavTest"
-            android:theme="@style/AppTheme.NoActionBar">
 
+        <activity
+            android:name=".UI.NewDonationActivity"
+            android:label="@string/new_donation"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity android:name=".UI.SplashScreenActivity" />
         <activity android:name=".UI.TestActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".UI.MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

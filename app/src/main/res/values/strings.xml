@@ -22,34 +22,43 @@
 
     <!-- DonationList Activity -->
     <string name="new_donation">New Donation</string>
-    <string name="your_donations">Close navigation drawer</string>
+    <string name="your_donations">Your Active Donations</string>
+    <string name="your_donations_title">Your Donations</string>
     <string name="donations_list_title">Your Donations</string>
 
-    <!-- DonationDetails Activity -->
 
+    <!-- NewDonation Activity -->
+    <string name="donate_food">Donate Food</string>
+    <string name="add_donation_title">Make a Donation</string>
+    <string name="add_donation_button">Add Donation</string>
+    <string name="when_food_ready">When will the food be ready?</string>
+    <string name="pickup_end_time">Pickup End Time?</string>
+    <string name="food_types">Food Types</string>
+    <string name="how_many_servings">Approx how many could this feed?</string>
+    <string name="fit_in_car">Will this donation fit in a car?</string>
+    <string name="other_info">Any other information?</string>
 
-
-
-    <string-array name="food_types">
-        <item>Select the status of donation</item>
-        <item>Beverages</item>
+    <string-array name="food_types_array">
+        <item>Select the type of food</item>
+        <item>Dairy</item>
+        <item>Meat &amp; Other Protein</item>
+        <item>Produce</item>
         <item>Baked Goods</item>
-        <item>Canned Foods</item>
-        <item>Dairy Products</item>
-        <item>Frozen Foods</item>
-        <item>Grain/Pasta</item>
-        <item>Pet Food</item>
+        <item>Prepared - Individually Packaged</item>
+        <item>Prepared - Tray/Multi-Serving</item>
         <item>Other</item>
     </string-array>
 
+
     <string-array name="app_uses">
         <item>How would you like to use this app?</item>
-        <item>Make a donation</item>
-        <item>Claim a donation</item>
-        <item>Volunteer Driver</item>
+        <item>Make a Donation</item>
+        <item>Claim a Donation</item>
+        <item>Deliver Food</item>
     </string-array>
-    <string name="title_activity_login">Sign in</string>
+
     <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
