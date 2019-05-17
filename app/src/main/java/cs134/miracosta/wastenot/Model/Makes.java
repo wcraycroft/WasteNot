@@ -13,12 +13,12 @@ public class Makes {
     private String mClaimerKey;
     private String mDriverKey;
 
-    public Makes(String key, String donationKey, String donorKey, String claimerKey, String driverKey) {
-        mKey = key;
+    public Makes(String donationKey, String donorKey) {
+        mKey = "";
         mDonationKey = donationKey;
         mDonorKey = donorKey;
-        mClaimerKey = claimerKey;
-        mDriverKey = driverKey;
+        mClaimerKey = "";
+        mDriverKey = "";
     }
 
     public Makes() {

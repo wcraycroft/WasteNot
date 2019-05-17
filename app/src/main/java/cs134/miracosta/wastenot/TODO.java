@@ -1,20 +1,23 @@
 /**
  *
- *  Will
+ *  ***Will***
  * Firebase calls:
- *    - addUser()
- *    - getUser(email)
+ *    - addUser(User)
+ *    - getUserByEmail(String email)
+ *    - getUserByKey(String key)
  *    - getAllClaims()
  *    - getUserClaims(User)
- *    - convertDonationToClaim(Donation, User (claimer))
+ *    - claimDonation(Donation, String user key (claimer))
  *
  *    TODO: Add Ahmad strings.xml
+ *    TODO: translate strings
+ *    TODO:
  *
  *
  *
  *
  *
- * Ahmad
+ * ***Ahmad***
  *
  * TODO: Get location information from user, add location getter/setters etc. to User class
  *      Address, City, State, Zip
@@ -22,6 +25,8 @@
  * TODO: Replace Claimer/Driver with User
  * TODO: Replace Claim/Delivery with Donation
  * TODO: Add Button in ClaimListActivity that take user to DeliveryActivity
+ *
+ * Don't forget to download the google-services.json I emailed you and put it in app directory.
   */
 
 

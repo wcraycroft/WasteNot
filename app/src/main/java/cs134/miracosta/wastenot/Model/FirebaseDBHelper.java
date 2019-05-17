@@ -51,6 +51,7 @@ public class FirebaseDBHelper {
     private List<String> allKeysList = new ArrayList<>();
     private User focusedUser;
     private Donation focusedDonation;
+    private Makes focusedMakes;
     private String focusedKey;
 
     // Constructor
@@ -129,10 +130,8 @@ public class FirebaseDBHelper {
         });
     }
 
-    public void getUser(String key, final DataStatus dataStatus)
+    public void getUserByKey(final String key, final DataStatus dataStatus)
     {
-        // Store key to be assigned later
-        focusedKey = key;
         // Get user from DB
         mUserDB.document(key).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -144,15 +143,38 @@ public class FirebaseDBHelper {
                     focusedUser = documentSnapshot.toObject((User.class));
                     //TODO: debug
                     Log.i(TAG, "Converted object: " + focusedUser.toString());
-                    // Before returning the User, assign it the generated key
-                    focusedUser.setKey(focusedKey);
                     // Send the Data via interface
-                    List<Object> items = new ArrayList<>();
+                    List<User> items = new ArrayList<>();
                     items.add(focusedUser);
                     // Send data through interface
                     dataStatus.DataIsRead(items);
+                    Log.i(TAG, "Document was retrieved successfully by key.");
                 }
             } // end of onSuccess
+        });
+    }
+
+    public void getUserByEmail(final String email, final DataStatus dataStatus)
+    {
+        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        focusedUser = document.toObject((User.class));
+                        if (focusedUser.getEmail().equals(email)) {
+                            List<User> items = new ArrayList<>();
+                            items.add(focusedUser);
+                            // Send the Data via interface
+                            dataStatus.DataIsRead(items);
+                            Log.i(TAG, "Document was retrieved successfully by email.");
+                            return;
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
         });
     }
 
@@ -210,24 +232,88 @@ public class FirebaseDBHelper {
      ***************************************************/
 
     // TODO: update key in DB
-    public void addDonation(Donation newDonation, final DataStatus dataStatus)
+    // Adds a new Donation to the Donation Collection and calls method to create a new Makes relationship
+    public void addDonation(final Donation newDonation, final String userKey, final DataStatus dataStatus)
     {
-        // Store reference to Donation to set key
-        focusedDonation = newDonation;
-        // Add user to DB
+        // Add new Donation to DB
         mDonationDB.add(newDonation).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
         {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task)
             {
                 if (task.isSuccessful()) {
-                    Log.i(TAG, "Document was added successfully. Key = " + task.getResult().getId());
+                    String donationKey = task.getResult().getId();
+                    Log.i(TAG, "Donation was added successfully. Key = " + donationKey);
                     // Set the new user's key (note it will still be the old value in DB)
-                    focusedDonation.setKey(task.getResult().getId());
+                    newDonation.setKey(donationKey);
+                    // Set new ket in database
+                    mDonationDB.document(donationKey).set(newDonation);
+                    // Create new Makes relation
+                    addNewMakes(donationKey, userKey, dataStatus);
+                    // This now gets called in addNewMakes()
+                    //dataStatus.DataIsProcessed();
+                }
+                else {
+                    Log.w(TAG, "Error adding Donation.", task.getException());
+                }
+            }
+        });
+    }
+
+    // Helper method that adds a new Makes relationship between the passed Donation and User keys
+    private void addNewMakes(String donationKey, String userKey, final DataStatus dataStatus)
+    {
+        // Instantiate Makes
+        final Makes newMakes = new Makes(donationKey, userKey);
+        mMakesDB.add(newMakes).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    String makesKey = task.getResult().getId();
+                    Log.i(TAG, "Makes was added successfully. Key = " + makesKey);
+                    // Set the new Make's key
+                    newMakes.setKey(makesKey);
+                    // Update database with new key value
+                    mMakesDB.document(makesKey).set(newMakes);
+                    // Task complete
                     dataStatus.DataIsProcessed();
                 }
                 else {
                     Log.w(TAG, "Error adding Donation.", task.getException());
+                }
+            }
+        });
+    }
+
+    /**
+     * Call this method when a user claims a donation. It will update the appropriate info in database.
+     * This will also update the Donation object in the Donations collection, so if you make any changes
+     * like adding a pickup/dropoff time, you do not need to call another update() in addition to this method.
+     */
+    public void claimDonation(final Donation claimedDonation, final String claimerKey, final DataStatus dataStatus)
+    {
+        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        focusedMakes = document.toObject((Makes.class));
+                        // Check if the keys match
+                        if (focusedMakes.getDonationKey().equals(claimedDonation.getKey())) {
+                            // Set the new claimer key and update DB
+                            focusedMakes.setClaimerKey(claimerKey);
+                            mMakesDB.document(focusedMakes.getKey()).set(focusedMakes);
+                            // Set the donation status to claimed and update DB (in case we forgot)
+                            claimedDonation.setStatus(DonationStatus.DONATION_CLAIMED);
+                            mDonationDB.document(focusedDonation.getKey()).set(focusedDonation);
+                            // Task complete
+                            dataStatus.DataIsProcessed();
+                            Log.i(TAG, "Donation claim was updated in DB.");
+                            return;
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Error updating donation to claim: ", task.getException());
                 }
             }
         });
@@ -240,7 +326,7 @@ public class FirebaseDBHelper {
             public void onComplete(@NonNull Task<Void> task)
             {
                 if (task.isSuccessful()) {
-                    Log.i(TAG, "Document was updated successfully.");
+                    Log.i(TAG, "Donation was updated successfully.");
                     dataStatus.DataIsProcessed();
                 }
                 else {
