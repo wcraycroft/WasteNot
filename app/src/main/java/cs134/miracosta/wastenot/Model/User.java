@@ -20,8 +20,8 @@ public class User implements Parcelable {
     public User() {
     }
 
-    public User(String key, String firstName, String lastName, String email, String companyName, Location location) {
-        mKey = key;
+    public User(String firstName, String lastName, String email, String companyName, Location location) {
+        mKey = "";
         mFirstName = firstName;
         mLastName = lastName;
         mEmail = email;

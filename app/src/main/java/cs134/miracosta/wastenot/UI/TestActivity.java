@@ -55,14 +55,9 @@ public class TestActivity extends AppCompatActivity {
 
     public void testDatabase(View v) {
         String text = inputEditText.getText().toString();
-
-
         Location testLoc = new Location("123 Fake St", "Long Island",
                 "NY", "51611");
-
-        testUser = new User();
-
-
+        testUser = new User("Will", "C", "abc@abc", "Comp", testLoc);
 
 
         // TODO: Example of FirebaseDBHelper Call
@@ -72,8 +67,10 @@ public class TestActivity extends AppCompatActivity {
             public void DataIsProcessed() {
 
                 // Put code here if you are not getting data back
-                Toast.makeText(TestActivity.this, "Claimer added successfully.", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Inside DataIsProcessed: " + testUser);
+                Toast.makeText(TestActivity.this, "User added successfully.", Toast.LENGTH_SHORT).show();
+
+
+                /*
                 mDB.getUserByKey(testUser.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
@@ -89,14 +86,34 @@ public class TestActivity extends AppCompatActivity {
                     public void DataIsProcessed() {
                     }
                 });
+                */
             }
 
             @Override
             public void DataIsRead(List<?> items) {
-
-                // TODO: put code here if you are getting data back from DB (getters)
+                // Put code here if you are getting data back from DB (getters)
             }
         });
+
+
+        // Another example where data is returned
+        mDB.getUserByKey("key", new FirebaseDBHelper.DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                // The data we want is in items list (even if it's only 1 object)
+                testUser = (User) items.get(0);
+                // Do stuff with data...
+            }
+
+            @Override
+            public void DataIsProcessed() {
+                // not used here, leave this empty
+            }
+        });
+
+
+
+
 
         /*allUserKeys.clear();
         mDB.getAllUserKeys(new FirebaseDBHelper.DataStatus() {

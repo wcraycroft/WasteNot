@@ -16,6 +16,7 @@
  *    TODO: finish delivery/google maps layout
  *    TODO: finish New Donation spinners
  *    TODO: translate strings
+ *    TODO: Javadocs, JUnit testing, Animation
  *    TODO: delete this file :)
  *
  *
