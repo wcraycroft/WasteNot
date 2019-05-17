@@ -47,8 +47,9 @@ public class FirebaseDBHelper {
 
     // Other variables
     private List<User> allUsersList = new ArrayList<>();
-    private List<Donation> allDonationsList = new ArrayList<>();
+    private List<Donation> donationsList = new ArrayList<>();
     private List<String> allKeysList = new ArrayList<>();
+    private List<String> donationKeysList = new ArrayList<>();
     private User focusedUser;
     private Donation focusedDonation;
     private Makes focusedMakes;
@@ -379,14 +380,14 @@ public class FirebaseDBHelper {
 
     public void getAllDonations(final DataStatus dataStatus)
     {
-        allDonationsList.clear();
+        donationsList.clear();
         mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     // Loop through all documents in collection
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        allDonationsList.add(document.toObject((Donation.class)));
+                        donationsList.add(document.toObject((Donation.class)));
                     }
                 } else {
                     Log.w(TAG, "Error getting documents: ", task.getException());
@@ -394,6 +395,170 @@ public class FirebaseDBHelper {
             }
         });
     }
+
+
+    /**
+     *  This method returns (via interface) a list of all donations linked to a User (in any way)
+     */
+    public void getDonationsByUser(String userKey, final DataStatus dataStatus)
+    {
+        donationsList.clear();
+        // Get list of Donation keys that have not been claimed from Makes db
+        getDonationKeysByUser(userKey, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) { }   // not used
+            @Override
+            public void DataIsProcessed() {
+                // Keys list is updated and we are ready to party
+                mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // Loop through all Donations
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // If keys match, parse Donation and add it to list
+                                if (donationKeysList.contains(document.getId()))
+                                {
+                                    donationsList.add(document.toObject((Donation.class)));
+                                }
+                            }
+                            // Task complete, send data via interface
+                            dataStatus.DataIsRead(donationsList);
+                            Log.i(TAG, "User Donation List successfully fetched from Donation DB.");
+                        } else {
+                            Log.w(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    /** Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
+     *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+     */
+    private void getDonationKeysByUser(final String userKey, final DataStatus dataStatus)
+    {
+        donationKeysList.clear();
+        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        focusedMakes = document.toObject((Makes.class));
+                        // Check if the user key match any of the Makes user keys
+                        if (userKey.equals(focusedMakes.getClaimerKey()) ||
+                                userKey.equals(focusedMakes.getDonorKey()) ||
+                                userKey.equals(focusedMakes.getDriverKey()))
+                        {
+                            donationKeysList.add(focusedMakes.getDonationKey());
+                        }
+
+                    } // end of document for loop
+
+                    // Task complete, no need to send data since we will be staying in this class
+                    // and have access to the keys list
+                    dataStatus.DataIsProcessed();
+                    Log.i(TAG, "Donation keys were fetched successfully from Makes DB.");
+
+                } else {
+                    Log.d(TAG, "Error fetching donation keys from Makes collection: ", task.getException());
+                }
+            }
+        });
+    }
+
+
+    /**
+     *  This method returns (via interface) a list of all donations with the passed status
+     *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+     */
+    public void getDonationsByStatus(DonationStatus status, final DataStatus dataStatus)
+    {
+        donationsList.clear();
+        // Get list of Donation keys that have not been claimed from Makes db
+        getDonationKeysByStatus(status, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) { }   // not used
+            @Override
+            public void DataIsProcessed() {
+                // Keys list is updated and we are ready to party
+                mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // Loop through all Donations
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // If keys match, parse Donation and add it to list
+                                if (donationKeysList.contains(document.getId()))
+                                {
+                                    donationsList.add(document.toObject((Donation.class)));
+                                }
+                            }
+                            // Task complete, send data via interface
+                            dataStatus.DataIsRead(donationsList);
+                            Log.i(TAG, "Status Donation List successfully fetched from Donation DB.");
+                        } else {
+                            Log.w(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    /**
+     * Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
+     *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+     */
+    private void getDonationKeysByStatus(final DonationStatus status, final DataStatus dataStatus)
+    {
+        donationKeysList.clear();
+        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        focusedMakes = document.toObject((Makes.class));
+                        // Check if the keys match the requested status
+                        switch (status) {
+                            // Unclaimed donation: no claimer (or driver) key
+                            case UNCLAIMED:
+                                if (focusedMakes.getClaimerKey().equals("")) {
+                                    donationKeysList.add(focusedMakes.getDonationKey());
+                                }
+                                break;
+                            // Claimed donation: claimer key, no driver key
+                            case DONATION_CLAIMED:
+                                if (!focusedMakes.getClaimerKey().equals("")
+                                && focusedMakes.getDriverKey().equals("")) {
+                                    donationKeysList.add(focusedMakes.getDonationKey());
+                                }
+                                break;
+                            // Delivery Claimed donation: claimer and driver key
+                            case DELIVERY_CLAIMED:
+                                if (!focusedMakes.getClaimerKey().equals("")
+                                        && !focusedMakes.getDriverKey().equals("")) {
+                                    donationKeysList.add(focusedMakes.getDonationKey());
+                                }
+                                break;
+                        } // end of status switch statement
+                    } // end of document for loop
+
+                    // Task complete, no need to send data since we will be staying in this class
+                    // and have access to the keys list
+                    dataStatus.DataIsProcessed();
+                    Log.i(TAG, "Donation keys were fetched successfully from Makes DB.");
+
+                } else {
+                    Log.d(TAG, "Error fetching donation keys from Makes collection: ", task.getException());
+                }
+            }
+        });
+    }
+
 
     public void getAllDonationKeys(final DataStatus dataStatus)
     {
