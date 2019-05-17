@@ -74,7 +74,7 @@ public class TestActivity extends AppCompatActivity {
                 // Put code here if you are not getting data back
                 Toast.makeText(TestActivity.this, "Claimer added successfully.", Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "Inside DataIsProcessed: " + testUser);
-                mDB.getUser(testUser.getKey(), new FirebaseDBHelper.DataStatus() {
+                mDB.getUserByKey(testUser.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
                         outputUser = (User) items.get(0);

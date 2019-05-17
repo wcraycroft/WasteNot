@@ -12,7 +12,7 @@
  *              note: claimDonation will also update the db with any changes you make to that passed Donations (like giving it a dropoff time)
  *
  * Other:
- *    TODO: (PRIO) Add Ahmad's strings.xml
+ *    DONE: (PRIO) Add Ahmad's strings.xml
  *    TODO: finish delivery/google maps layout
  *    TODO: finish New Donation spinners
  *    TODO: translate strings
