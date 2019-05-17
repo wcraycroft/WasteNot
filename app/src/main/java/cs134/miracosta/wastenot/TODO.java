@@ -21,8 +21,6 @@
  *
  *
  *
- *
- *
  * ***Ahmad***
  *
  * TODO: Get location information from user, add location getter/setters etc. to User class
@@ -34,7 +32,9 @@
  * TODO: Add Button in ClaimListActivity that take user to DeliveryActivity
  *
  * Don't forget to download the google-services.json I emailed you and put it in app directory.
-  */
+ *
+ *
+ */
 
 
 

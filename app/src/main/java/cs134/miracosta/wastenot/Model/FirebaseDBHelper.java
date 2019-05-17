@@ -155,22 +155,21 @@ public class FirebaseDBHelper {
         });
     }
 
-    public void getUserByEmail(final String email, final DataStatus dataStatus)
+    public void getUserByEmail(String email, final DataStatus dataStatus)
     {
-        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mUserDB.whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        focusedUser = document.toObject((User.class));
-                        if (focusedUser.getEmail().equals(email)) {
-                            List<User> items = new ArrayList<>();
-                            items.add(focusedUser);
-                            // Send the Data via interface
-                            dataStatus.DataIsRead(items);
-                            Log.i(TAG, "Document was retrieved successfully by email.");
-                            return;
-                        }
+                        List<User> items = new ArrayList<>();
+                        items.add(document.toObject((User.class)));
+                        // Send the Data via interface
+                        dataStatus.DataIsRead(items);
+                        Log.i(TAG, "Document was retrieved successfully by email.");
+                        return;
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -232,7 +231,6 @@ public class FirebaseDBHelper {
      * FIRESTORE DONATION DATABASE METHODS
      ***************************************************/
 
-    // TODO: update key in DB
     // Adds a new Donation to the Donation Collection and calls method to create a new Makes relationship
     public void addDonation(final Donation newDonation, final String userKey, final DataStatus dataStatus)
     {
@@ -293,25 +291,24 @@ public class FirebaseDBHelper {
      */
     public void claimDonation(final Donation claimedDonation, final String claimerKey, final DataStatus dataStatus)
     {
-        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mMakesDB.whereEqualTo("donationKey", claimedDonation.getKey())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         focusedMakes = document.toObject((Makes.class));
-                        // Check if the keys match
-                        if (focusedMakes.getDonationKey().equals(claimedDonation.getKey())) {
-                            // Set the new claimer key and update DB
-                            focusedMakes.setClaimerKey(claimerKey);
-                            mMakesDB.document(focusedMakes.getKey()).set(focusedMakes);
-                            // Set the donation status to claimed and update DB (in case we forgot)
-                            claimedDonation.setStatus(DonationStatus.DONATION_CLAIMED);
-                            mDonationDB.document(focusedDonation.getKey()).set(focusedDonation);
-                            // Task complete
-                            dataStatus.DataIsProcessed();
-                            Log.i(TAG, "Donation claim was updated in DB.");
-                            return;
-                        }
+                        // Set the new claimer key and update DB
+                        focusedMakes.setClaimerKey(claimerKey);
+                        mMakesDB.document(focusedMakes.getKey()).set(focusedMakes);
+                        // Set the donation status to claimed and update DB (in case we forgot)
+                        claimedDonation.setStatus(DonationStatus.DONATION_CLAIMED);
+                        mDonationDB.document(focusedDonation.getKey()).set(focusedDonation);
+                        // Task complete
+                        dataStatus.DataIsProcessed();
+                        Log.i(TAG, "Donation claim was updated in DB.");
+                        return;
                     }
                 } else {
                     Log.d(TAG, "Error updating donation to claim: ", task.getException());
@@ -322,7 +319,9 @@ public class FirebaseDBHelper {
 
     public void updateDonation(User updatedDonation, final DataStatus dataStatus)
     {
-        mDonationDB.document(updatedDonation.getKey()).set(updatedDonation).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDonationDB.document(updatedDonation.getKey())
+                .set(updatedDonation)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task)
             {
@@ -441,7 +440,8 @@ public class FirebaseDBHelper {
     private void getDonationKeysByUser(final String userKey, final DataStatus dataStatus)
     {
         donationKeysList.clear();
-        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        mMakesDB.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
