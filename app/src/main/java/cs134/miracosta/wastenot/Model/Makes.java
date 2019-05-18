@@ -21,65 +21,6 @@ public class Makes {
         mDriverKey = "";
     }
 
-    public Makes(String mKey, String mDonationKey, String mDonorKey, String mClaimerKey, String mDriverKey)
-    {
-        this.mKey = mKey;
-        this.mDonationKey = mDonationKey;
-        this.mDonorKey = mDonorKey;
-        this.mClaimerKey = mClaimerKey;
-        this.mDriverKey = mDriverKey;
-    }
-
-    public String getmKey()
-    {
-        return mKey;
-    }
-
-    public void setmKey(String mKey)
-    {
-        this.mKey = mKey;
-    }
-
-    public String getmDonationKey()
-    {
-        return mDonationKey;
-    }
-
-    public void setmDonationKey(String mDonationKey)
-    {
-        this.mDonationKey = mDonationKey;
-    }
-
-    public String getmDonorKey()
-    {
-        return mDonorKey;
-    }
-
-    public void setmDonorKey(String mDonorKey)
-    {
-        this.mDonorKey = mDonorKey;
-    }
-
-    public String getmClaimerKey()
-    {
-        return mClaimerKey;
-    }
-
-    public void setmClaimerKey(String mClaimerKey)
-    {
-        this.mClaimerKey = mClaimerKey;
-    }
-
-    public String getmDriverKey()
-    {
-        return mDriverKey;
-    }
-
-    public void setmDriverKey(String mDriverKey)
-    {
-        this.mDriverKey = mDriverKey;
-    }
-
     public Makes() {
     }
 
