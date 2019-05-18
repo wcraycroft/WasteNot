@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private RadioGroup rgUserType;
     private ConstraintLayout loader;
     private String selectedUserType = "";
-    private EditText etFirstName, etLastName, etEmail, etPassword, etConfirmPassword, eAddress, eCity, eState, eZipCode;
+    private EditText etFirstName, etLastName, etEmail, etCompanyName, etPassword, etConfirmPassword, eAddress, eCity, eState, eZipCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
         etEmail = findViewById(R.id.etEmail);
+        etCompanyName = findViewById(R.id.etCompanyName);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         eAddress = findViewById(R.id.etAddress);
@@ -88,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String firstName = etFirstName.getText().toString().trim();
         String lastName = etLastName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        String companyName = etCompanyName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String address = eAddress.getText().toString().trim();
@@ -127,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Animator.animate(etConfirmPassword);
         }
         else {
-            User user = new User(selectedUserType, firstName, lastName, email, password, new Location(address,city,eState.getText().toString().trim(),eZipCode.getText().toString().trim()));
+            User user = new User(selectedUserType, firstName, lastName, email, companyName, password, new Location(this, address, city, eState.getText().toString().trim(), eZipCode.getText().toString().trim()));
             registerNewUser(user);
         }
     }

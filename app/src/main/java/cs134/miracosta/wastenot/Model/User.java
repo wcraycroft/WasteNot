@@ -21,6 +21,13 @@ public class User implements Serializable
     private String mCompanyName;
     private Location mLocation;
 
+
+    public User() {
+    }
+
+    // Commented out duplicated getters/setters since they were creating duplicate fields in database
+
+    /*
     public User(String mKey, String userType, String mFirstName, String mLastName, String mEmail, String mPassword, String mCompanyName, Location mLocation)
     {
         this.mKey = mKey;
@@ -35,8 +42,6 @@ public class User implements Serializable
 
 
 
-    public User() {
-    }
 
     public String getmKey()
     {
@@ -98,12 +103,14 @@ public class User implements Serializable
         this.mLocation = mLocation;
     }
 
-    public User(String userType, String firstName, String lastName, String email, String mPassword, Location location) {
+    */
+
+    public User(String userType, String firstName, String lastName, String email, String companyName, String mPassword, Location location) {
         this.userType = userType;
         mFirstName = firstName;
         mLastName = lastName;
         mEmail = email;
-        mCompanyName = email;
+        mCompanyName = companyName;
         this.mPassword = mPassword;
         mLocation = location;
     }

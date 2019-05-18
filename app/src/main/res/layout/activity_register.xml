@@ -74,17 +74,29 @@
         app:layout_constraintStart_toStartOf="@id/etFirstName"
         app:layout_constraintTop_toBottomOf="@id/etFirstName" />
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:maxLength="30"
-        app:layout_constraintEnd_toEndOf="@id/etFirstName"
-        app:layout_constraintStart_toStartOf="@id/etFirstName"
-        app:layout_constraintTop_toBottomOf="@id/etLastName" />
+        <EditText
+            android:id="@+id/etCompanyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:hint="Company Name (optional)"
+            android:inputType="text"
+            android:maxLength="30"
+            app:layout_constraintEnd_toEndOf="@id/etFirstName"
+            app:layout_constraintStart_toStartOf="@id/etFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/etLastName" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLength="30"
+            app:layout_constraintEnd_toEndOf="@id/etFirstName"
+            app:layout_constraintStart_toStartOf="@id/etFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/etCompanyName" />
 
     <EditText
         android:id="@+id/etPassword"
