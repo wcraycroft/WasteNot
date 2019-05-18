@@ -53,7 +53,7 @@ public class ClaimDetailsActivity extends AppCompatActivity {
 
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
-        mDB.getUserByEmail(email,new FirebaseDBHelper.DataStatus() {
+        mDB.getUserByEmail(email, new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items)
             {

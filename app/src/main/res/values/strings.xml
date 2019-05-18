@@ -37,6 +37,9 @@
     <string name="fit_in_car">Will this donation fit in a car?</string>
     <string name="other_info">Any other information?</string>
 
+    <!-- Delivery Activity -->
+    <string name="map">Map</string>
+
     <string-array name="food_types_array">
         <item>Select the type of food</item>
         <item>Dairy</item>

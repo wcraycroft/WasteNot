@@ -145,7 +145,7 @@ public class FirebaseDBHelper {
                 {
                     // Which type of user determines what data Firestore will attempt to pull
                     focusedUser = documentSnapshot.toObject((User.class));
-                    //TODO: debug
+                    //TODO: remove debug
                     Log.i(TAG, "Converted object: " + focusedUser.toString());
                     // Send the Data via interface
                     List<User> items = new ArrayList<>();
@@ -169,8 +169,10 @@ public class FirebaseDBHelper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 List<User> items = new ArrayList<>();
                                 items.add(document.toObject((User.class)));
+
                                 // Send the Data via interface
                                 dataStatus.DataIsRead(items);
+
                                 Log.i(TAG, "Document was retrieved successfully by email.");
                                 return;
                             }
@@ -180,6 +182,7 @@ public class FirebaseDBHelper {
                         }
                     }
                 });
+
     }
 
     public void getAllUsers(final DataStatus dataStatus)
