@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group>
+        <item
+            android:id="@+id/nav_deliver"
+            android:icon="@drawable/ic_deliver"
+            android:title="@string/menu_deliver" />
+
+        <item
+            android:id="@+id/nav_donate"
+            android:icon="@drawable/ic_donate"
+            android:title="@string/menu_donate" />
+        <item
+            android:id="@+id/nav_claim"
+            android:icon="@drawable/ic_claim"
+            android:title="@string/menu_claim" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/menu_logout" />
+    </group>
+
+</menu>

@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">WasteNot</string>
+    <string name="add">Add Donation</string>
+    <string name="weight">Enter the approximate weight (oz)</string>
+    <string name="description">Enter item(s) description</string>
+    <string name="date">Select the expiration date</string>
+    <string name="create_account">Create an Account</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="existing_user">Already a user? Click here to sign in.</string>
+
+    <!-- Navigation Drawer -->
+    <string name="menu_donate">Donate Food</string>
+    <string name="menu_claim">Claim a Donation</string>
+    <string name="menu_deliver">Deliver Food</string>
+    <string name="menu_logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- DonationList Activity -->
+    <string name="new_donation">New Donation</string>
+    <string name="your_donations">Your Active Donations</string>
+    <string name="your_donations_title">Your Donations</string>
+    <string name="donations_list_title">Your Donations</string>
+
+
+    <!-- NewDonation Activity -->
+    <string name="add_donation_title">Make a Donation</string>
+    <string name="add_donation_button">Add Donation</string>
+    <string name="when_food_ready">When will the food be ready?</string>
+    <string name="pickup_end_time">Pickup End Time?</string>
+    <string name="food_types">Food Types</string>
+    <string name="how_many_servings">Approx how many could this feed?</string>
+    <string name="fit_in_car">Will this donation fit in a car?</string>
+    <string name="other_info">Any other information?</string>
+
+    <string-array name="food_types_array">
+        <item>Select the type of food</item>
+        <item>Dairy</item>
+        <item>Meat &amp; Other Protein</item>
+        <item>Produce</item>
+        <item>Baked Goods</item>
+        <item>Prepared - Individually Packaged</item>
+        <item>Prepared - Tray/Multi-Serving</item>
+        <item>Other</item>
+    </string-array>
+
+
+    <string-array name="app_uses">
+        <item>How would you like to use this app?</item>
+        <item>Make a Donation</item>
+        <item>Claim a Donation</item>
+        <item>Deliver Food</item>
+    </string-array>
+
+    <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_delivery" translatable="false">DeliveryActivity</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_donations_list" translatable="false">DonationsListActivity</string>
+    <string name="title_activity_donation_list" translatable="false">DonationListActivity</string>
+    <string name="go">Go</string>
+    <string name="register">Register</string>
+    <string name="view_your_claims">View Your Claims</string>
+    <string name="claim">Claim</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+</resources>
