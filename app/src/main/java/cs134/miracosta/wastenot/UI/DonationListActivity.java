@@ -80,18 +80,18 @@ public class DonationListActivity extends AppCompatActivity
                 // Do nothing
                 break;
             case R.id.nav_claim:
-                // TODO: Intent to Claim activity
+                startActivity(new Intent(this, ClaimsListActivity.class));
                 break;
             case R.id.nav_deliver:
-                // TODO: Intent to Deliver activity
+                startActivity(new Intent(this, DeliveryActivity.class));
                 break;
             case R.id.nav_logout:
-                // TODO: intent to Login activity
+                startActivity(new Intent(this, LoginActivity.class));
+                finishAffinity();
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
-        // TODO: if we decide to finish activity, do it here
         return true;
     }
 

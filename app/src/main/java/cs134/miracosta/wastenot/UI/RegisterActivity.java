@@ -29,6 +29,7 @@ import cs134.miracosta.wastenot.utils.Animator;
 import cs134.miracosta.wastenot.utils.Validator;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+    public static final String TAG = "WasteNot";
     private DatabaseReference ref;
     public FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
@@ -193,10 +194,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (userType.equals("claimer")) {
             startActivity(new Intent(RegisterActivity.this, ClaimsListActivity.class));
             finishAffinity();
+        } else if (userType.equals("donor")) {
+            startActivity(new Intent(RegisterActivity.this, DonationListActivity.class));
+            finishAffinity();
+        } else if (userType.equals("driver")) {
+            startActivity(new Intent(RegisterActivity.this, DeliveryActivity.class));
+            finishAffinity();
         } else {
-            Toast.makeText(RegisterActivity.this,
-                    "Driver and Donor are not supported yet", Toast.LENGTH_SHORT).show();
-            finish();
+            Log.w(TAG, "Error redirecting user. (incompatible type?)");
         }
     }
 

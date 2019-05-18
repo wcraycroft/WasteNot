@@ -14,37 +14,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".UI.MyClaimsActivity"></activity>
+
         <activity android:name=".UI.ClaimDetailsActivity" />
-        <activity android:name=".UI.DonationListActivity" />
+
         <activity android:name=".UI.RegisterActivity" />
-        <activity android:name=".UI.LoginActivityNew" />
+
+        <activity android:name=".UI.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- TODO: Set delivery title -->
         <activity
             android:name=".UI.DeliveryActivity"
             android:label="@string/title_activity_delivery"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".UI.DonationListActivity"
+            android:label="@string/your_donations_title"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
             android:name=".UI.ClaimsListActivity"
             android:label="@string/your_donations_title"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
             android:name=".UI.NewDonationActivity"
             android:label="@string/new_donation"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance">
         </activity>
 
         <activity android:name=".UI.SplashScreenActivity" />
+
         <activity android:name=".UI.TestActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -3,6 +3,7 @@
 
 package cs134.miracosta.wastenot.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -71,21 +72,19 @@ public class NewDonationActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_donate:
-                finish();
                 break;
             case R.id.nav_claim:
-                // TODO: Intent to Claim activity
+                startActivity(new Intent(this, ClaimsListActivity.class));
                 break;
             case R.id.nav_deliver:
-                // TODO: Intent to Deliver activity
+                startActivity(new Intent(this, DeliveryActivity.class));
                 break;
             case R.id.nav_logout:
-                // TODO: intent to Login activity
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
-        // TODO: if we decide to finish activity, do it here
+        finish();
         return true;
     }
 

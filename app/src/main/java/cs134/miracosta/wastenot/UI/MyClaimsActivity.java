@@ -67,7 +67,7 @@ public class MyClaimsActivity extends AppCompatActivity implements View.OnClickL
             {
                 User user = (User) items.get(0);
 
-                mDB.getClaimedDonations(user.getKey(), new FirebaseDBHelper.DataStatus() {
+                mDB.getDonationsByUser(user.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsProcessed()
                     {
