@@ -1,4 +1,4 @@
-package cs134.miracosta.wastenot.Model;
+package cs134.miracosta.wastenot.Model.Enums;
 
 public enum DonationStatus
 {

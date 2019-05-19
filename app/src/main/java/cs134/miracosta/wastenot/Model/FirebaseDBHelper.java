@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
+
 public class FirebaseDBHelper {
 
     public static final String TAG = "WasteNot";

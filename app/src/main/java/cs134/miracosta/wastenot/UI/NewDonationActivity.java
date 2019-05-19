@@ -15,10 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.List;
-
-import cs134.miracosta.wastenot.Model.Donation;
-import cs134.miracosta.wastenot.Model.DonationListAdapter;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
 

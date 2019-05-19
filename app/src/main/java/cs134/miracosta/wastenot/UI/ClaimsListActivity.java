@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Donation;
-import cs134.miracosta.wastenot.Model.DonationStatus;
+import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
-import cs134.miracosta.wastenot.Model.FoodType;
+import cs134.miracosta.wastenot.Model.Enums.FoodType;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.ClaimsAdapter;

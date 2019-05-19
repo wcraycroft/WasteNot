@@ -1,4 +1,4 @@
-package cs134.miracosta.wastenot.Model;
+package cs134.miracosta.wastenot.UI.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs134.miracosta.wastenot.Model.Location;
 import cs134.miracosta.wastenot.R;
 
 /**

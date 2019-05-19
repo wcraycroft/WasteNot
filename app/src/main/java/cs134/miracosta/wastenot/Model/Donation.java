@@ -5,6 +5,9 @@ package cs134.miracosta.wastenot.Model;
 
 import java.io.Serializable;
 
+import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
+import cs134.miracosta.wastenot.Model.Enums.FoodType;
+
 public class Donation implements Serializable
 {
 
@@ -18,7 +21,6 @@ public class Donation implements Serializable
     private String mPickupEndTime;
     private String mPickupTime;
     private String mDropoffEndTime;
-    private String claimerKey;
 
     /**
      *
@@ -108,6 +110,22 @@ public class Donation implements Serializable
 
     public void setPickupEndTime(String pickupEndTime) {
         this.mPickupEndTime = pickupEndTime;
+    }
+
+    public String getPickupTime() {
+        return mPickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        mPickupTime = pickupTime;
+    }
+
+    public String getDropoffEndTime() {
+        return mDropoffEndTime;
+    }
+
+    public void setDropoffEndTime(String dropoffEndTime) {
+        mDropoffEndTime = dropoffEndTime;
     }
 
     @Override
