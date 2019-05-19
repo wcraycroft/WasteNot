@@ -315,7 +315,7 @@ public class FirebaseDBHelper {
                                 mMakesDB.document(focusedMakes.getKey()).set(focusedMakes);
                                 // Set the donation status to claimed and update DB (in case we forgot)
                                 claimedDonation.setStatus(DonationStatus.DONATION_CLAIMED);
-                                mDonationDB.document(focusedDonation.getKey()).set(focusedDonation);
+                                mDonationDB.document(claimedDonation.getKey()).set(claimedDonation);
                                 // Task complete
                                 dataStatus.DataIsProcessed();
                                 Log.i(TAG, "Donation claim was updated in DB.");
