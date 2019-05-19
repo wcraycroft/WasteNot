@@ -16,8 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -30,9 +28,7 @@ import cs134.miracosta.wastenot.utils.Validator;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     public static final String TAG = "WasteNot";
-    private DatabaseReference ref;
     public FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
     private FirebaseDBHelper mDB;
 
     private Button btRegister;
@@ -70,8 +66,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         eState = findViewById(R.id.etState);
         eZipCode = findViewById(R.id.etZip);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        ref = mDatabase.child("users");
         firebaseAuth = FirebaseAuth.getInstance();
     }
 

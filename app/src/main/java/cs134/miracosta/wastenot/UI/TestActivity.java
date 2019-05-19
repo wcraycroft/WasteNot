@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +20,6 @@ public class TestActivity extends AppCompatActivity {
 
     public static final String TAG = "WasteNot";
 
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mDatabaseReference;
-    DatabaseReference locationDB;
     FirebaseDBHelper mDB;
 
     Button testButton;

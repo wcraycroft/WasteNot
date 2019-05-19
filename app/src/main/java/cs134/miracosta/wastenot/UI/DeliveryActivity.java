@@ -6,6 +6,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,12 +33,11 @@ import java.util.List;
 import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.Model.DonationListAdapter;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
-import cs134.miracosta.wastenot.Model.Location;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 
 public class DeliveryActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "WasteNot";
 
@@ -49,11 +49,10 @@ public class DeliveryActivity extends AppCompatActivity
     // View elements
     private DrawerLayout drawer;
     private Toolbar toolbar;
-    private Button newDonationButton;
     private GoogleMap map;
-    private SupportMapFragment mapFragment;
-    private ListFragment listFragment;
-    FragmentManager fm;
+    private DeliveryMapFragment mapFragment;
+    private DeliveryListFragment listFragment;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,26 +68,38 @@ public class DeliveryActivity extends AppCompatActivity
         // TODO: populate locations list
 
         // Link View
-        toolbar = findViewById(R.id.donation_list_toolbar);
-        drawer = findViewById(R.id.donation_list_drawer_layout);
-        newDonationButton = findViewById(R.id.newDonationButton);
+        toolbar = findViewById(R.id.delivery_toolbar);
+        drawer = findViewById(R.id.delivery_drawer_layout);
         setSupportActionBar(toolbar);
 
-
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
-        toggleMap = true;
-
-        fm = getSupportFragmentManager();
-
-        NavigationView navigationView = findViewById(R.id.donation_list_nav_view);
+        NavigationView navigationView = findViewById(R.id.delivery_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        mapFragment = new DeliveryMapFragment();
+        listFragment = new DeliveryListFragment();
+
+        //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.anim_rotate, R.anim.anim_rotate)
+                .replace(R.id.fragment_container, mapFragment)
+                .commit();
+        /*
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+            toggleMap = true;
+        } else {
+            Log.w(TAG, "Error loading Google Map.");
+        }
+
+        fm = getSupportFragmentManager();
+        //listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
+        */
+
     }
 
     @Override
@@ -103,12 +114,23 @@ public class DeliveryActivity extends AppCompatActivity
 
         if (id == R.id.miToggle) {
             if (toggleMap) {
-                toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                fm.beginTransaction()
-                        .setCustomAnimations(R.anim.rotate, R.anim.rotate)
-                        .show(listFragment)
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
+                        .replace(R.id.fragment_container, mapFragment)
                         .commit();
+                item.setIcon(R.drawable.ic_list_white);
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
+                        .replace(R.id.fragment_container, listFragment)
+                        .commit();
+                item.setIcon(R.drawable.ic_map_white);
+
+                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
+                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
+
             }
+            toggleMap = !toggleMap;
             return true;
         }
 
@@ -117,7 +139,7 @@ public class DeliveryActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.donation_list_drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.delivery_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -171,6 +193,7 @@ public class DeliveryActivity extends AppCompatActivity
 
     }
 
+    /*
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.i(TAG, "Entering onMapReady");    // debug
@@ -205,7 +228,17 @@ public class DeliveryActivity extends AppCompatActivity
                     .position(position)
                     .title(location.getName()));
         }
-        */
+
 
     }
+
+
+    public class MapFragment extends com.google.android.gms.maps.MapFragment {
+        @Override
+        public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+            return layoutInflater.inflate(R.layout.fragment_delivery_map, viewGroup, false);
+            toolbar =
+        }
+    }
+    */
 }

@@ -43,7 +43,7 @@ public class NewDonationActivity extends AppCompatActivity
 
         // Link View
         toolbar = findViewById(R.id.new_donation_toolbar);
-        drawer = findViewById(R.id.donation_list_drawer_layout);
+        drawer = findViewById(R.id.new_donation_drawer_layout);
         addDonationButton = findViewById(R.id.addDonationButton);
         setSupportActionBar(toolbar);
 
