@@ -9,7 +9,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class User implements Serializable
+public class User implements Parcelable
 {
 
     private String mKey;
@@ -17,7 +17,7 @@ public class User implements Serializable
     private String mFirstName;
     private String mLastName;
     private String mEmail;
-    private String mPassword;
+    //private String mPassword;   // Don't want to store user passwords on public database (I made Register pass it locally, should still work)
     private String mCompanyName;
     private Location mLocation;
 
@@ -105,15 +105,27 @@ public class User implements Serializable
 
     */
 
-    public User(String userType, String firstName, String lastName, String email, String companyName, String mPassword, Location location) {
+    public User(String userType, String firstName, String lastName, String email, String companyName, Location location) {
         this.userType = userType;
         mFirstName = firstName;
         mLastName = lastName;
         mEmail = email;
         mCompanyName = companyName;
-        this.mPassword = mPassword;
+        //this.mPassword = mPassword;
         mLocation = location;
     }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getUserType()
     {
@@ -173,7 +185,7 @@ public class User implements Serializable
         mLocation = location;
     }
 
-    public String getmPassword()
+    /*public String getmPassword()
     {
         return mPassword;
     }
@@ -182,6 +194,7 @@ public class User implements Serializable
     {
         this.mPassword = mPassword;
     }
+    */
 
     @Override
     public String toString() {
@@ -193,5 +206,32 @@ public class User implements Serializable
                 ", mCompanyName='" + mCompanyName + '\'' +
                 ", mLocation=" + mLocation +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(mKey);
+        dest.writeString(userType);
+        dest.writeString(mFirstName);
+        dest.writeString(mLastName);
+        dest.writeString(mEmail);
+        dest.writeString(mCompanyName);
+
+    }
+
+    private User(Parcel parcel)
+    {
+        mKey = parcel.readString();
+        userType = parcel.readString();
+        mFirstName = parcel.readString();
+        mLastName = parcel.readString();
+        mEmail = parcel.readString();
+        mCompanyName = parcel.readString();
     }
 }

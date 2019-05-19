@@ -3,16 +3,16 @@
     android:id="@+id/donationListLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:onClick="viewGameDetails">
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/donationListImageView"
         android:layout_width="65dp"
-        android:layout_height="70dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="4dp"
         android:layout_marginRight="12dp"
         android:layout_weight="0.5"
+        android:padding="4dp"
         android:src="@mipmap/ic_launcher"></ImageView>
 
     <LinearLayout
@@ -28,20 +28,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Packaged (tray)"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/donationItemServingsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="15 servings" />
+            android:text="15 servings"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/donationItemTimeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick up before 5:30 pm" />
+            android:text="Pick up before 5:30 pm"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -59,6 +61,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/status"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -66,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Claimed          Waiting on driver" />
+            android:text="Claimed          Waiting on driver"
+            android:textSize="18sp" />
     </LinearLayout>
 
 

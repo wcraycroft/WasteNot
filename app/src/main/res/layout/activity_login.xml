@@ -57,6 +57,7 @@
 
     <Button
         android:id="@+id/btRegister"
+        style="@android:style/Widget.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

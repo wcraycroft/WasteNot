@@ -4,6 +4,7 @@
 package cs134.miracosta.wastenot.Model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.Enums.FoodType;
@@ -32,13 +33,13 @@ public class Donation implements Serializable
      * @param readyTime
      * @param pickupEndTime
      */
-    public Donation(DonationStatus status, FoodType foodType, int servings, boolean fitInCar, String otherInfo, String readyTime, String pickupEndTime)
+    public Donation(FoodType foodType, int servings, boolean fitInCar, String otherInfo, String readyTime, String pickupEndTime)
     {
         mKey = "void";
-        mStatus = status;
+        mStatus = DonationStatus.UNCLAIMED;
         mFoodType = foodType;
         mServings = servings;
-        fitInCar = fitInCar;
+        this.fitInCar = fitInCar;
         mOtherInfo = otherInfo;
         mReadyTime = readyTime;
         mPickupEndTime = pickupEndTime;
@@ -142,5 +143,27 @@ public class Donation implements Serializable
                 ", PickupTime=" + mPickupTime +
                 ", DropoffEndTime=" + mDropoffEndTime +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Donation donation = (Donation) o;
+        return mServings == donation.mServings &&
+                fitInCar == donation.fitInCar &&
+                Objects.equals(mKey, donation.mKey) &&
+                mStatus == donation.mStatus &&
+                mFoodType == donation.mFoodType &&
+                Objects.equals(mOtherInfo, donation.mOtherInfo) &&
+                Objects.equals(mReadyTime, donation.mReadyTime) &&
+                Objects.equals(mPickupEndTime, donation.mPickupEndTime) &&
+                Objects.equals(mPickupTime, donation.mPickupTime) &&
+                Objects.equals(mDropoffEndTime, donation.mDropoffEndTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mKey, mStatus, mFoodType, mServings, fitInCar, mOtherInfo, mReadyTime, mPickupEndTime, mPickupTime, mDropoffEndTime);
     }
 }

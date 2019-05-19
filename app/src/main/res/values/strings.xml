@@ -50,11 +50,11 @@
     <string name="pickup_end_time">Pickup End Time?</string>
     <string name="food_types">Food Types</string>
     <string name="how_many_servings">Approx how many could this feed?</string>
-    <string name="fit_in_car">Will this donation fit in a car?</string>
+    <string name="fit_in_car">Will this donation fit in one car?</string>
     <string name="other_info">Any other information?</string>
 
     <string-array name="food_types_array">
-        <item>Select the type of food</item>
+        <item>Select a Food Type</item>
         <item>Dairy</item>
         <item>Meat &amp; Other Protein</item>
         <item>Produce</item>
@@ -62,6 +62,59 @@
         <item>Prepared - Individually Packaged</item>
         <item>Prepared - Tray/Multi-Serving</item>
         <item>Other</item>
+    </string-array>
+
+    <string-array name="ready_time_array">
+        <item>From 10am</item>
+        <item>From 11am</item>
+        <item>From 12pm</item>
+        <item>From 1pm</item>
+        <item>From 2pm</item>
+        <item>From 3pm</item>
+        <item>From 4pm</item>
+        <item>From 5pm</item>
+        <item>From 6pm</item>
+        <item>From 7pm</item>
+        <item>From 8pm</item>
+        <item>From 9pm</item>
+        <item>From 10pm</item>
+    </string-array>
+
+    <string-array name="end_time_array">
+        <item>Before 10am</item>
+        <item>Before 11am</item>
+        <item>Before 12pm</item>
+        <item>Before 1pm</item>
+        <item>Before 2pm</item>
+        <item>Before 3pm</item>
+        <item>Before 4pm</item>
+        <item>Before 5pm</item>
+        <item>Before 6pm</item>
+        <item>Before 7pm</item>
+        <item>Before 8pm</item>
+        <item>Before 9pm</item>
+        <item>Before 10pm</item>
+    </string-array>
+
+    <string name="yes">Yes</string>
+    <string-array name="fit_in_car_array">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="servings_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>8</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>75</item>
+        <item>100+</item>
     </string-array>
 
     <!-- Delivery Activity -->

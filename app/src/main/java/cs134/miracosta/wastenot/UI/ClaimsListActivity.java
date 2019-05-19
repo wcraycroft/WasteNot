@@ -66,7 +66,7 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
 
         // db.getAllClaims()
         loader.setVisibility(View.VISIBLE);
-        mDB.getAllDonations(new FirebaseDBHelper.DataStatus() {
+        mDB.getDonationsByStatus(DonationStatus.UNCLAIMED, new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items)
             {
@@ -135,7 +135,7 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
             {
                 User user = (User) items.get(0);
 
-                Donation donation = new Donation(DonationStatus.UNCLAIMED, FoodType.BAKED_GOODS, 10, true, "Other dummy info"
+                Donation donation = new Donation(FoodType.BAKED_GOODS, 10, true, "Other dummy info"
                         , "22:00", "23:00");
 
                 mDB.addDonation(donation,user.getKey(), new FirebaseDBHelper.DataStatus() {

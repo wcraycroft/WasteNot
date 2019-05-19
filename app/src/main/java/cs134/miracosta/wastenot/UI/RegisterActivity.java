@@ -123,8 +123,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Animator.animate(etConfirmPassword);
         }
         else {
-            User user = new User(selectedUserType, firstName, lastName, email, companyName, password, new Location(this, address, city, eState.getText().toString().trim(), eZipCode.getText().toString().trim()));
-            registerNewUser(user);
+            User user = new User(selectedUserType, firstName, lastName, email, companyName, new Location(this, address, city, eState.getText().toString().trim(), eZipCode.getText().toString().trim()));
+            // Passing password privately so it doesn't get added to User database
+            registerNewUser(user, password);
         }
     }
 
@@ -133,10 +134,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      *
      * @param user user to register
      */
-    private void registerNewUser(final User user)
+    private void registerNewUser(final User user, String password)
     {
         loader.setVisibility(View.VISIBLE);
-        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getmPassword())
+        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
