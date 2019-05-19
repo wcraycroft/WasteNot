@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,7 +73,7 @@ public class DonationListActivity extends AppCompatActivity
             @Override
             public void DataIsRead(List<?> items) {
                 user = (User) items.get(0);
-                db.getDonationsByUser(user.getKey(), new FirebaseDBHelper.DataStatus() {
+                db.getDonationsByUserRealTime(DonationListActivity.this, user.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
                         donationsList = (List<Donation>) items;

@@ -34,11 +34,11 @@
     <string name="meat">Meat</string>
     <string name="dairy">Dairy</string>
     <string name="produce">Produce</string>
-    <string name="other">Nondescript</string>
+    <string name="other">Other</string>
     <string name="servings_suffix">%d servings</string>
     <string name="pickup_by_prefix">Pick up by %s</string>
     <string name="pickup_around_prefix">Pick up around %s</string>
-    <string name="status_claimed">Claimed\nRequesting Driver</string>
+    <string name="status_claimed">Claimed,\nRequesting Driver</string>
     <string name="status_unclaimed">Not Yet Claimed</string>
     <string name="status_delivery_claimed">Delivery Claimed</string>
 
@@ -96,7 +96,6 @@
         <item>Before 10pm</item>
     </string-array>
 
-    <string name="yes">Yes</string>
     <string-array name="fit_in_car_array">
         <item>Yes</item>
         <item>No</item>

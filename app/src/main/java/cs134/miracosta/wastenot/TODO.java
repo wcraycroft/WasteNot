@@ -9,9 +9,10 @@
  *    - getUserClaims(User)
  *    - claimDonation(Donation, String user key (claimer))
  *
- *    TODO: Add Ahmad strings.xml
+ *    DONE: Add Ahmad strings.xml
+ *    TODO: Prompt user for pickup time when claiming delivery
  *    TODO: translate strings
- *    TODO:
+ *    TODO: get realtime updates from DB calls
  *
  *
  *
@@ -19,14 +20,16 @@
  *
  * ***Ahmad***
  *
- * TODO: Get location information from user, add location getter/setters etc. to User class
+ * DONE: Get location information from user, add location getter/setters etc. to User class
  *      Address, City, State, Zip
-*  TODO: Replace Database calls with FirebaseDBHelper methods (see TestActivity for example)
- * TODO: Replace Claimer/Driver with User
- * TODO: Replace Claim/Delivery with Donation
- * TODO: Add Button in ClaimListActivity that take user to DeliveryActivity
+*  DONE: Replace Database calls with FirebaseDBHelper methods (see TestActivity for example)
+ * DONE: Replace Claimer/Driver with User
+ * DONE: Replace Claim/Delivery with Donation
+ * DONE: Add Button in ClaimListActivity that take user to DeliveryActivity
  *
- * Don't forget to download the google-services.json I emailed you and put it in app directory.
+ * TODO: Prompt user (claimer) for dropoff end time (the latest they can accept the delivery) when claiming delivery
+ *       If you do this before calling claimDonation() it will automatically get updated in DB.
+ *
   */
 
 

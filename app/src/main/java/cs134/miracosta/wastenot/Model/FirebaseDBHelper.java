@@ -9,6 +9,8 @@
 
 package cs134.miracosta.wastenot.Model;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -18,12 +20,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 
@@ -405,6 +411,62 @@ public class FirebaseDBHelper {
             }
         });
     }
+
+    public void getDonationsByUserRealTime(Activity context, final String userKey, final DataStatus dataStatus) {
+
+        mDonationDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                // Store our documents snapshot as final to be accessed in Makes query
+                final QuerySnapshot donationSnapshot = queryDocumentSnapshots;
+
+                if (donationSnapshot == null) {
+                    Log.w(TAG, "Error retrieving realtime Donations.");
+                    dataStatus.onError("Error retrieving realtime Donations.");
+                }
+                else {
+                    mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+
+                                donationKeysList.clear();
+                                // Populate list with all donation keys linked to our User
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    focusedMakes = document.toObject((Makes.class));
+
+                                    // Check if the user key match any of the Makes user keys
+                                    if (userKey.equals(focusedMakes.getClaimerKey()) ||
+                                            userKey.equals(focusedMakes.getDonorKey()) ||
+                                            userKey.equals(focusedMakes.getDriverKey())) {
+                                        donationKeysList.add(focusedMakes.getDonationKey());
+                                    }
+                                } // end of Makes document retrieval
+
+                                donationsList.clear();
+                                // Loop through Donations, find any that match our user donation keys
+                                for (QueryDocumentSnapshot document : donationSnapshot) {
+                                    // If keys match, parse Donation and add it to list
+                                    if (donationKeysList.contains(document.getId())) {
+                                        donationsList.add(document.toObject((Donation.class)));
+                                    }
+                                }
+                                // Task complete, send data via interface
+                                dataStatus.DataIsRead(donationsList);
+                                Log.i(TAG, "User Donation List successfully fetched from Donation DB.");
+
+                            } else {
+                                Log.d(TAG, "Error fetching donation keys from Makes collection: ", task.getException());
+                                dataStatus.onError(task.getException().getMessage());
+                            }
+                        }
+                    }); // end of Makes query
+
+                }   // end of document snapshot !isEmpty condition
+            }
+        }); // end of Donation query
+    }
+
 
 
     /**

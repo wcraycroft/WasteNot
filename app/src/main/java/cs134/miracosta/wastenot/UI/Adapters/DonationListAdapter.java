@@ -3,6 +3,7 @@ package cs134.miracosta.wastenot.UI.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,16 +79,19 @@ public class DonationListAdapter extends ArrayAdapter<Donation> {
                 donationItemStatusTextView.setText(R.string.status_claimed);
                 donationItemTimeTextView.setText(mContext.getResources().getString(
                         R.string.pickup_by_prefix, selectedDonation.getPickupEndTime()));
+                donationItemStatusTextView.setTextColor(mContext.getResources().getColor(R.color.text_orange));
                 break;
             case DELIVERY_CLAIMED:
                 donationItemStatusTextView.setText(R.string.status_delivery_claimed);
                 donationItemTimeTextView.setText(mContext.getResources().getString(
                         R.string.pickup_around_prefix, selectedDonation.getPickupTime()));
+                donationItemStatusTextView.setTextColor(mContext.getResources().getColor(R.color.text_green));
                 break;
             case UNCLAIMED:
                 donationItemStatusTextView.setText(R.string.status_unclaimed);
                 donationItemTimeTextView.setText(mContext.getResources().getString(
                         R.string.pickup_by_prefix, selectedDonation.getPickupEndTime()));
+                donationItemStatusTextView.setTextColor(mContext.getResources().getColor(R.color.text_red));
                 break;
         }
 
