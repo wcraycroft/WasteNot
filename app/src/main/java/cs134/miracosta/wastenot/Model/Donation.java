@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.Enums.FoodType;
+import cs134.miracosta.wastenot.R;
 
 public class Donation implements Parcelable
 {
@@ -28,7 +29,6 @@ public class Donation implements Parcelable
 
     /**
      *
-     * @param status
      * @param foodType
      * @param servings
      * @param fitInCar
@@ -61,6 +61,33 @@ public class Donation implements Parcelable
         mPickupEndTime = in.readString();
         mPickupTime = in.readString();
         mDropoffEndTime = in.readString();
+        String foodTypeStr = in.readString();
+
+        switch(foodTypeStr) {
+            case "Meat":
+                mFoodType = FoodType.MEAT;
+                break;
+            case "Dairy":
+                mFoodType = FoodType.DAIRY;
+                break;
+            case "Other":
+                mFoodType = FoodType.OTHER;
+                break;
+            case "Produce":
+                mFoodType = FoodType.PRODUCE;
+                break;
+            case "Baked":
+                mFoodType = FoodType.BAKED_GOODS;
+                break;
+            case "Tray":
+                mFoodType = FoodType.PREPARED_TRAY;
+                break;
+            case "Packaged":
+                mFoodType = FoodType.PREPARED_PACKAGED;
+                break;
+            default:
+                mFoodType = FoodType.OTHER;
+        }
     }
 
     public static final Creator<Donation> CREATOR = new Creator<Donation>() {
@@ -208,5 +235,32 @@ public class Donation implements Parcelable
         dest.writeString(mPickupEndTime);
         dest.writeString(mPickupTime);
         dest.writeString(mDropoffEndTime);
+
+        switch (mFoodType)
+        {
+            case MEAT:
+                dest.writeString("Meat");
+                break;
+            case DAIRY:
+                dest.writeString("Dairy");
+                break;
+            case OTHER:
+                dest.writeString("Other");
+                break;
+            case PRODUCE:
+                dest.writeString("Produce");
+                break;
+            case BAKED_GOODS:
+                dest.writeString("Baked");
+                break;
+            case PREPARED_TRAY:
+                dest.writeString("Tray");
+                break;
+            case PREPARED_PACKAGED:
+                dest.writeString("Packaged");
+                break;
+            default:
+                dest.writeString("Meat");
+        }
     }
 }

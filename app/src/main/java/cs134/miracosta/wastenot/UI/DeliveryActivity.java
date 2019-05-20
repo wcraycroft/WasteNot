@@ -50,9 +50,6 @@ public class DeliveryActivity extends AppCompatActivity
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
-        // TODO: get User from authentication?
-        //user = new User();
-
         // TODO: populate locations list
 
         // Link View
@@ -155,6 +152,8 @@ public class DeliveryActivity extends AppCompatActivity
         deliveryDetailsIntent.putExtra("Claimer", delivery.getClaimer());
         deliveryDetailsIntent.putExtra("Donor", delivery.getDonor());
         deliveryDetailsIntent.putExtra("Donation", delivery.getDonation());
+        deliveryDetailsIntent.putExtra("DonorLocation", delivery.getDonor().getLocation());
+        deliveryDetailsIntent.putExtra("ClaimerLocation", delivery.getClaimer().getLocation());
         startActivity(deliveryDetailsIntent);
     }
 

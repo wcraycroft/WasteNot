@@ -37,6 +37,8 @@
     <string name="other">Other</string>
     <string name="servings_suffix">%d servings</string>
     <string name="pickup_by_prefix">Pick up by %s</string>
+    <string name="ready_at_prefix">Ready at %s</string>
+    <string name="dropoff_by_prefix">Dropoff by %s</string>
     <string name="pickup_around_prefix">Pick up around %s</string>
     <string name="status_claimed">Claimed,\nRequesting Driver</string>
     <string name="status_unclaimed">Not Yet Claimed</string>
@@ -94,6 +96,35 @@
         <item>Before 8pm</item>
         <item>Before 9pm</item>
         <item>Before 10pm</item>
+    </string-array>
+
+    <string-array name="pickup_time_array">
+        <item>Select a Pickup Time</item>
+        <item>10:00am</item>
+        <item>10:30am</item>
+        <item>11:00am</item>
+        <item>11:30am</item>
+        <item>12:00pm</item>
+        <item>12:30pm</item>
+        <item>1:00pm</item>
+        <item>1:30pm</item>
+        <item>2:00pm</item>
+        <item>2:30pm</item>
+        <item>3:00pm</item>
+        <item>3:30pm</item>
+        <item>4:00pm</item>
+        <item>4:30pm</item>
+        <item>5:00pm</item>
+        <item>5:30pm</item>
+        <item>6:00pm</item>
+        <item>6:30pm</item>
+        <item>7:00pm</item>
+        <item>7:30pm</item>
+        <item>8:00pm</item>
+        <item>8:30pm</item>
+        <item>9:00pm</item>
+        <item>9:30pm</item>
+        <item>10:00pm</item>
     </string-array>
 
     <string-array name="fit_in_car_array">

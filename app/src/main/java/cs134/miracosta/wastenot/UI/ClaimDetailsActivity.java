@@ -106,8 +106,8 @@ public class ClaimDetailsActivity extends AppCompatActivity {
      * method to get data from previous screen
      */
     private void getData() {
-        if (getIntent() != null && getIntent().getSerializableExtra("CLAIM_MODEL") != null) {
-            donation = (Donation) getIntent().getSerializableExtra("CLAIM_MODEL");
+        if (getIntent() != null && getIntent().getParcelableExtra("CLAIM_MODEL") != null) {
+            donation = (Donation) getIntent().getParcelableExtra("CLAIM_MODEL");
             setDataInViews();
         } else {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();

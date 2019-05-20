@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/donationListIsEmptyTextView2"
+        android:id="@+id/deliveryDetailsTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/donationListIsEmptyTextView2"
+        app:layout_constraintTop_toBottomOf="@+id/deliveryDetailsTitleTextView"
         tools:layout_editor_absoluteX="16dp">
 
         <LinearLayout
@@ -53,7 +53,7 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/deliveryDetailsFoodTypeTextView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="8dp"
@@ -64,11 +64,11 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                     <ImageView
-                        android:id="@+id/deliveryItemImageView2"
+                        android:id="@+id/deliveryDetailsImageView"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_vertical"
@@ -76,7 +76,7 @@
                         android:src="@mipmap/ic_launcher"></ImageView>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/deliveryDetailsServingsTextView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
@@ -85,7 +85,7 @@
                         android:gravity="center|end"
                         android:text="Servings: 11"
                         android:textSize="20sp"
-                        app:layout_constraintEnd_toStartOf="@+id/textView11"
+                        app:layout_constraintEnd_toStartOf="@+id/deliveryDetailsFoodTypeTextView"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="105dp" />
@@ -99,7 +99,7 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/deliveryDetailsReadyTimeTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -109,26 +109,11 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                     <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Dropoff by 11pm"
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toStartOf="@+id/textView11"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:layout_editor_absoluteY="105dp" />
-
-                    <TextView
-                        android:id="@+id/textView14"
+                        android:id="@+id/deliveryDetailsPickupTimeTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -138,7 +123,22 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
+                        tools:layout_editor_absoluteY="105dp" />
+
+                    <TextView
+                        android:id="@+id/deliveryDetailsDropoffTimeTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Dropoff by 11pm"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toStartOf="@+id/deliveryDetailsFoodTypeTextView"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="105dp" />
 
                 </TableRow>
@@ -158,11 +158,10 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                     <TextView
-                        android:id="@+id/textView17"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -171,7 +170,7 @@
                         android:text="Dropoff Location:"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/textView11"
+                        app:layout_constraintEnd_toStartOf="@+id/deliveryDetailsFoodTypeTextView"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="105dp" />
@@ -183,7 +182,7 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:id="@+id/textView19"
+                        android:id="@+id/deliveryDetailsPickupNameTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -192,10 +191,11 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                     <TextView
+                        android:id="@+id/deliveryDetailsDropoffNameTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -204,7 +204,7 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                 </TableRow>
@@ -215,7 +215,7 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:id="@+id/textView18"
+                        android:id="@+id/deliveryDetailsPickupAddressTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -224,11 +224,11 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
                     <TextView
-                        android:id="@+id/textView16"
+                        android:id="@+id/deliveryDetailsDropoffAddressTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -237,29 +237,9 @@
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
+                        app:layout_constraintStart_toEndOf="@+id/deliveryDetailsServingsTextView"
                         tools:layout_editor_absoluteY="105dp" />
 
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/textView20"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:text="Other Info:"
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/textView3"
-                        tools:layout_editor_absoluteY="105dp" />
                 </TableRow>
 
             </TableLayout>
@@ -285,13 +265,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/deliveryDetailsPickupSpinner"
         style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:entries="@array/end_time_array"
         android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/claimDeliveryButton"

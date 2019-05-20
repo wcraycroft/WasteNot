@@ -340,6 +340,56 @@ public class FirebaseDBHelper {
                 });
     }
 
+    public void claimDelivery(String driverEmail, final Delivery claimedDelivery, final DataStatus dataStatus)
+    {
+        // get Driver's key
+        getUserByEmail(driverEmail, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                User user = (User) items.get(0);
+                final String driverKey = user.getKey();
+                // Get
+                mMakesDB.whereEqualTo("donationKey", claimedDelivery.getDonation().getKey())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Makes makes = document.toObject((Makes.class));
+                                        // TODO: Claimed delivery has missing information
+                                        Donation claimedDonation = claimedDelivery.getDonation();
+                                        // Set the new claimer key and update DB
+                                        makes.setDriverKey(driverKey);
+                                        mMakesDB.document(makes.getKey()).set(makes);
+                                        // Set the donation status to delivery claimed and update DB (in case we forgot)
+                                        claimedDonation.setStatus(DonationStatus.DELIVERY_CLAIMED);
+                                        mDonationDB.document(claimedDonation.getKey()).set(claimedDonation);
+                                        // Task complete
+                                        dataStatus.DataIsProcessed();
+                                        Log.i(TAG, "Delivery claim was updated in DB.");
+                                        return;
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error updating delivery to claim: ", task.getException());
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void DataIsProcessed() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
+    }
+
     public void updateDonation(User updatedDonation, final DataStatus dataStatus)
     {
         mDonationDB.document(updatedDonation.getKey())

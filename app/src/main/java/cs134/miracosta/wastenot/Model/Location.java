@@ -132,7 +132,6 @@ public class Location implements Parcelable {
      * Helper method uses google API to convert address into LatLng
      * Note this requires a Context so it has to be called externally or pass it a context through
      * the appropriate constructor
-     * TODO: figure out which context is safe to use here
      */
     public void setLatLng(Context c)
     {
