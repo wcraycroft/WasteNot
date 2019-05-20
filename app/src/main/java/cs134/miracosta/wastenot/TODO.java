@@ -12,7 +12,10 @@
  *    DONE: Add Ahmad strings.xml
  *    TODO: Prompt user for pickup time when claiming delivery
  *    TODO: translate strings
- *    TODO: get realtime updates from DB calls
+ *    DONE: get realtime updates from DB calls
+ *    TODO: get fine location info from user.
+ *    TODO: add delivered button to My deliveries which removes both Donation and Makes from DB
+ *    TODO: JUnit and Javadocs
  *
  *
  *

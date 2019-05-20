@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,25 +38,25 @@ public class UserDeliveriesActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private Toolbar toolbar;
     FirebaseDBHelper db;
-    List<Delivery> userDeliveriesList;
+    List<Delivery> userDeliveriesList = new ArrayList<>();
     DeliveryListAdapter deliveryListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery);
+        setContentView(R.layout.activity_user_deliveries);
 
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
         // Link View
         myDeliveriesListView = findViewById(R.id.myDeliveriesListView);
-        toolbar = findViewById(R.id.delivery_toolbar);
-        drawer = findViewById(R.id.delivery_drawer_layout);
+        toolbar = findViewById(R.id.user_deliveries_toolbar);
+        drawer = findViewById(R.id.user_deliveries_drawer_layout);
         setSupportActionBar(toolbar);
 
         // Set drawer, toolbar and listeners
-        NavigationView navigationView = findViewById(R.id.delivery_nav_view);
+        NavigationView navigationView = findViewById(R.id.user_deliveries_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,7 +98,6 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.delivery_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

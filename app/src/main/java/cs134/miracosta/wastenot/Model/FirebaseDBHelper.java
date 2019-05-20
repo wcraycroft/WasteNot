@@ -187,7 +187,7 @@ public class FirebaseDBHelper {
                                 // Send the Data via interface
                                 dataStatus.DataIsRead(items);
 
-                                Log.i(TAG, "Document was retrieved successfully by email.");
+                                Log.i(TAG, "User Document was retrieved successfully by email.");
                                 return;
                             }
                         } else {
@@ -752,13 +752,13 @@ public class FirebaseDBHelper {
 
     }
 
-    public void getUserDeliveries(String userEmail, final DataStatus dataStatus)
+    public void getUserDeliveries(String driverEmail, final DataStatus dataStatus)
     {
-        getUserByEmail(userEmail, new DataStatus() {
+        getUserByEmail(driverEmail, new DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {
                 User user = (User) items.get(0);
-                populateUserDeliveryKeys(user.getEmail(), new DataStatus() {
+                populateUserDeliveryKeys(user.getKey(), new DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
                         // Get key lists
@@ -789,7 +789,7 @@ public class FirebaseDBHelper {
                                         if (deliveriesList.size() == size)
                                         {
                                             dataStatus.DataIsRead(deliveriesList);
-                                            Log.i(TAG, "By some miracle, " + size + " Deliveries were retrieved from this mess.");
+                                            Log.i(TAG, size + " User Deliveries were retrieved from this mess.");
                                         }
                                     }
                                     @Override
@@ -804,13 +804,17 @@ public class FirebaseDBHelper {
                     @Override
                     public void DataIsProcessed() { }
                     @Override
-                    public void onError(String errorMessage) { }
+                    public void onError(String errorMessage) {
+                        Log.w(TAG, "Error retrieving user deliver keys.");
+                    }
                 });
             }
             @Override
             public void DataIsProcessed() { }
             @Override
-            public void onError(String errorMessage) { }
+            public void onError(String errorMessage) {
+                Log.w(TAG, "Error retrieving user by email.");
+            }
         });
 
 
@@ -860,6 +864,7 @@ public class FirebaseDBHelper {
 
     private void populateUserDeliveryKeys(String driverKey, final DataStatus dataStatus) {
 
+        Log.i(TAG, "Driver key = " + driverKey);
         mMakesDB.whereEqualTo("driverKey", driverKey)
             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -873,14 +878,12 @@ public class FirebaseDBHelper {
                         // Loop through Makes documents
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Makes makes = document.toObject((Makes.class));
-                        // Check if the donation is claimed (but not delivered)
-                        if (makes.getDriverKey().equals(""))
-                        {
-                            // Add keys to lists
-                            donationsKeysList.add(makes.getDonationKey());
-                            donorKeysList.add(makes.getDonorKey());
-                            claimerKeysList.add(makes.getClaimerKey());
-                        }
+
+                        // Add keys to lists
+                        donationsKeysList.add(makes.getDonationKey());
+                        donorKeysList.add(makes.getDonorKey());
+                        claimerKeysList.add(makes.getClaimerKey());
+
                     } // end of document for loop
 
                     // Create a list of key lists to send out
@@ -891,7 +894,7 @@ public class FirebaseDBHelper {
                     // Task complete, no need to send data since we will be staying in this class
                     // and have access to the keys list
                     dataStatus.DataIsRead(keysLists);
-                    Log.i(TAG, "Delivery keys were fetched successfully from Makes DB.");
+                    Log.i(TAG, donationsKeysList.size() + " User Delivery keys were fetched successfully from Makes DB.");
 
                 } else {
                     Log.d(TAG, "Error fetching delivery keys from Makes collection: ", task.getException());
