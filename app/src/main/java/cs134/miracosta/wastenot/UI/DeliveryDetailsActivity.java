@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.DonationListAdapter;
 
-public class DeliveryActivity extends AppCompatActivity
+public class DeliveryDetailsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "WasteNot";
@@ -195,23 +196,22 @@ public class DeliveryActivity extends AppCompatActivity
 
     public void goToDeliveryDetails(View v)
     {
-        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
-        // TODO: parcelable User
-        //newDonationIntent.putExtra("User", user);
-        startActivity(newDonationIntent);
+        Donation selectedDonation = (Donation) v.getTag();
+
+        Intent detailsIntent = new Intent(this, DeliveryDetailsActivity.class);
+        detailsIntent.putExtra("Selected Donation", selectedDonation);
+
+        startActivity(detailsIntent);
     }
 
     public void goToUserDeliveryList(View v)
     {
-        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
-        // TODO: parcelable User
-        //newDonationIntent.putExtra("User", user);
-        startActivity(newDonationIntent);
-    }
+        Donation selectedDonation = (Donation) v.getTag();
 
-    public void toggleFragment(View v)
-    {
+        Intent detailsIntent = new Intent(this, DeliveryDetailsActivity.class);
+        detailsIntent.putExtra("Selected Donation", selectedDonation);
 
+        startActivity(detailsIntent);
     }
 
     /*

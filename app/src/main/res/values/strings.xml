@@ -153,4 +153,5 @@
     <string name="claim">Claim</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
+    <string name="my_deliveries">My Deliveries</string>
 </resources>

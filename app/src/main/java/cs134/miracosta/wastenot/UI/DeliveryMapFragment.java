@@ -28,6 +28,7 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i("WasteNot", "Entering onCreateView for List");
         View rootView = inflater.inflate(R.layout.fragment_delivery_map, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
