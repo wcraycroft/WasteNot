@@ -190,4 +190,5 @@
     <string name="user_deliveries_title">Your Deliveries</string>
     <string name="delivery_details_title">Delivery Details</string>
     <string name="claim_this_delivery">Claim This Delivery</string>
+    <string name="donation_delivered">Donation Delivered</string>
 </resources>

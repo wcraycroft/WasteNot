@@ -1,4 +1,4 @@
-// TODO: Add Makes Collection which will handle all interactions between Users and Donations
+
 
 /**
  *
@@ -38,9 +38,9 @@ public class FirebaseDBHelper {
     public static final String TAG = "WasteNot";
 
     // Collection Paths
-    public static final String USER_COLLECTION = "USERS";
-    public static final String DONATION_COLLECTION = "DONATIONS";
-    public static final String MAKES_COLLECTION = "MAKES";
+    private static final String USER_COLLECTION = "USERS";
+    private static final String DONATION_COLLECTION = "DONATIONS";
+    private static final String MAKES_COLLECTION = "MAKES";
 
     // Database references
     private CollectionReference mUserDB;
@@ -708,9 +708,11 @@ public class FirebaseDBHelper {
                 final List<String> donationsKeysList = (List<String>) items.get(0);
                 final List<String> donorKeysList = (List<String>) items.get(1);
                 final List<String> claimerKeysList = (List<String>) items.get(2);
+                final List<String> makesKeysList = (List<String>) items.get(3);
                 // Makes sure list sizes match
                 if (donationsKeysList.size() != donorKeysList.size() ||
-                        donationsKeysList.size() != claimerKeysList.size())
+                        donationsKeysList.size() != claimerKeysList.size() ||
+                        donationsKeysList.size() != makesKeysList.size())
                 {
                     dataStatus.onError("Error retrieving delivery keys (List size mismatch)");
                     Log.e(TAG, "Error retrieving delivery keys (List size mismatch)");
@@ -721,7 +723,8 @@ public class FirebaseDBHelper {
                     for (int i = 0; i < size; i++) {
                         Log.i(TAG, "Building delivery for " + i + " Key = " + donationsKeysList.get(i));
 
-                        buildDelivery(donationsKeysList.get(i), donorKeysList.get(i), claimerKeysList.get(i), new DataStatus() {
+                        buildDelivery(donationsKeysList.get(i), donorKeysList.get(i),
+                                      claimerKeysList.get(i), makesKeysList.get(i), new DataStatus() {
                             @Override
                             public void DataIsRead(List<?> items) {
                                 Delivery delivery = (Delivery) items.get(0);
@@ -765,6 +768,7 @@ public class FirebaseDBHelper {
                         final List<String> donationsKeysList = (List<String>) items.get(0);
                         final List<String> donorKeysList = (List<String>) items.get(1);
                         final List<String> claimerKeysList = (List<String>) items.get(2);
+                        final List<String> makesKeysList = (List<String>) items.get(3);
                         // Makes sure list sizes match
                         if (donationsKeysList.size() != donorKeysList.size() ||
                                 donationsKeysList.size() != claimerKeysList.size())
@@ -778,7 +782,8 @@ public class FirebaseDBHelper {
                             for (int i = 0; i < size; i++) {
                                 Log.i(TAG, "Building delivery for " + i + " Key = " + donationsKeysList.get(i));
 
-                                buildDelivery(donationsKeysList.get(i), donorKeysList.get(i), claimerKeysList.get(i), new DataStatus() {
+                                buildDelivery(donationsKeysList.get(i), donorKeysList.get(i),
+                                        claimerKeysList.get(i), makesKeysList.get(i), new DataStatus() {
                                     @Override
                                     public void DataIsRead(List<?> items) {
                                         Delivery delivery = (Delivery) items.get(0);
@@ -817,7 +822,6 @@ public class FirebaseDBHelper {
             }
         });
 
-
     }
 
 
@@ -831,6 +835,7 @@ public class FirebaseDBHelper {
                     final List<String> donationsKeysList = new ArrayList<>();
                     final List<String> donorKeysList = new ArrayList<>();
                     final List<String> claimerKeysList = new ArrayList<>();
+                    final List<String> makesKeysList = new ArrayList<>();
 
                     // Loop through Makes documents
                     for (QueryDocumentSnapshot document : task.getResult()) {
@@ -842,6 +847,7 @@ public class FirebaseDBHelper {
                             donationsKeysList.add(makes.getDonationKey());
                             donorKeysList.add(makes.getDonorKey());
                             claimerKeysList.add(makes.getClaimerKey());
+                            makesKeysList.add(makes.getKey());
                         }
                     } // end of document for loop
 
@@ -850,6 +856,7 @@ public class FirebaseDBHelper {
                     keysLists.add(donationsKeysList);
                     keysLists.add(donorKeysList);
                     keysLists.add(claimerKeysList);
+                    keysLists.add(makesKeysList);
                     // Task complete, no need to send data since we will be staying in this class
                     // and have access to the keys list
                     dataStatus.DataIsRead(keysLists);
@@ -874,8 +881,9 @@ public class FirebaseDBHelper {
                     final List<String> donationsKeysList = new ArrayList<>();
                     final List<String> donorKeysList = new ArrayList<>();
                     final List<String> claimerKeysList = new ArrayList<>();
+                    final List<String> makesKeysList = new ArrayList<>();
 
-                        // Loop through Makes documents
+                    // Loop through Makes documents
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Makes makes = document.toObject((Makes.class));
 
@@ -883,6 +891,7 @@ public class FirebaseDBHelper {
                         donationsKeysList.add(makes.getDonationKey());
                         donorKeysList.add(makes.getDonorKey());
                         claimerKeysList.add(makes.getClaimerKey());
+                        makesKeysList.add(makes.getKey());
 
                     } // end of document for loop
 
@@ -891,6 +900,7 @@ public class FirebaseDBHelper {
                     keysLists.add(donationsKeysList);
                     keysLists.add(donorKeysList);
                     keysLists.add(claimerKeysList);
+                    keysLists.add(makesKeysList);
                     // Task complete, no need to send data since we will be staying in this class
                     // and have access to the keys list
                     dataStatus.DataIsRead(keysLists);
@@ -903,7 +913,7 @@ public class FirebaseDBHelper {
         });
     }
 
-    private void buildDelivery(String donationKey, String donorKey, String claimerKey, final DataStatus dataStatus)
+    private void buildDelivery(String donationKey, String donorKey, String claimerKey, final String makesKey, final DataStatus dataStatus)
     {
         final Delivery outputDelivery = new Delivery();
         final List<Delivery> deliveriesList = new ArrayList<>();
@@ -915,6 +925,7 @@ public class FirebaseDBHelper {
                 // Check if all fields have been filled
                 if (outputDelivery.isComplete())
                 {
+                    outputDelivery.setMakesKey(makesKey);
                     deliveriesList.clear();
                     deliveriesList.add(outputDelivery);
                     dataStatus.DataIsRead(deliveriesList);
@@ -934,6 +945,7 @@ public class FirebaseDBHelper {
                 // Check if all fields have been filled
                 if (outputDelivery.isComplete())
                 {
+                    outputDelivery.setMakesKey(makesKey);
                     deliveriesList.clear();
                     deliveriesList.add(outputDelivery);
                     dataStatus.DataIsRead(deliveriesList);
@@ -953,6 +965,7 @@ public class FirebaseDBHelper {
                 // Check if all fields have been filled
                 if (outputDelivery.isComplete())
                 {
+                    outputDelivery.setMakesKey(makesKey);
                     deliveriesList.clear();
                     deliveriesList.add(outputDelivery);
                     dataStatus.DataIsRead(deliveriesList);
@@ -981,6 +994,39 @@ public class FirebaseDBHelper {
                     Log.w(TAG, "Error getting documents: ", task.getException());
                 }
                 dataStatus.DataIsRead(allKeysList);
+            }
+        });
+    }
+
+    public void deleteDelivery(String donationKey, final String makesKey, final DataStatus dataStatus)
+    {
+        // Delete donation
+        mDonationDB.document(donationKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Donation was deleted successfully.");
+                    // Delete Makes
+                    mMakesDB.document(makesKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.i(TAG, "Makes was deleted successfully.");
+                                dataStatus.DataIsProcessed();
+                            }
+                            else
+                            {
+                                dataStatus.onError(task.getException().getMessage());
+                                Log.w(TAG, "Error deleting Makes.", task.getException());
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    dataStatus.onError(task.getException().getMessage());
+                    Log.w(TAG, "Error deleting Donation.", task.getException());
+                }
             }
         });
     }

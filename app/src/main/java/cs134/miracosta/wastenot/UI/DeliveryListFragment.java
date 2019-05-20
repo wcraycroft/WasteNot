@@ -44,6 +44,8 @@ public class DeliveryListFragment extends Fragment {
         return fragView;
     }
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

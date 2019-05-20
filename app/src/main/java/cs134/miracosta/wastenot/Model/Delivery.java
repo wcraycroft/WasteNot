@@ -9,12 +9,22 @@ public class Delivery {
     private User mDonor;
     private User mClaimer;
     private User mDriver;
+    private String mMakesKey;
 
     public Delivery() {
         mDonation = null;
         mDonor = null;
         mClaimer = null;
         mDriver = null;
+        mMakesKey = "";
+    }
+
+    public String getMakesKey() {
+        return mMakesKey;
+    }
+
+    public void setMakesKey(String makesKey) {
+        mMakesKey = makesKey;
     }
 
     public User getDriver() {

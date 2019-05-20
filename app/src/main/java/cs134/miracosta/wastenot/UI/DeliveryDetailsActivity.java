@@ -59,7 +59,6 @@ public class DeliveryDetailsActivity extends AppCompatActivity
     private TextView deliveryDetailsDropoffNameTextView;
     private TextView deliveryDetailsPickupAddressTextView;
     private TextView deliveryDetailsDropoffAddressTextView;
-    private TextView deliveryDetailsOtherInfoTextView;
 
     private Spinner deliveryDetailsPickupSpinner;
     private Button claimDeliveryButton;

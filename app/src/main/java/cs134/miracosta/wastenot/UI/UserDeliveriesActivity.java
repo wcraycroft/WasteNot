@@ -1,10 +1,8 @@
 package cs134.miracosta.wastenot.UI;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -24,11 +21,10 @@ import java.util.List;
 import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Delivery;
-import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
-import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
+import cs134.miracosta.wastenot.UI.Adapters.UserDeliveryListAdapter;
 
 public class UserDeliveriesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,7 +35,7 @@ public class UserDeliveriesActivity extends AppCompatActivity
     private Toolbar toolbar;
     FirebaseDBHelper db;
     List<Delivery> userDeliveriesList = new ArrayList<>();
-    DeliveryListAdapter deliveryListAdapter;
+    UserDeliveryListAdapter deliveryListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +75,7 @@ public class UserDeliveriesActivity extends AppCompatActivity
                 userDeliveriesList.clear();
                 userDeliveriesList = (List<Delivery>) items;
                 Log.i(TAG, "Data retrieved. User Deliveries in list = " + userDeliveriesList.size());
-                // Set list adapter
-                deliveryListAdapter = new DeliveryListAdapter(UserDeliveriesActivity.this, R.layout.list_item_delivery, userDeliveriesList);
-                myDeliveriesListView.setAdapter(deliveryListAdapter);
+                setListAdapter();
             }
 
             @Override
@@ -94,6 +88,13 @@ public class UserDeliveriesActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void setListAdapter()
+    {
+        // Set list adapter
+        deliveryListAdapter = new UserDeliveryListAdapter(UserDeliveriesActivity.this, R.layout.list_item_user_delivery, userDeliveriesList);
+        myDeliveriesListView.setAdapter(deliveryListAdapter);
     }
 
     @Override
@@ -130,6 +131,29 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onClickDelivered(View v)
+    {
+        // Get Delivery from tag
+        Delivery delivery = (Delivery) v.getTag();
+        // Delete Delivery (Donation + Makes) from database
+        db.deleteDelivery(delivery.getDonation().getKey(), delivery.getMakesKey(), new FirebaseDBHelper.DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) { }
+
+            @Override
+            public void DataIsProcessed() {
+                Toast.makeText(UserDeliveriesActivity.this, "Delivery completion registered. Thank you!", Toast.LENGTH_SHORT).show();
+                // Refresh list
+                getUserDeliveries();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(UserDeliveriesActivity.this, "Error completing the delivery. Try again later.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
