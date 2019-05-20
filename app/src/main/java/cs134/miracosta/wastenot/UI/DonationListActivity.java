@@ -10,13 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -101,7 +99,7 @@ public class DonationListActivity extends AppCompatActivity
 
     private void setListAdapter()
     {
-        donationsListAdapter = new DonationListAdapter(this, R.layout.donation_list_item, donationsList);
+        donationsListAdapter = new DonationListAdapter(this, R.layout.list_item_donation, donationsList);
         donationsListView.setAdapter(donationsListAdapter);
     }
 

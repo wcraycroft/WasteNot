@@ -18,6 +18,8 @@
 
         <activity android:name=".UI.MyClaimsActivity"></activity>
 
+
+
         <activity android:name=".UI.ClaimDetailsActivity" />
 
         <activity android:name=".UI.RegisterActivity" />
@@ -29,34 +31,41 @@
             </intent-filter>
         </activity>
 
-        <!-- TODO: Set delivery title -->
+        <activity
+            android:name=".UI.UserDeliveriesActivity"
+            android:label="@string/user_deliveries_title"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".UI.DeliveryDetailsActivity"
+            android:label="@string/delivery_details_title"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".UI.DeliveryActivity"
             android:label="@string/title_activity_delivery"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".UI.DonationListActivity"
             android:label="@string/your_donations_title"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".UI.ClaimsListActivity"
             android:label="@string/your_donations_title"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".UI.NewDonationActivity"
             android:label="@string/new_donation"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleInstance">
-        </activity>
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".UI.SplashScreenActivity" />
 

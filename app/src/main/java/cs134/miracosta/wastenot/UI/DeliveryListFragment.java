@@ -1,13 +1,10 @@
 package cs134.miracosta.wastenot.UI;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.MapFragment;
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.List;
-import java.util.Objects;
 
+import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
-import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
+import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
 import cs134.miracosta.wastenot.UI.Adapters.DonationListAdapter;
 
 public class DeliveryListFragment extends Fragment {
@@ -35,8 +29,8 @@ public class DeliveryListFragment extends Fragment {
     private View fragView;
     private Context mContext;
     FirebaseDBHelper db;
-    List<Donation> allDeliveriesList;
-    DonationListAdapter donationsListAdapter;
+    List<Delivery> allDeliveriesList;
+    DeliveryListAdapter deliveryListAdapter;
 
     @Nullable
     @Override
@@ -62,15 +56,15 @@ public class DeliveryListFragment extends Fragment {
 
         // Populate list of donations
         // TODO: make call update in realtime
-        db.getDonationsByStatus(DonationStatus.DONATION_CLAIMED, new FirebaseDBHelper.DataStatus() {
+        db.getAllDeliveries(new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {
-                allDeliveriesList = (List<Donation>) items;
-                Log.i(TAG, "Data retrieved. Donations in list = " + allDeliveriesList.size());
+                allDeliveriesList = (List<Delivery>) items;
+                Log.i(TAG, "Data retrieved. Deliveries in list = " + allDeliveriesList.size());
                 if (fragView != null) {
                     if (mContext != null) {
-                        donationsListAdapter = new DonationListAdapter(mContext, R.layout.donation_list_item, allDeliveriesList);
-                        deliveriesListView.setAdapter(donationsListAdapter);
+                        deliveryListAdapter = new DeliveryListAdapter(mContext, R.layout.list_item_delivery, allDeliveriesList);
+                        deliveriesListView.setAdapter(deliveryListAdapter);
                     } else {
                         Log.w(TAG, "Failed to link adapter (null Context)");
                     }
@@ -81,7 +75,7 @@ public class DeliveryListFragment extends Fragment {
             public void DataIsProcessed() { }
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(getActivity(),
+                Toast.makeText(mContext,
                         "Error retrieving user information.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -91,8 +85,8 @@ public class DeliveryListFragment extends Fragment {
     private void setListAdapter()
     {
         if (mContext != null) {
-            donationsListAdapter = new DonationListAdapter(mContext, R.layout.donation_list_item, allDeliveriesList);
-            deliveriesListView.setAdapter(donationsListAdapter);
+            deliveryListAdapter = new DonationListAdapter(mContext, R.layout.list_item_donation, allDeliveriesList);
+            deliveriesListView.setAdapter(deliveryListAdapter);
             Log.i(TAG, " test Linked adapter");
         }
         else {

@@ -1,4 +1,3 @@
-//TODO: For testing purposes, feel free to replace with your own code
 
 
 package cs134.miracosta.wastenot.Model;
@@ -12,7 +11,7 @@ import java.util.Objects;
 public class User implements Parcelable
 {
 
-    private String mKey;
+    private String mKey = "";
     private String userType;
     private String mFirstName;
     private String mLastName;

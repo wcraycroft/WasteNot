@@ -1,5 +1,6 @@
 package cs134.miracosta.wastenot.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,37 +11,34 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
+import java.util.Objects;
 
+import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
-import cs134.miracosta.wastenot.UI.Adapters.DonationListAdapter;
+import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
 
 public class UserDeliveriesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "WasteNot";
-
-    private FirebaseDBHelper db;
-    private List<Donation> donationsList;
-    private DonationListAdapter donationsListAdapter;
-    private User user;
-    private boolean toggleMap;
-    // View elements
+    private ListView myDeliveriesListView;
     private DrawerLayout drawer;
     private Toolbar toolbar;
-    private GoogleMap map;
-    private DeliveryMapFragment mapFragment;
-    private DeliveryListFragment listFragment;
-    private FragmentManager fm;
+    FirebaseDBHelper db;
+    List<Delivery> userDeliveriesList;
+    DeliveryListAdapter deliveryListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +48,13 @@ public class UserDeliveriesActivity extends AppCompatActivity
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
-        // TODO: get User from authentication
-        user = new User();
-
-        // TODO: populate locations list
-
         // Link View
+        myDeliveriesListView = findViewById(R.id.myDeliveriesListView);
         toolbar = findViewById(R.id.delivery_toolbar);
         drawer = findViewById(R.id.delivery_drawer_layout);
         setSupportActionBar(toolbar);
 
+        // Set drawer, toolbar and listeners
         NavigationView navigationView = findViewById(R.id.delivery_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -68,96 +63,37 @@ public class UserDeliveriesActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        mapFragment = new DeliveryMapFragment();
-        listFragment = new DeliveryListFragment();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, listFragment)
-                .commit();
-
-        toggleMap = true;
-        /*
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, mapFragment)
-                .commit();
-         */
-
-
-
-        /*
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-            toggleMap = true;
-        } else {
-            Log.w(TAG, "Error loading Google Map.");
-        }
-
-        fm = getSupportFragmentManager();
-        //listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
-        */
-        //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        // Get deliveries from DB
+        getUserDeliveries();
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.delivery_toolbar_menu, menu);
-        return true;
-    }
+    public void getUserDeliveries() {
+        final String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.miToggle) {
-            if (toggleMap) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .replace(R.id.fragment_container, mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_list_white);
-            } else {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .replace(R.id.fragment_container, listFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_map_white);
-
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
+        // Populate list of donations
+        db.getUserDeliveries(email, new FirebaseDBHelper.DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                userDeliveriesList.clear();
+                userDeliveriesList = (List<Delivery>) items;
+                Log.i(TAG, "Data retrieved. User Deliveries in list = " + userDeliveriesList.size());
+                // Set list adapter
+                deliveryListAdapter = new DeliveryListAdapter(UserDeliveriesActivity.this, R.layout.list_item_delivery, userDeliveriesList);
+                myDeliveriesListView.setAdapter(deliveryListAdapter);
             }
-            Log.i(TAG, "Is List Fragment hidden? " + listFragment.isHidden());
-            Log.i(TAG, "Is Map Fragment hidden? " + mapFragment.isHidden());
-            toggleMap = !toggleMap;
-            return true;
-        }
 
-        return false;
-    }
+            @Override
+            public void DataIsProcessed() { }
 
-        /*
-        if (id == R.id.miToggle) {
-            if (toggleMap) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_list_white);
-            } else {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(listFragment)
-                        //.hide(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_map_white);
-
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(UserDeliveriesActivity.this,
+                        "Error retrieving your deliveries. Please try again later.", Toast.LENGTH_SHORT).show();
             }
-            */
+        });
 
+    }
 
     @Override
     public void onBackPressed() {
@@ -177,12 +113,14 @@ public class UserDeliveriesActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_donate:
                 startActivity(new Intent(this, DonationListActivity.class));
+                finish();
                 break;
             case R.id.nav_claim:
                 startActivity(new Intent(this, ClaimsListActivity.class));
+                finish();
                 break;
             case R.id.nav_deliver:
-                // Do nothing
+                startActivity(new Intent(this, DeliveryActivity.class));
                 break;
             case R.id.nav_logout:
                 startActivity(new Intent(this, LoginActivity.class));
@@ -194,72 +132,4 @@ public class UserDeliveriesActivity extends AppCompatActivity
         return true;
     }
 
-    public void goToDeliveryDetails(View v)
-    {
-        Donation selectedDonation = (Donation) v.getTag();
-
-        Intent detailsIntent = new Intent(this, UserDeliveriesActivity.class);
-        detailsIntent.putExtra("Selected Donation", selectedDonation);
-
-        startActivity(detailsIntent);
-    }
-
-    public void goToUserDeliveryList(View v)
-    {
-        Donation selectedDonation = (Donation) v.getTag();
-
-        Intent detailsIntent = new Intent(this, UserDeliveriesActivity.class);
-        detailsIntent.putExtra("Selected Donation", selectedDonation);
-
-        startActivity(detailsIntent);
-    }
-
-    /*
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        Log.i(TAG, "Entering onMapReady");    // debug
-
-        map = googleMap;
-        // Specify our location with LatLng class
-        LatLng myPosition = new LatLng(33.190802, -117.301805);
-
-        // Add position to the map
-        map.addMarker(new MarkerOptions()
-                .position(myPosition)
-                .title("Current Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
-
-        // Create new camera location at current location
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(myPosition)
-                .zoom(15.0f)
-                .build();
-        // Update the position (move to location)
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        // Instruct map to move to this position
-        map.moveCamera(cameraUpdate);
-
-        // Add all caffeine locations
-        LatLng position;
-        /*
-        for (Location location : allLocationsList)
-        {
-            position = new LatLng(location.getLatitude(), location.getLongitude());
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(location.getName()));
-        }
-
-
-    }
-
-
-    public class MapFragment extends com.google.android.gms.maps.MapFragment {
-        @Override
-        public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-            return layoutInflater.inflate(R.layout.fragment_delivery_map, viewGroup, false);
-            toolbar =
-        }
-    }
-    */
 }

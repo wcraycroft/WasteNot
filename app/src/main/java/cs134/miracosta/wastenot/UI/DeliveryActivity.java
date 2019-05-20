@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import java.util.List;
 
+import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.Model.User;
@@ -49,8 +50,8 @@ public class DeliveryActivity extends AppCompatActivity
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
-        // TODO: get User from authentication
-        user = new User();
+        // TODO: get User from authentication?
+        //user = new User();
 
         // TODO: populate locations list
 
@@ -75,26 +76,6 @@ public class DeliveryActivity extends AppCompatActivity
                 .commit();
 
         toggleMap = true;
-        /*
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, mapFragment)
-                .commit();
-         */
-
-
-
-        /*
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-            toggleMap = true;
-        } else {
-            Log.w(TAG, "Error loading Google Map.");
-        }
-
-        fm = getSupportFragmentManager();
-        //listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
-        */
-        //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
     }
 
@@ -122,9 +103,6 @@ public class DeliveryActivity extends AppCompatActivity
                         .commit();
                 item.setIcon(R.drawable.ic_map_white);
 
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
             }
             Log.i(TAG, "Is List Fragment hidden? " + listFragment.isHidden());
             Log.i(TAG, "Is Map Fragment hidden? " + mapFragment.isHidden());
@@ -134,29 +112,6 @@ public class DeliveryActivity extends AppCompatActivity
 
         return false;
     }
-
-        /*
-        if (id == R.id.miToggle) {
-            if (toggleMap) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_list_white);
-            } else {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(listFragment)
-                        //.hide(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_map_white);
-
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
-            }
-            */
-
 
     @Override
     public void onBackPressed() {
@@ -195,24 +150,44 @@ public class DeliveryActivity extends AppCompatActivity
 
     public void goToDeliveryDetails(View v)
     {
-        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
-        // TODO: parcelable User
-        //newDonationIntent.putExtra("User", user);
-        startActivity(newDonationIntent);
+        Delivery delivery = (Delivery) v.getTag();
+        Intent deliveryDetailsIntent = new Intent(this, DeliveryDetailsActivity.class);
+        deliveryDetailsIntent.putExtra("Claimer", delivery.getClaimer());
+        deliveryDetailsIntent.putExtra("Donor", delivery.getDonor());
+        deliveryDetailsIntent.putExtra("Donation", delivery.getDonation());
+        startActivity(deliveryDetailsIntent);
     }
 
-    public void goToUserDeliveryList(View v)
+    public void goToUserDeliveries(View v)
     {
-        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
-        // TODO: parcelable User
-        //newDonationIntent.putExtra("User", user);
-        startActivity(newDonationIntent);
+        Intent userDeliveriesIntent = new Intent(this, UserDeliveriesActivity.class);
+        startActivity(userDeliveriesIntent);
     }
 
-    public void toggleFragment(View v)
-    {
 
-    }
+
+
+
+    /*
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, mapFragment)
+                .commit();
+         */
+
+
+
+        /*
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+            toggleMap = true;
+        } else {
+            Log.w(TAG, "Error loading Google Map.");
+        }
+
+        fm = getSupportFragmentManager();
+        //listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
+        */
+    //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
     /*
     @Override
@@ -252,7 +227,6 @@ public class DeliveryActivity extends AppCompatActivity
 
 
     }
-
 
     public class MapFragment extends com.google.android.gms.maps.MapFragment {
         @Override

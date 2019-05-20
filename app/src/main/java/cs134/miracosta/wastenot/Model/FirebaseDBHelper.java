@@ -10,7 +10,6 @@
 package cs134.miracosta.wastenot.Model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -26,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,15 +54,21 @@ public class FirebaseDBHelper {
         void onError(String errorMessage);
     }
 
-    // Other variables
+    // Lists
     private List<User> allUsersList = new ArrayList<>();
-    private List<Donation> donationsList = new ArrayList<>();
+    private List<Donation> donationsList = new ArrayList<>();    // TODO: convert to final local variable in each method
+    //private List<Delivery> deliveriesList = new ArrayList<>();
     private List<String> allKeysList = new ArrayList<>();
     private List<String> donationKeysList = new ArrayList<>();
+    //private List<String> donorKeysList = new ArrayList<>();
+    //private List<String> claimerKeysList = new ArrayList<>();
+
     private User focusedUser;
     private Donation focusedDonation;
     private Makes focusedMakes;
     private String focusedKey;
+    //private Delivery outputDelivery;
+    private boolean dataProcessed = true;
 
     // Constructor
     public FirebaseDBHelper()
@@ -476,7 +482,7 @@ public class FirebaseDBHelper {
     {
         donationsList.clear();
         // Get list of Donation keys that have not been claimed from Makes db
-        getDonationKeysByUser(userKey, new DataStatus() {
+        populateDonationKeysByUser(userKey, new DataStatus() {
 
             @Override
             public void DataIsProcessed() {
@@ -514,7 +520,7 @@ public class FirebaseDBHelper {
     /** Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
      *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
      */
-    private void getDonationKeysByUser(final String userKey, final DataStatus dataStatus)
+    private void populateDonationKeysByUser(final String userKey, final DataStatus dataStatus)
     {
         donationKeysList.clear();
         mMakesDB.get()
@@ -555,12 +561,12 @@ public class FirebaseDBHelper {
     {
         donationsList.clear();
         // Get list of Donation keys that have not been claimed from Makes db
-        getDonationKeysByStatus(status, new DataStatus() {
+        populateDonationKeysByStatus(status, new DataStatus() {
             @Override
             public void DataIsRead(List<?> items) { }   // not used
             @Override
             public void DataIsProcessed() {
-                // Keys list is updated and we are ready to party
+                // Keys list is updated
                 mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -593,7 +599,7 @@ public class FirebaseDBHelper {
      * Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
      *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
      */
-    private void getDonationKeysByStatus(final DonationStatus status, final DataStatus dataStatus)
+    private void populateDonationKeysByStatus(final DonationStatus status, final DataStatus dataStatus)
     {
         donationKeysList.clear();
         mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -636,6 +642,272 @@ public class FirebaseDBHelper {
                     Log.d(TAG, "Error fetching donation keys from Makes collection: ", task.getException());
                 }
             }
+        });
+    }
+
+    /**
+     *
+     * @param dataStatus
+     */
+    public void getAllDeliveries(final DataStatus dataStatus)
+    {
+        populateDeliveryKeys(new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                // Get key lists
+                final List<String> donationsKeysList = (List<String>) items.get(0);
+                final List<String> donorKeysList = (List<String>) items.get(1);
+                final List<String> claimerKeysList = (List<String>) items.get(2);
+                // Makes sure list sizes match
+                if (donationsKeysList.size() != donorKeysList.size() ||
+                        donationsKeysList.size() != claimerKeysList.size())
+                {
+                    dataStatus.onError("Error retrieving delivery keys (List size mismatch)");
+                    Log.e(TAG, "Error retrieving delivery keys (List size mismatch)");
+                }
+                else {
+                    final List<Delivery> deliveriesList = new ArrayList<>();
+                    final int size = donationsKeysList.size();
+                    for (int i = 0; i < size; i++) {
+                        Log.i(TAG, "Building delivery for " + i + " Key = " + donationsKeysList.get(i));
+
+                        buildDelivery(donationsKeysList.get(i), donorKeysList.get(i), claimerKeysList.get(i), new DataStatus() {
+                            @Override
+                            public void DataIsRead(List<?> items) {
+                                Delivery delivery = (Delivery) items.get(0);
+                                deliveriesList.add(delivery);
+                                Log.i(TAG, "Added to list : " + delivery.getDonation());
+
+                                // Check if last entry
+                                if (deliveriesList.size() == size)
+                                {
+                                    dataStatus.DataIsRead(deliveriesList);
+                                    Log.i(TAG, "By some miracle, " + size + " Deliveries were retrieved.");
+                                }
+                            }
+                            @Override
+                            public void DataIsProcessed() { }
+                            @Override
+                            public void onError(String errorMessage) { }
+                        });
+
+                    }  // end of keys for loop
+                }
+            }
+            @Override
+            public void DataIsProcessed() { }
+            @Override
+            public void onError(String errorMessage) { }
+        });
+
+    }
+
+    public void getUserDeliveries(String userEmail, final DataStatus dataStatus)
+    {
+        getUserByEmail(userEmail, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                User user = (User) items.get(0);
+                populateUserDeliveryKeys(user.getEmail(), new DataStatus() {
+                    @Override
+                    public void DataIsRead(List<?> items) {
+                        // Get key lists
+                        final List<String> donationsKeysList = (List<String>) items.get(0);
+                        final List<String> donorKeysList = (List<String>) items.get(1);
+                        final List<String> claimerKeysList = (List<String>) items.get(2);
+                        // Makes sure list sizes match
+                        if (donationsKeysList.size() != donorKeysList.size() ||
+                                donationsKeysList.size() != claimerKeysList.size())
+                        {
+                            dataStatus.onError("Error retrieving delivery keys (List size mismatch)");
+                            Log.e(TAG, "Error retrieving delivery keys (List size mismatch)");
+                        }
+                        else {
+                            final List<Delivery> deliveriesList = new ArrayList<>();
+                            final int size = donationsKeysList.size();
+                            for (int i = 0; i < size; i++) {
+                                Log.i(TAG, "Building delivery for " + i + " Key = " + donationsKeysList.get(i));
+
+                                buildDelivery(donationsKeysList.get(i), donorKeysList.get(i), claimerKeysList.get(i), new DataStatus() {
+                                    @Override
+                                    public void DataIsRead(List<?> items) {
+                                        Delivery delivery = (Delivery) items.get(0);
+                                        deliveriesList.add(delivery);
+                                        Log.i(TAG, "Added to list : " + delivery.getDonation());
+
+                                        // Check if last entry
+                                        if (deliveriesList.size() == size)
+                                        {
+                                            dataStatus.DataIsRead(deliveriesList);
+                                            Log.i(TAG, "By some miracle, " + size + " Deliveries were retrieved from this mess.");
+                                        }
+                                    }
+                                    @Override
+                                    public void DataIsProcessed() { }
+                                    @Override
+                                    public void onError(String errorMessage) { }
+                                });
+
+                            }  // end of keys for loop
+                        }
+                    }
+                    @Override
+                    public void DataIsProcessed() { }
+                    @Override
+                    public void onError(String errorMessage) { }
+                });
+            }
+            @Override
+            public void DataIsProcessed() { }
+            @Override
+            public void onError(String errorMessage) { }
+        });
+
+
+    }
+
+
+    private void populateDeliveryKeys(final DataStatus dataStatus) {
+
+        mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Create key lists
+                    final List<String> donationsKeysList = new ArrayList<>();
+                    final List<String> donorKeysList = new ArrayList<>();
+                    final List<String> claimerKeysList = new ArrayList<>();
+
+                    // Loop through Makes documents
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Makes makes = document.toObject((Makes.class));
+                        // Check if the donation is claimed (but not delivered)
+                        if (!makes.getClaimerKey().equals("") && makes.getDriverKey().equals(""))
+                        {
+                            // Add keys to lists
+                            donationsKeysList.add(makes.getDonationKey());
+                            donorKeysList.add(makes.getDonorKey());
+                            claimerKeysList.add(makes.getClaimerKey());
+                        }
+                    } // end of document for loop
+
+                    // Create a list of key lists to send out
+                    List<List<String>> keysLists = new ArrayList<List<String>>();
+                    keysLists.add(donationsKeysList);
+                    keysLists.add(donorKeysList);
+                    keysLists.add(claimerKeysList);
+                    // Task complete, no need to send data since we will be staying in this class
+                    // and have access to the keys list
+                    dataStatus.DataIsRead(keysLists);
+                    Log.i(TAG, "Delivery keys were fetched successfully from Makes DB.");
+
+                } else {
+                    Log.d(TAG, "Error fetching delivery keys from Makes collection: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void populateUserDeliveryKeys(String driverKey, final DataStatus dataStatus) {
+
+        mMakesDB.whereEqualTo("driverKey", driverKey)
+            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                    // Create key lists
+                    final List<String> donationsKeysList = new ArrayList<>();
+                    final List<String> donorKeysList = new ArrayList<>();
+                    final List<String> claimerKeysList = new ArrayList<>();
+
+                        // Loop through Makes documents
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Makes makes = document.toObject((Makes.class));
+                        // Check if the donation is claimed (but not delivered)
+                        if (makes.getDriverKey().equals(""))
+                        {
+                            // Add keys to lists
+                            donationsKeysList.add(makes.getDonationKey());
+                            donorKeysList.add(makes.getDonorKey());
+                            claimerKeysList.add(makes.getClaimerKey());
+                        }
+                    } // end of document for loop
+
+                    // Create a list of key lists to send out
+                    List<List<String>> keysLists = new ArrayList<List<String>>();
+                    keysLists.add(donationsKeysList);
+                    keysLists.add(donorKeysList);
+                    keysLists.add(claimerKeysList);
+                    // Task complete, no need to send data since we will be staying in this class
+                    // and have access to the keys list
+                    dataStatus.DataIsRead(keysLists);
+                    Log.i(TAG, "Delivery keys were fetched successfully from Makes DB.");
+
+                } else {
+                    Log.d(TAG, "Error fetching delivery keys from Makes collection: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void buildDelivery(String donationKey, String donorKey, String claimerKey, final DataStatus dataStatus)
+    {
+        final Delivery outputDelivery = new Delivery();
+        final List<Delivery> deliveriesList = new ArrayList<>();
+        // Get Donation
+        getDonation(donationKey, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                outputDelivery.setDonation((Donation) items.get(0));
+                // Check if all fields have been filled
+                if (outputDelivery.isComplete())
+                {
+                    deliveriesList.clear();
+                    deliveriesList.add(outputDelivery);
+                    dataStatus.DataIsRead(deliveriesList);
+                }
+            }
+            @Override
+            public void DataIsProcessed() { }
+            @Override
+            public void onError(String errorMessage) { }
+        });
+
+        // Get Donor
+        getUserByKey(donorKey, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                outputDelivery.setDonor((User) items.get(0));
+                // Check if all fields have been filled
+                if (outputDelivery.isComplete())
+                {
+                    deliveriesList.clear();
+                    deliveriesList.add(outputDelivery);
+                    dataStatus.DataIsRead(deliveriesList);
+                }
+            }
+            @Override
+            public void DataIsProcessed() { }
+            @Override
+            public void onError(String errorMessage) { }
+        });
+
+        // Get Claimer
+        getUserByKey(claimerKey, new DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) {
+                outputDelivery.setClaimer((User) items.get(0));
+                // Check if all fields have been filled
+                if (outputDelivery.isComplete())
+                {
+                    deliveriesList.clear();
+                    deliveriesList.add(outputDelivery);
+                    dataStatus.DataIsRead(deliveriesList);
+                }                                 }
+            @Override
+            public void DataIsProcessed() { }
+            @Override
+            public void onError(String errorMessage) { }
         });
     }
 

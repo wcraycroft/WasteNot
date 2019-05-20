@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:layout_weight="15" />
+        android:layout_weight="15"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
 
     <Button
         android:id="@+id/myDeliveriesButton"
@@ -22,7 +24,7 @@
         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
 
         android:fontFamily="sans-serif-medium"
-        android:onClick="goToUserDeliveryList"
+        android:onClick="goToUserDeliveries"
         android:padding="16dp"
         android:text="View My Deliveries"
         android:textColor="@color/colorPrimary"

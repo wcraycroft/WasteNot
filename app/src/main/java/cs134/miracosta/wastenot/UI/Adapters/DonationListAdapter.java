@@ -25,6 +25,8 @@ import cs134.miracosta.wastenot.R;
 
 public class DonationListAdapter extends ArrayAdapter<Donation> {
 
+    public static final String TAG = "WasteNot";
+
     private Context mContext;
     private List<Donation> mDonationsList = new ArrayList<>();
     private int mResourceId;
@@ -138,7 +140,7 @@ public class DonationListAdapter extends ArrayAdapter<Donation> {
         }
         catch (IOException ex)
         {
-            Log.e("Gamers Delight", "Error loading " + imageName, ex);
+            Log.e(TAG, "Error loading " + imageName, ex);
         }
 
         return view;

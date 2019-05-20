@@ -3,13 +3,16 @@
 
 package cs134.miracosta.wastenot.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.Enums.FoodType;
 
-public class Donation implements Serializable
+public class Donation implements Parcelable
 {
 
     private String mKey;
@@ -48,6 +51,29 @@ public class Donation implements Serializable
     public Donation() {
     }
 
+
+    protected Donation(Parcel in) {
+        mKey = in.readString();
+        mServings = in.readInt();
+        fitInCar = in.readByte() != 0;
+        mOtherInfo = in.readString();
+        mReadyTime = in.readString();
+        mPickupEndTime = in.readString();
+        mPickupTime = in.readString();
+        mDropoffEndTime = in.readString();
+    }
+
+    public static final Creator<Donation> CREATOR = new Creator<Donation>() {
+        @Override
+        public Donation createFromParcel(Parcel in) {
+            return new Donation(in);
+        }
+
+        @Override
+        public Donation[] newArray(int size) {
+            return new Donation[size];
+        }
+    };
 
     public String getKey() {
         return mKey;
@@ -165,5 +191,22 @@ public class Donation implements Serializable
     @Override
     public int hashCode() {
         return Objects.hash(mKey, mStatus, mFoodType, mServings, fitInCar, mOtherInfo, mReadyTime, mPickupEndTime, mPickupTime, mDropoffEndTime);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mKey);
+        dest.writeInt(mServings);
+        dest.writeByte((byte) (fitInCar ? 1 : 0));
+        dest.writeString(mOtherInfo);
+        dest.writeString(mReadyTime);
+        dest.writeString(mPickupEndTime);
+        dest.writeString(mPickupTime);
+        dest.writeString(mDropoffEndTime);
     }
 }

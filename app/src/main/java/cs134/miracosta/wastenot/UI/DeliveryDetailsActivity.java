@@ -68,34 +68,11 @@ public class DeliveryDetailsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        mapFragment = new DeliveryMapFragment();
-        listFragment = new DeliveryListFragment();
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, listFragment)
                 .commit();
 
         toggleMap = true;
-        /*
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, mapFragment)
-                .commit();
-         */
-
-
-
-        /*
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-            toggleMap = true;
-        } else {
-            Log.w(TAG, "Error loading Google Map.");
-        }
-
-        fm = getSupportFragmentManager();
-        //listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
-        */
-        //mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
     }
 
@@ -123,9 +100,6 @@ public class DeliveryDetailsActivity extends AppCompatActivity
                         .commit();
                 item.setIcon(R.drawable.ic_map_white);
 
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
             }
             Log.i(TAG, "Is List Fragment hidden? " + listFragment.isHidden());
             Log.i(TAG, "Is Map Fragment hidden? " + mapFragment.isHidden());
@@ -135,28 +109,6 @@ public class DeliveryDetailsActivity extends AppCompatActivity
 
         return false;
     }
-
-        /*
-        if (id == R.id.miToggle) {
-            if (toggleMap) {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_list_white);
-            } else {
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_rotate_reverse, R.anim.anim_rotate)
-                        .show(listFragment)
-                        //.hide(mapFragment)
-                        .commit();
-                item.setIcon(R.drawable.ic_map_white);
-
-                //toolbar.setNavigationIcon(R.drawable.ic_map_white);
-                //toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_list_white));
-
-            }
-            */
 
 
     @Override
@@ -194,72 +146,9 @@ public class DeliveryDetailsActivity extends AppCompatActivity
         return true;
     }
 
-    public void goToDeliveryDetails(View v)
+    public void claimDelivery(View v)
     {
-        Donation selectedDonation = (Donation) v.getTag();
-
-        Intent detailsIntent = new Intent(this, DeliveryDetailsActivity.class);
-        detailsIntent.putExtra("Selected Donation", selectedDonation);
-
-        startActivity(detailsIntent);
-    }
-
-    public void goToUserDeliveryList(View v)
-    {
-        Donation selectedDonation = (Donation) v.getTag();
-
-        Intent detailsIntent = new Intent(this, DeliveryDetailsActivity.class);
-        detailsIntent.putExtra("Selected Donation", selectedDonation);
-
-        startActivity(detailsIntent);
-    }
-
-    /*
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        Log.i(TAG, "Entering onMapReady");    // debug
-
-        map = googleMap;
-        // Specify our location with LatLng class
-        LatLng myPosition = new LatLng(33.190802, -117.301805);
-
-        // Add position to the map
-        map.addMarker(new MarkerOptions()
-                .position(myPosition)
-                .title("Current Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
-
-        // Create new camera location at current location
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(myPosition)
-                .zoom(15.0f)
-                .build();
-        // Update the position (move to location)
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        // Instruct map to move to this position
-        map.moveCamera(cameraUpdate);
-
-        // Add all caffeine locations
-        LatLng position;
-        /*
-        for (Location location : allLocationsList)
-        {
-            position = new LatLng(location.getLatitude(), location.getLongitude());
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(location.getName()));
-        }
-
 
     }
 
-
-    public class MapFragment extends com.google.android.gms.maps.MapFragment {
-        @Override
-        public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-            return layoutInflater.inflate(R.layout.fragment_delivery_map, viewGroup, false);
-            toolbar =
-        }
-    }
-    */
 }

@@ -154,4 +154,9 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="my_deliveries">My Deliveries</string>
+    <string name="drop_off_at">Drop off at:</string>
+    <string name="status_claimed_short">Requesting driver</string>
+    <string name="user_deliveries_title">Your Deliveries</string>
+    <string name="delivery_details_title">Delivery Details</string>
+    <string name="claim_this_delivery">Claim This Delivery</string>
 </resources>
