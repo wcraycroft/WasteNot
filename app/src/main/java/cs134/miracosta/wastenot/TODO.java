@@ -14,8 +14,10 @@
  *    TODO: translate strings
  *    DONE: get realtime updates from DB calls
  *    TODO: get fine location info from user.
- *    TODO: add delivered button to My deliveries which removes both Donation and Makes from DB
+ *    TODO: swap db call to realtime
+ *    TODO: cleanup unused calls
  *    TODO: JUnit and Javadocs
+ *    TODO: Splashscreen? (not required and it would just be cosmetic)
  *
  *
  *

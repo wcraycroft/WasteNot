@@ -120,8 +120,10 @@ public class ClaimDetailsActivity extends AppCompatActivity {
      */
     private void setDataInViews() {
         TextView tvInfo = findViewById(R.id.tvInfo);
+
         String text =
-                "Donor company name: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n" +
+                // Donors should stay anonymous to Claimers for legal reasons
+                //"Donor company name: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n" +
                         "Fit In Car: " + donation.isFitInCar() + "\n" +
                         "Food Type: " + donation.getFoodType() + "\n" +
                         "Other Info: " + donation.getOtherInfo() + "\n" +

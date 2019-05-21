@@ -146,6 +146,9 @@ public class DeliveryActivity extends AppCompatActivity
 
     public void goToDeliveryDetails(View v)
     {
+        if (v.getTag() == null)
+            return;
+
         Delivery delivery = (Delivery) v.getTag();
         Intent deliveryDetailsIntent = new Intent(this, DeliveryDetailsActivity.class);
         deliveryDetailsIntent.putExtra("Claimer", delivery.getClaimer());

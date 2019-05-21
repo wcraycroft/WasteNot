@@ -49,8 +49,6 @@ public class DeliveryListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "test Entering onAttach for List");
-
         mContext = context;
 
         // Instantiate DBHelper
@@ -62,7 +60,7 @@ public class DeliveryListFragment extends Fragment {
             @Override
             public void DataIsRead(List<?> items) {
                 allDeliveriesList = (List<Delivery>) items;
-                Log.i(TAG, "Data retrieved. Deliveries in list = " + allDeliveriesList.size());
+                Log.i(TAG, " Delivery List Data retrieved. Deliveries in list = " + allDeliveriesList.size());
                 if (fragView != null) {
                     if (mContext != null) {
                         deliveryListAdapter = new DeliveryListAdapter(mContext, R.layout.list_item_delivery, allDeliveriesList);

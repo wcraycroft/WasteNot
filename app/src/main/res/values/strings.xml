@@ -28,7 +28,7 @@
 
     <!-- DonationList Item-->
     <string name="status">Status:</string>
-    <string name="packaged_tray">Packaged</string>
+    <string name="packaged_tray">Packaged (Tray)</string>
     <string name="packaged_indiv">Packaged (indiv)</string>
     <string name="baked">Baked Goods</string>
     <string name="meat">Meat</string>
@@ -191,4 +191,6 @@
     <string name="delivery_details_title">Delivery Details</string>
     <string name="claim_this_delivery">Claim This Delivery</string>
     <string name="donation_delivered">Donation Delivered</string>
+    <string name="view_details">View Details</string>
+    <string name="current_location">Current Location</string>
 </resources>
