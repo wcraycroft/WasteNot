@@ -26,8 +26,10 @@ public class MyClaimsActivity extends AppCompatActivity implements View.OnClickL
     private ConstraintLayout loader;
     private FirebaseDBHelper mDB;
 
+    //References to all the views
     private RecyclerView rvClaims;
     private ClaimsAdapter adapter;
+    //ArrayList to store all the donations
     private ArrayList<Donation> donations = new ArrayList<>();
 
     @Override
@@ -35,12 +37,16 @@ public class MyClaimsActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_claims);
 
+        //Initialize FirebaseDBHelper class
         mDB = new FirebaseDBHelper();
 
+
+        //Bind the views with their xml ids & all listeners
         loader = findViewById(R.id.loader);
         rvClaims = findViewById(R.id.rvClaims);
         loader.setOnClickListener(this);
 
+        //Create layoutManager & ClaimsAdapter classes and set both to recycleView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvClaims.setLayoutManager(linearLayoutManager);
@@ -48,13 +54,11 @@ public class MyClaimsActivity extends AppCompatActivity implements View.OnClickL
         adapter = new ClaimsAdapter(this,donations, null);
         rvClaims.setAdapter(adapter);
 
-
-
         getAllClaims();
     }
 
     /**
-     * method to get all claims
+     * method to get all claims from Firebase
      */
     private void getAllClaims() {
         loader.setVisibility(View.VISIBLE);

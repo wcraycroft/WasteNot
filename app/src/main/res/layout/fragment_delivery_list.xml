@@ -15,7 +15,6 @@
         android:paddingRight="8dp" />
 
     <Button
-        android:id="@+id/myDeliveriesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -26,7 +25,7 @@
         android:fontFamily="sans-serif-medium"
         android:onClick="goToUserDeliveries"
         android:padding="16dp"
-        android:text="View My Deliveries"
+        android:text="@string/view_my_deliveries"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 

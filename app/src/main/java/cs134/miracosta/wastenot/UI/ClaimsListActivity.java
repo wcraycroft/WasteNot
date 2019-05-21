@@ -27,11 +27,15 @@ import cs134.miracosta.wastenot.UI.Adapters.ClaimsAdapter;
 
 public class ClaimsListActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ConstraintLayout loader;
+    //Reference to FirebaseDBHelper class
     private FirebaseDBHelper mDB;
 
+    //References to all the views
+    private ConstraintLayout loader;
     private RecyclerView rvClaims;
     public ClaimsAdapter adapter;
+
+    //ArrayList to store all the donations
     private ArrayList<Donation> donations = new ArrayList<>();
 
     @Override
@@ -39,16 +43,18 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_claims_list);
 
+        //Initialize FirebaseDBHelper class
         mDB = new FirebaseDBHelper();
 
 
-
+        //Bind the views with their xml ids & all listeners
         loader = findViewById(R.id.loader);
         rvClaims = findViewById(R.id.rvClaims);
         findViewById(R.id.fabAddClaim).setOnClickListener(this);
         findViewById(R.id.btMyClaims).setOnClickListener(this);
         loader.setOnClickListener(this);
 
+        //Create layoutManager & ClaimsAdapter classes and set both to recycleView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvClaims.setLayoutManager(linearLayoutManager);
@@ -56,11 +62,14 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
         adapter = new ClaimsAdapter(this,donations, listener);
         rvClaims.setAdapter(adapter);
 
+
         getAllClaims();
     }
 
     /**
-     * method to get all claims
+     * Get the donations list using 'getDonationsByStatus' helper method and
+     * add them to list. If list is empty make empty view visible
+     * otherwise, reload the list by calling 'getAllClaims'
      */
     private void getAllClaims() {
 
@@ -131,7 +140,9 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * method to add a new claim
+     * Get the user by email using 'getUserByEmail' helper method and
+     * add new donation to Could Firestore using 'addDonation' &
+     * reload the list by calling 'getAllClaims'
      */
     private void addNewClaim() {
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
@@ -143,7 +154,8 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
             {
                 User user = (User) items.get(0);
 
-                Donation donation = new Donation(FoodType.BAKED_GOODS, 10, true, "Other dummy info"
+                Donation donation = new Donation(FoodType.BAKED_GOODS, 10, true,
+                        getString(R.string.other_dummy_info)
                         , "22:00", "23:00");
 
                 mDB.addDonation(donation,user.getKey(), new FirebaseDBHelper.DataStatus() {
@@ -156,7 +168,7 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void DataIsProcessed()
                     {
-                        Toast.makeText(ClaimsListActivity.this, "Claim Added successfully",
+                        Toast.makeText(ClaimsListActivity.this, getString(R.string.claim_added_success),
                                 Toast.LENGTH_SHORT).show();
                         getAllClaims();
                     }
@@ -187,6 +199,12 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    /**
+     * On 'RESULT_OK', reload the list by calling 'getAllClaims'
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
@@ -194,6 +212,10 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    /**
+     * Close current activity & start 'DeliveryActivity'
+     * @param view
+     */
     public void goToDelivery(View view)
     {
         startActivity(new Intent(ClaimsListActivity.this,DeliveryActivity.class));

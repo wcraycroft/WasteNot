@@ -10,7 +10,6 @@
     tools:showIn="@layout/app_bar_donation_list">
 
     <Button
-        android:id="@+id/newDonationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -27,7 +26,6 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/donationListIsEmptyTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

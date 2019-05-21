@@ -19,7 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Company Name"
+            android:text="@string/company_name"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -30,12 +30,11 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="5"
-            android:text="Pickup by 10:pm "
+            android:text="@string/pickup_by_10pm"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/mapInfoDetailsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

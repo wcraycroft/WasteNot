@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,9 +27,13 @@ import cs134.miracosta.wastenot.utils.Validator;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     public static final String TAG = "WasteNot";
+
+    //Reference to FirebaseAuth
     public FirebaseAuth firebaseAuth;
+    //Reference to FirebaseDBHelper class
     private FirebaseDBHelper mDB;
 
+    //References to all the views
     private Button btRegister;
     private RadioGroup rgUserType;
     private ConstraintLayout loader;
@@ -79,6 +82,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         rgUserType.setOnCheckedChangeListener(this);
     }
 
+    /**
+     * Call the registerNewUser method after inputs validation
+     */
     public void clickRegister() {
         String firstName = etFirstName.getText().toString().trim();
         String lastName = etLastName.getText().toString().trim();
@@ -90,36 +96,36 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String city = eCity.getText().toString().trim();
 
         if (!Validator.validateText(selectedUserType))
-            Toast.makeText(this, "Select User Type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.user_type), Toast.LENGTH_SHORT).show();
         else if (!Validator.validateText(firstName)) {
-            Toast.makeText(this, "Enter First Name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.user_first_name), Toast.LENGTH_SHORT).show();
             Animator.animate(etFirstName);
         } else if (!Validator.validateText(lastName)) {
-            Toast.makeText(this, "Enter Last Name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.user_last_name), Toast.LENGTH_SHORT).show();
             Animator.animate(etLastName);
         } else if (!Validator.validateText(email)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_email), Toast.LENGTH_SHORT).show();
             Animator.animate(etEmail);
         } else if (!Validator.validateEmail(email)) {
-            Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
             Animator.animate(etEmail);
         } else if (!Validator.validateText(password)) {
-            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_password), Toast.LENGTH_SHORT).show();
             Animator.animate(etPassword);
         } else if (!Validator.validateText(confirmPassword)) {
-            Toast.makeText(this, "Please confirm password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.confirm_password), Toast.LENGTH_SHORT).show();
             Animator.animate(etConfirmPassword);
         } else if (!password.equals(confirmPassword)) {
-            Toast.makeText(this, "Confirm password does not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.confirm_password_no_match), Toast.LENGTH_SHORT).show();
             Animator.animate(etConfirmPassword);
         } else if (!Validator.validateText(address)) {
-        Toast.makeText(this, "Please enter valid address", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.enter_valid_address), Toast.LENGTH_SHORT).show();
         Animator.animate(eAddress);
         } else if (!Validator.validateText(city)) {
-        Toast.makeText(this, "Please enter valid city", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.enter_valid_city), Toast.LENGTH_SHORT).show();
         Animator.animate(eCity);
         } else if (!password.equals(confirmPassword)) {
-        Toast.makeText(this, "Confirm password does not match", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.confirm_password_no_match), Toast.LENGTH_SHORT).show();
         Animator.animate(etConfirmPassword);
         }
         else {
@@ -130,7 +136,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * method to register a new user
+     * Register the user by calling Firebase method 'createUserWithEmailAndPassword'
+     * and onSuccess, add the user to Firebase Cloud Firestore and call the 'redirectUserToDashBoard' method onSuccess
      *
      * @param user user to register
      */
@@ -153,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 public void DataIsProcessed()
                                 {
                                     loader.setVisibility(View.GONE);
-                                    Toast.makeText(RegisterActivity.this, "User Registered successfully",
+                                    Toast.makeText(RegisterActivity.this, getString(R.string.user_registered_msg),
                                             Toast.LENGTH_SHORT).show();
                                     redirectUserToDashBoard(user.getUserType());
                                 }
@@ -169,13 +176,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         } else {
                             loader.setVisibility(View.GONE);
                             // If sign in fails, display a message to the firebaseUser.
-                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
                                 Toast.makeText(RegisterActivity.this,
                                         task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(RegisterActivity.this,
-                                        "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        getString(R.string.error_authentication), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -198,7 +204,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(RegisterActivity.this, DeliveryActivity.class));
             finishAffinity();
         } else {
-            Log.w(TAG, "Error redirecting user. (incompatible type?)");
+            Toast.makeText(RegisterActivity.this, getString(R.string.error_invalid_user), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -29,20 +29,19 @@
         android:layout_width="wrap_content"
         android:visibility="gone"
         android:layout_height="wrap_content"
-        android:text="No Open Donations Yet"
+        android:text="@string/no_open_donations_yet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btGoToDeliveryActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:background="@color/colorAccent"
-        android:text="Delivery"
+        android:text="@string/delivery"
         android:textColor="#fff"
         android:textAllCaps="false"
         android:layout_margin="24dp"

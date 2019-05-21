@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Register"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,19 +35,19 @@
             android:id="@+id/rbDonor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Donor" />
+            android:text="@string/donor" />
 
         <RadioButton
             android:id="@+id/rbDriver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Driver" />
+            android:text="@string/driver" />
 
         <RadioButton
             android:id="@+id/rbClaimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Claimer" />
+            android:text="@string/claimer" />
     </RadioGroup>
 
     <EditText
@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:hint="First name"
+        android:hint="@string/first_name"
         android:inputType="text"
         android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="Last name"
+        android:hint="@string/last_name"
         android:inputType="text"
         android:maxLength="15"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:hint="Company Name (optional)"
+            android:hint="@string/company_name_optional"
             android:inputType="text"
             android:maxLength="30"
             app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -91,7 +91,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:maxLength="30"
             app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -103,7 +103,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -115,7 +115,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="Confirm Password"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -127,7 +127,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="Address"
+        android:hint="@string/address"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
         app:layout_constraintStart_toStartOf="@id/etFirstName"
@@ -138,7 +138,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="City"
+        android:hint="@string/city"
         android:inputType="text"
         android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -150,7 +150,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="State"
+        android:hint="@string/state"
         android:inputType="text"
         android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -162,7 +162,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:hint="zipCode"
+        android:hint="@string/zipcode"
         android:inputType="number"
         android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@id/etFirstName"
@@ -174,7 +174,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="Register"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etZip" />

@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -23,7 +22,6 @@ import java.util.Objects;
 import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
-import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
 import cs134.miracosta.wastenot.UI.Adapters.UserDeliveryListAdapter;
 
 public class UserDeliveriesActivity extends AppCompatActivity
@@ -74,7 +72,6 @@ public class UserDeliveriesActivity extends AppCompatActivity
             public void DataIsRead(List<?> items) {
                 userDeliveriesList.clear();
                 userDeliveriesList = (List<Delivery>) items;
-                Log.i(TAG, "Data retrieved. User Deliveries in list = " + userDeliveriesList.size());
                 setListAdapter();
             }
 
@@ -84,7 +81,7 @@ public class UserDeliveriesActivity extends AppCompatActivity
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(UserDeliveriesActivity.this,
-                        "Error retrieving your deliveries. Please try again later.", Toast.LENGTH_SHORT).show();
+                        getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -144,14 +141,14 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
             @Override
             public void DataIsProcessed() {
-                Toast.makeText(UserDeliveriesActivity.this, "Delivery completion registered. Thank you!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.delivery_registered), Toast.LENGTH_SHORT).show();
                 // Refresh list
                 getUserDeliveries();
             }
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(UserDeliveriesActivity.this, "Error completing the delivery. Try again later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }

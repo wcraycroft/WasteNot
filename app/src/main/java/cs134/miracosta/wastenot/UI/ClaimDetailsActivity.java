@@ -23,9 +23,13 @@ import cs134.miracosta.wastenot.R;
 
 public class ClaimDetailsActivity extends AppCompatActivity {
 
-    private ConstraintLayout loader;
+    //Reference to FirebaseDBHelper class
     private FirebaseDBHelper mDB;
 
+    //References to all the views
+    private ConstraintLayout loader;
+
+    //Reference to Donation object being passed through intent
     private Donation donation;
 
     @Override
@@ -33,8 +37,11 @@ public class ClaimDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_claim_details);
 
+        //Initialize FirebaseDBHelper class
         mDB = new FirebaseDBHelper();
 
+
+        //Bind the views with their xml ids & all listeners
         loader = findViewById(R.id.loader);
 
         findViewById(R.id.btClaim).setOnClickListener(new View.OnClickListener() {
@@ -48,7 +55,7 @@ public class ClaimDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * method to donation a donation
+     * Call the 'claimDonation' method after selecting the dropOff endTime
      */
     private void claimClicked() {
 
@@ -65,11 +72,16 @@ public class ClaimDetailsActivity extends AppCompatActivity {
                 claimDonation();
             }
         }, hour, minute, true);//YES 24 hour time
-        mTimePicker.setTitle("Select dropOff Time");
+        mTimePicker.setTitle(getString(R.string.select_drop_off_time));
         mTimePicker.show();
 
     }
 
+    /**
+     * Get the user by email using 'getUserByEmail' helper method and
+     * mark the donation as claimed in Could Firestore using 'claimDonation' &
+     * finish the activity by setting the result 'RESULT_OK'
+     */
     private void claimDonation()
     {
         loader.setVisibility(View.VISIBLE);
@@ -92,7 +104,7 @@ public class ClaimDetailsActivity extends AppCompatActivity {
                     public void DataIsProcessed()
                     {
                         loader.setVisibility(View.GONE);
-                        Toast.makeText(ClaimDetailsActivity.this, "Claimed Successfully",
+                        Toast.makeText(ClaimDetailsActivity.this, getString(R.string.claimed_successfully),
                                 Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         setResult(RESULT_OK, intent);
@@ -130,10 +142,10 @@ public class ClaimDetailsActivity extends AppCompatActivity {
      */
     private void getData() {
         if (getIntent() != null && getIntent().getParcelableExtra("CLAIM_MODEL") != null) {
-            donation = (Donation) getIntent().getParcelableExtra("CLAIM_MODEL");
+            donation = getIntent().getParcelableExtra("CLAIM_MODEL");
             setDataInViews();
         } else {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
     }
@@ -144,15 +156,12 @@ public class ClaimDetailsActivity extends AppCompatActivity {
     private void setDataInViews() {
         TextView tvInfo = findViewById(R.id.tvInfo);
 
-        String text =
-                // Donors should stay anonymous to Claimers for legal reasons
-                //"Donor company name: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n" +
-                        "Fit In Car: " + donation.isFitInCar() + "\n" +
-                        "Food Type: " + donation.getFoodType() + "\n" +
-                        "Other Info: " + donation.getOtherInfo() + "\n" +
-                        "Pick up end Time: " + donation.getPickupEndTime() + "\n" +
-                        "Ready Time: " + donation.getReadyTime() + "\n" +
-                        "Servings: " + donation.getServings() + "\n";
+        String text =   getString(R.string.fit_in_car) + " " + donation.isFitInCar() + "\n" +
+                getString(R.string.food_type) + " " + donation.getFoodType() + "\n" +
+                getString(R.string.other_infos) + " "+ donation.getOtherInfo() + "\n" +
+                getString(R.string.pickup_end_time_) + " " + donation.getPickupEndTime() + "\n" +
+                getString(R.string.ready_time) + " " + donation.getReadyTime() + "\n" +
+                getString(R.string.servings) + " " + donation.getServings() + "\n";
 
         tvInfo.setText(text);
     }

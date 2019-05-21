@@ -15,12 +15,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import cs134.miracosta.wastenot.Model.Delivery;
-import cs134.miracosta.wastenot.Model.Donation;
-import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
-import cs134.miracosta.wastenot.UI.Adapters.DonationListAdapter;
 
 public class DeliveryListFragment extends Fragment {
 
@@ -76,7 +73,7 @@ public class DeliveryListFragment extends Fragment {
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(mContext,
-                        "Error retrieving user information.", Toast.LENGTH_SHORT).show();
+                        getString(R.string.error_retrieving_user_info), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -149,7 +149,7 @@ public class NewDonationActivity extends AppCompatActivity
         // Validate FoodType
         if (foodType.equals(foodTypeArray[0])) {
             // Default selection, send error message to user
-            Toast.makeText(this, "Please select a type of food.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.select_type_of_food), Toast.LENGTH_LONG).show();
             return;
         } else if (foodType.equals(foodTypeArray[1])) {
             valType = FoodType.DAIRY;
@@ -188,13 +188,13 @@ public class NewDonationActivity extends AppCompatActivity
 
             @Override
             public void DataIsProcessed() {
-                Toast.makeText(NewDonationActivity.this, "Thank you for your donation!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewDonationActivity.this, getString(R.string.thank_you_for_donation), Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(NewDonationActivity.this, "Error adding donation to database.", Toast.LENGTH_LONG).show();
+                Toast.makeText(NewDonationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }

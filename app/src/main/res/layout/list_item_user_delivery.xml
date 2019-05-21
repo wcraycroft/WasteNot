@@ -28,7 +28,7 @@
             android:id="@+id/userDeliveryItemPickupCompanyNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MiraCosta Cafe"
+            android:text="@string/miracosta_cafe"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Packaged (Tray)"
+                    android:text="@string/packaged_tray"
                     android:textSize="18sp" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Pick up by 5pm"
+                    android:text="@string/pickup_by_10pm"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="St Jude's Shelter"
+                    android:text="@string/st_jude_s_shelter"
                     android:textSize="18sp" />
 
             </LinearLayout>

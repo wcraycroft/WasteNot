@@ -5,14 +5,12 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
@@ -37,7 +34,6 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.Model.Location;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
-import cs134.miracosta.wastenot.UI.Adapters.DonationListAdapter;
 
 public class DeliveryDetailsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
@@ -227,7 +223,7 @@ public class DeliveryDetailsActivity extends AppCompatActivity
         String[] pickupTimeArray = getResources().getStringArray(R.array.pickup_time_array);
         if (pickupTime.equals(pickupTimeArray[0]) || pickupTime.equals(""))
         {
-            Toast.makeText(this, "Please Select a Pickup Time", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.select_pickup_time), Toast.LENGTH_SHORT).show();
             return;
         }
         // Grab Pickup Time
@@ -242,9 +238,9 @@ public class DeliveryDetailsActivity extends AppCompatActivity
             @Override
             public void DataIsProcessed() {
                 // Make toast and go back to delivery list
-                Toast.makeText(DeliveryDetailsActivity.this, "Delivery claimed from "
-                        + delivery.getDonor().getCompanyName() + " at " + delivery.getDonation().getPickupTime()
-                        + ". See you then!", Toast.LENGTH_LONG).show();
+                Toast.makeText(DeliveryDetailsActivity.this, getString(R.string.delivery_claimed_from)
+                        + delivery.getDonor().getCompanyName() + " "+getString(R.string.at)+" " + delivery.getDonation().getPickupTime()
+                        + ". "+getString(R.string.see_you)+"!", Toast.LENGTH_LONG).show();
                 finish();
             }
 

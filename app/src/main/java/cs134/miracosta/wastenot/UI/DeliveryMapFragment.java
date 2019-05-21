@@ -23,7 +23,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,7 +34,6 @@ import java.util.List;
 import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
-import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
 import cs134.miracosta.wastenot.UI.Adapters.MapInfoAdapter;
 
 public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback {
@@ -182,7 +180,7 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(mContext,
-                        "Error retrieving user information.", Toast.LENGTH_SHORT).show();
+                        getString(R.string.error_retrieving_user_info), Toast.LENGTH_SHORT).show();
             }
         });
 

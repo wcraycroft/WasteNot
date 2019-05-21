@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,12 +27,16 @@ import cs134.miracosta.wastenot.utils.Validator;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String TAG = "WasteNot";
-    //private DatabaseReference ref;
-    public FirebaseAuth firebaseAuth;
-    public FirebaseDBHelper db;
-    //private DatabaseReference mDatabase;
 
+    //Reference to FirebaseAuth
+    public FirebaseAuth firebaseAuth;
+    //Reference to FirebaseDBHelper class
+    private FirebaseDBHelper db;
+
+    //References to User model class
     private User user;
+
+    //References to all the views
     private Button btLogin;
     private Button btRegister;
     private ConstraintLayout loader;
@@ -58,8 +61,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
 
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
-        //ref = mDatabase.child("users");
         firebaseAuth = FirebaseAuth.getInstance();
         db = new FirebaseDBHelper();
 
@@ -75,18 +76,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     * Call the loginUser method after inputs validation
+     */
     public void clickLogin() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
         if (!Validator.validateText(email)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_email), Toast.LENGTH_SHORT).show();
             Animator.animate(etEmail);
         } else if (!Validator.validateEmail(email)) {
-            Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
             Animator.animate(etEmail);
         } else if (!Validator.validateText(password)) {
-            Toast.makeText(this, "Enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_password), Toast.LENGTH_SHORT).show();
             Animator.animate(etPassword);
         } else {
             loginUser(email, password);
@@ -94,7 +98,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * method to login the user
+     * method to login the user by calling Firebase method 'signInWithEmailAndPassword'
+     * and onSuccess, get the user by email and call the 'redirectUserToDashBoard' method
      *
      * @param email    email
      * @param password password
@@ -114,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     public void DataIsRead(List<?> items) {
                                         user = (User) items.get(0);
                                         loader.setVisibility(View.GONE);
-                                        Toast.makeText(LoginActivity.this, "Welcome " +
+                                        Toast.makeText(LoginActivity.this, getString(R.string.welcome) +
                                                 user.getFirstName(), Toast.LENGTH_LONG).show();
                                         if (user != null && user.getUserType() != null)
                                             redirectUserToDashBoard(user.getUserType());
@@ -133,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         } else {
                             loader.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.error_invalid_email_or_password), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -155,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LoginActivity.this, DeliveryActivity.class));
             finishAffinity();
         } else {
-            Log.w(TAG, "Error redirecting user. (incompatible type?)");
+            Toast.makeText(LoginActivity.this, getString(R.string.error_invalid_user), Toast.LENGTH_SHORT).show();
         }
     }
 

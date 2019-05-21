@@ -83,7 +83,7 @@ public class DonationListActivity extends AppCompatActivity
                     @Override
                     public void onError(String errorMessage) {
                         Toast.makeText(DonationListActivity.this,
-                                "Error retrieving user information.", Toast.LENGTH_SHORT).show();
+                                getString(R.string.error_retrieving_user_info), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -92,7 +92,7 @@ public class DonationListActivity extends AppCompatActivity
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(DonationListActivity.this,
-                        "Error retrieving user information.", Toast.LENGTH_SHORT).show();
+                        getString(R.string.error_retrieving_user_info), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -143,7 +143,7 @@ public class DonationListActivity extends AppCompatActivity
     {
         if (user == null)
         {
-            Toast.makeText(this, "Error. Please wait a moment and try again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             return;
         }
         Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
