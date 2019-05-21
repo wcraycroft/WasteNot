@@ -64,7 +64,6 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
      */
     private void getAllClaims() {
 
-        // db.getAllClaims()
         loader.setVisibility(View.VISIBLE);
         mDB.getDonationsByStatus(DonationStatus.UNCLAIMED, new FirebaseDBHelper.DataStatus() {
             @Override
@@ -77,10 +76,19 @@ public class ClaimsListActivity extends AppCompatActivity implements View.OnClic
 
                 if (donations.size() > 0)
                 {
+                    //In case user add first one
+                    rvClaims.setVisibility(View.VISIBLE);
+                    findViewById(R.id.tvNoClaims).setVisibility(View.GONE);
+
                     adapter = new ClaimsAdapter(ClaimsListActivity.this,donations,listener);
                     rvClaims.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-                }else findViewById(R.id.tvNoClaims).setVisibility(View.VISIBLE);
+                }else
+                {
+                    //In case list is empty
+                    rvClaims.setVisibility(View.GONE);
+                    findViewById(R.id.tvNoClaims).setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

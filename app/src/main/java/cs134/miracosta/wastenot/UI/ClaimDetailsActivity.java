@@ -1,15 +1,18 @@
 package cs134.miracosta.wastenot.UI;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +52,26 @@ public class ClaimDetailsActivity extends AppCompatActivity {
      */
     private void claimClicked() {
 
+
+        Calendar mCurrentTime = Calendar.getInstance();
+        int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mCurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(ClaimDetailsActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                donation.setDropoffEndTime( selectedHour + ":" + selectedMinute);
+
+                claimDonation();
+            }
+        }, hour, minute, true);//YES 24 hour time
+        mTimePicker.setTitle("Select dropOff Time");
+        mTimePicker.show();
+
+    }
+
+    private void claimDonation()
+    {
         loader.setVisibility(View.VISIBLE);
 
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();

@@ -32,7 +32,7 @@
  * DONE: Replace Claim/Delivery with Donation
  * DONE: Add Button in ClaimListActivity that take user to DeliveryActivity
  *
- * TODO: Prompt user (claimer) for dropoff end time (the latest they can accept the delivery) when claiming delivery
+ * DONE: Prompt user (claimer) for dropoff end time (the latest they can accept the delivery) when claiming delivery
  *       If you do this before calling claimDonation() it will automatically get updated in DB.
  *
   */
