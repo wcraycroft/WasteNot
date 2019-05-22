@@ -52,7 +52,6 @@ public class DeliveryListFragment extends Fragment {
         db = new FirebaseDBHelper();
 
         // Populate list of donations
-        // TODO: make call update in realtime
         db.getAllDeliveriesRealTime(new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {

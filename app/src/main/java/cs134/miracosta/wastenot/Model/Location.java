@@ -37,7 +37,6 @@ public class Location implements Parcelable {
         return CREATOR;
     }
 
-    // TODO: delete this constructor if we don't end up using it
     public Location(String address, String city, String state, String zipCode) {
         mAddress = address;
         mCity = city;
@@ -117,15 +116,6 @@ public class Location implements Parcelable {
     public String getFullAddress()
     {
         return mAddress + "\n" + mCity + ", " + mState + "  " + mZipCode;
-    }
-
-    public String getFormattedLatLng()
-    {
-        String latLng = String.valueOf(Math.abs(mLatitude));
-        latLng += ((mLatitude < 0.0) ? " S  " : " N  ");
-        latLng += String.valueOf(Math.abs(mLongitude));
-        latLng += ((mLongitude < 0.0) ? " W" : "E");
-        return latLng;
     }
 
     /**

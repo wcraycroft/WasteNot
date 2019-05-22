@@ -67,10 +67,6 @@
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".UI.SplashScreenActivity" />
-
-        <activity android:name=".UI.TestActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB0sGt-FA3WKuwuxC0jvmDIzRzBibG49qc" />

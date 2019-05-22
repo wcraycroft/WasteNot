@@ -1,4 +1,3 @@
-// TODO: Copy layout to a new unique nav drawer
 
 
 package cs134.miracosta.wastenot.UI;
@@ -181,7 +180,6 @@ public class NewDonationActivity extends AppCompatActivity
         valEnd = pickupEndTime.substring(7);
 
         Donation donation= new Donation(valType, valServings, fitInCar, otherInfo, valReady, valEnd);
-        // TODO: add donation to DB
         db.addDonation(donation, user.getKey(), new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) { }

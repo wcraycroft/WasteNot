@@ -121,8 +121,6 @@ public class FirebaseDBHelper {
                 {
                     // Which type of user determines what data Firestore will attempt to pull
                     focusedUser = documentSnapshot.toObject((User.class));
-                    //TODO: remove debug
-                    Log.i(TAG, "Converted object: " + focusedUser.toString());
                     // Send the Data via interface
                     List<User> items = new ArrayList<>();
                     items.add(focusedUser);
@@ -271,7 +269,6 @@ public class FirebaseDBHelper {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Makes makes = document.toObject((Makes.class));
-                                        // TODO: Claimed delivery has missing information
                                         Donation claimedDonation = claimedDelivery.getDonation();
                                         // Set the new claimer key and update DB
                                         makes.setDriverKey(driverKey);

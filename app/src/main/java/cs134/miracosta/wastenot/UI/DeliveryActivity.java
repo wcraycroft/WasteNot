@@ -50,8 +50,6 @@ public class DeliveryActivity extends AppCompatActivity
         // Instantiate DBHelper
         db = new FirebaseDBHelper();
 
-        // TODO: populate locations list
-
         // Link View
         toolbar = findViewById(R.id.delivery_toolbar);
         drawer = findViewById(R.id.delivery_drawer_layout);

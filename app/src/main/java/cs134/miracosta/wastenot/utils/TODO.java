@@ -11,11 +11,11 @@
  *
  *    DONE: Add Ahmad strings.xml
  *    DONE: Prompt user for pickup time when claiming delivery
- *    TODO: translate strings
+ *    DONE: translate strings
  *    DONE: get realtime updates from DB calls
  *    DONE: get fine location info from user.
- *    TODO: swap db call to realtime
- *    TODO: cleanup unused calls
+ *    DONE: swap db call to realtime
+ *    DONE: cleanup unused calls
  *    TODO: JUnit and Javadocs
  *
  *
@@ -40,7 +40,7 @@
 
 
 
-package cs134.miracosta.wastenot;
+package cs134.miracosta.wastenot.utils;
 
 public class TODO {
 }
