@@ -20,7 +20,6 @@
         <activity android:name=".UI.MyClaimsActivity"></activity>
 
 
-
         <activity android:name=".UI.ClaimDetailsActivity" />
 
         <activity android:name=".UI.RegisterActivity" />

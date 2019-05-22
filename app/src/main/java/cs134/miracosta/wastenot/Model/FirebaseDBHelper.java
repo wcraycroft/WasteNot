@@ -10,6 +10,7 @@
 package cs134.miracosta.wastenot.Model;
 
 import android.app.Activity;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -25,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,19 +56,14 @@ public class FirebaseDBHelper {
 
     // Lists
     private List<User> allUsersList = new ArrayList<>();
-    private List<Donation> donationsList = new ArrayList<>();    // TODO: convert to final local variable in each method
-    //private List<Delivery> deliveriesList = new ArrayList<>();
+    private List<Donation> donationsList = new ArrayList<>();    // TODO: convert to final local variable
     private List<String> allKeysList = new ArrayList<>();
     private List<String> donationKeysList = new ArrayList<>();
-    //private List<String> donorKeysList = new ArrayList<>();
-    //private List<String> claimerKeysList = new ArrayList<>();
 
     private User focusedUser;
     private Donation focusedDonation;
     private Makes focusedMakes;
     private String focusedKey;
-    //private Delivery outputDelivery;
-    private boolean dataProcessed = true;
 
     // Constructor
     public FirebaseDBHelper()
@@ -114,39 +109,6 @@ public class FirebaseDBHelper {
         });
     }
 
-    public void updateUser(User updatedUser, final DataStatus dataStatus)
-    {
-        mUserDB.document(updatedUser.getKey()).set(updatedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task)
-            {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "Document was updated successfully.");
-                    dataStatus.DataIsProcessed();
-                }
-                else {
-                    Log.w(TAG, "Error updating user.", task.getException());
-                }
-            }
-        });
-    }
-
-    public void deleteUser(String deletedKey, final DataStatus dataStatus)
-    {
-        mUserDB.document(deletedKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task)
-            {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "Document was deleted successfully.");
-                    dataStatus.DataIsProcessed();
-                }
-                else {
-                    Log.w(TAG, "Error deleting user.", task.getException());
-                }
-            }
-        });
-    }
 
     public void getUserByKey(final String key, final DataStatus dataStatus)
     {
@@ -199,54 +161,6 @@ public class FirebaseDBHelper {
 
     }
 
-    public void getAllUsers(final DataStatus dataStatus)
-    {
-        allUsersList.clear();
-        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        allUsersList.add(document.toObject((User.class)));
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-    }
-
-    public void getAllUserKeys(final DataStatus dataStatus)
-    {
-        // Clear allKeysList list
-        allKeysList.clear();
-        // Get all allKeysList in collection
-        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        allKeysList.add(document.getId());
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-                dataStatus.DataIsRead(allKeysList);
-            }
-        });
-    }
-
-    public void deleteAllUsers(List<String> userKeys)
-    {
-        Log.d(TAG, "Attempting to delete " + userKeys.size() + " documents from User collection.");
-        // Loop through all key values
-        for (String key : userKeys)
-        {
-            // Delete document
-            mUserDB.document(key).delete();
-        }
-        // If used for test purposes only, no DataStatus needed.
-    }
 
     /***************************************************
      * FIRESTORE DONATION DATABASE METHODS
@@ -390,41 +304,6 @@ public class FirebaseDBHelper {
 
     }
 
-    public void updateDonation(User updatedDonation, final DataStatus dataStatus)
-    {
-        mDonationDB.document(updatedDonation.getKey())
-                .set(updatedDonation)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if (task.isSuccessful()) {
-                            Log.i(TAG, "Donation was updated successfully.");
-                            dataStatus.DataIsProcessed();
-                        }
-                        else {
-                            Log.w(TAG, "Error updating Donation.", task.getException());
-                        }
-                    }
-                });
-    }
-
-    public void deleteDonation(String deletedKey, final DataStatus dataStatus)
-    {
-        mDonationDB.document(deletedKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task)
-            {
-                if (task.isSuccessful()) {
-                    Log.i(TAG, "Document was deleted successfully.");
-                    dataStatus.DataIsProcessed();
-                }
-                else {
-                    Log.w(TAG, "Error deleting Donation.", task.getException());
-                }
-            }
-        });
-    }
 
     public void getDonation(String key, final DataStatus dataStatus)
     {
@@ -438,7 +317,6 @@ public class FirebaseDBHelper {
                 if (documentSnapshot.exists())
                 {
                     focusedDonation = documentSnapshot.toObject((Donation.class));
-                    // TODO: remove key setter
                     // Before returning the Donation, assign it the generated key
                     focusedDonation.setKey(focusedKey);
                     // Send the Data via interface
@@ -450,23 +328,7 @@ public class FirebaseDBHelper {
         });
     }
 
-    public void getAllDonations(final DataStatus dataStatus)
-    {
-        donationsList.clear();
-        mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Loop through all documents in collection
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        donationsList.add(document.toObject((Donation.class)));
-                    }
-                } else {
-                    Log.w(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-    }
+
 
     public void getDonationsByUserRealTime(Activity context, final String userKey, final DataStatus dataStatus) {
 
@@ -755,6 +617,32 @@ public class FirebaseDBHelper {
 
     }
 
+    // Adds a realtime listener to getAllDeliveries
+    public void getAllDeliveriesRealTime(final DataStatus dataStatus)
+    {
+        mMakesDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                getAllDeliveries(new DataStatus() {
+                    @Override
+                    public void DataIsRead(List<?> items) {
+                        dataStatus.DataIsRead(items);
+                    }
+
+                    @Override
+                    public void DataIsProcessed() {
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+            }
+        });
+    }
+
     public void getUserDeliveries(String driverEmail, final DataStatus dataStatus)
     {
         getUserByEmail(driverEmail, new DataStatus() {
@@ -822,6 +710,30 @@ public class FirebaseDBHelper {
             }
         });
 
+    }
+
+    // Adds a realtime listener to getUserDeliveries
+    public void getUserDeliveriesRealTime(final String driverEmail, final DataStatus dataStatus) {
+
+        mMakesDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                getUserDeliveries(driverEmail, new DataStatus() {
+                    @Override
+                    public void DataIsRead(List<?> items) {
+                        dataStatus.DataIsRead(items);
+                    }
+
+                    @Override
+                    public void DataIsProcessed() {
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+            }
+        });
     }
 
 
@@ -978,26 +890,6 @@ public class FirebaseDBHelper {
     }
 
 
-    public void getAllDonationKeys(final DataStatus dataStatus)
-    {
-        // Clear allKeysList list
-        allKeysList.clear();
-        // Get all allKeysList in collection
-        mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        allKeysList.add(document.getId());
-                    }
-                } else {
-                    Log.w(TAG, "Error getting documents: ", task.getException());
-                }
-                dataStatus.DataIsRead(allKeysList);
-            }
-        });
-    }
-
     public void deleteDelivery(String donationKey, final String makesKey, final DataStatus dataStatus)
     {
         // Delete donation
@@ -1031,6 +923,72 @@ public class FirebaseDBHelper {
         });
     }
 
+
+
+}  // end of class
+
+
+
+    /*
+
+
+    DEPRECATED
+
+
+
+    public void getAllDonationKeys(final DataStatus dataStatus)
+    {
+        // Clear allKeysList list
+        allKeysList.clear();
+        // Get all allKeysList in collection
+        mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        allKeysList.add(document.getId());
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents: ", task.getException());
+                }
+                dataStatus.DataIsRead(allKeysList);
+            }
+        });
+    }
+    public void updateUser(User updatedUser, final DataStatus dataStatus)
+    {
+        mUserDB.document(updatedUser.getKey()).set(updatedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Document was updated successfully.");
+                    dataStatus.DataIsProcessed();
+                }
+                else {
+                    Log.w(TAG, "Error updating user.", task.getException());
+                }
+            }
+        });
+    }
+
+    public void deleteUser(String deletedKey, final DataStatus dataStatus)
+    {
+        mUserDB.document(deletedKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Document was deleted successfully.");
+                    dataStatus.DataIsProcessed();
+                }
+                else {
+                    Log.w(TAG, "Error deleting user.", task.getException());
+                }
+            }
+        });
+    }
+
     public void deleteAllDonations(List<String> donationKeys)
     {
         Log.d(TAG, "Attempting to delete " + donationKeys.size() + " documents from Donations collection.");
@@ -1043,5 +1001,108 @@ public class FirebaseDBHelper {
         // If used for non-test purposes, add DataStatus call
     }
 
+    public void getAllDonations(final DataStatus dataStatus)
+    {
+        donationsList.clear();
+        mDonationDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Loop through all documents in collection
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        donationsList.add(document.toObject((Donation.class)));
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
 
-}  // end of class
+
+    public void getAllUsers(final DataStatus dataStatus)
+    {
+        allUsersList.clear();
+        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        allUsersList.add(document.toObject((User.class)));
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void getAllUserKeys(final DataStatus dataStatus)
+    {
+        // Clear allKeysList list
+        allKeysList.clear();
+        // Get all allKeysList in collection
+        mUserDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        allKeysList.add(document.getId());
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+                dataStatus.DataIsRead(allKeysList);
+            }
+        });
+    }
+
+    public void deleteAllUsers(List<String> userKeys)
+    {
+        Log.d(TAG, "Attempting to delete " + userKeys.size() + " documents from User collection.");
+        // Loop through all key values
+        for (String key : userKeys)
+        {
+            // Delete document
+            mUserDB.document(key).delete();
+        }
+        // If used for test purposes only, no DataStatus needed.
+    }
+
+    public void updateDonation(User updatedDonation, final DataStatus dataStatus)
+    {
+        mDonationDB.document(updatedDonation.getKey())
+                .set(updatedDonation)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "Donation was updated successfully.");
+                            dataStatus.DataIsProcessed();
+                        }
+                        else {
+                            Log.w(TAG, "Error updating Donation.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void deleteDonation(String deletedKey, final DataStatus dataStatus)
+    {
+        mDonationDB.document(deletedKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Document was deleted successfully.");
+                    dataStatus.DataIsProcessed();
+                }
+                else {
+                    Log.w(TAG, "Error deleting Donation.", task.getException());
+                }
+            }
+        });
+    }
+
+    */

@@ -10,14 +10,13 @@
  *    - claimDonation(Donation, String user key (claimer))
  *
  *    DONE: Add Ahmad strings.xml
- *    TODO: Prompt user for pickup time when claiming delivery
+ *    DONE: Prompt user for pickup time when claiming delivery
  *    TODO: translate strings
  *    DONE: get realtime updates from DB calls
- *    TODO: get fine location info from user.
+ *    DONE: get fine location info from user.
  *    TODO: swap db call to realtime
  *    TODO: cleanup unused calls
  *    TODO: JUnit and Javadocs
- *    TODO: Splashscreen? (not required and it would just be cosmetic)
  *
  *
  *

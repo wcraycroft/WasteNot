@@ -67,7 +67,7 @@ public class UserDeliveriesActivity extends AppCompatActivity
         final String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
         // Populate list of donations
-        db.getUserDeliveries(email, new FirebaseDBHelper.DataStatus() {
+        db.getUserDeliveriesRealTime(email, new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {
                 userDeliveriesList.clear();
@@ -141,8 +141,10 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
             @Override
             public void DataIsProcessed() {
-                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.delivery_registered), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.delivery_registered), Toast.LENGTH_LONG).show();
                 // Refresh list
+                userDeliveriesList.clear();
+                deliveryListAdapter.notifyDataSetChanged();
                 getUserDeliveries();
             }
 

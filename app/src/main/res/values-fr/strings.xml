@@ -3,12 +3,12 @@
     <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
     <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
     <string name="password">Mot de passe</string>
-    <string name="register">registre</string>
-    <string name="add_donation_button">Ajouter un don</string>
-    <string name="add_donation_title">Faire un don</string>
-    <string name="fit_in_car">Ce don ira-t-il dans une voiture?</string>
-    <string name="food_types">Types de nourriture</string>
-    <string name="how_many_servings">Environ combien cela pourrait-il nourrir?</string>
+    <string name="register">Enregistrer</string>
+    <string name="add_donation_button">Faites un don</string>
+    <string name="add_donation_title">Faites un don</string>
+    <string name="fit_in_car">Rentrera t\'il dans une voiture?</string>
+    <string name="food_types">Types d\'aliments</string>
+    <string name="how_many_servings">Combien de portions?</string>
     <string name="menu_claim">Réclamer un don</string>
     <string name="menu_deliver">Livrer de la nourriture</string>
     <string name="menu_donate">Donner de la nourriture</string>
@@ -35,7 +35,7 @@
     <string name="city">Ville</string>
     <string name="state">Etat</string>
     <string name="zipcode">code postal</string>
-    <string name="produce">Produire</string>
+    <string name="produce">Produits Agricole</string>
     <string name="servings_11">Portions: 11</string>
     <string name="ready_at_10am">Prêt à 10h</string>
     <string name="pickup_by_10pm">Ramassage avant 22h</string>
@@ -91,9 +91,9 @@
     <string name="drop_off_at">Déposer à:</string>
     <string name="dropoff_by_prefix">Déposer par</string>
     <string name="food_type">Type de nourriture:</string>
-    <string name="login">S\'identifier</string>
+    <string name="login">Entrer</string>
     <string name="map">Carte</string>
-    <string name="meat">Moi à</string>
+    <string name="meat">Viande</string>
     <string name="my_deliveries">Mes livraisons</string>
     <string name="other">Autre</string>
     <string name="view_details">Voir les détails</string>
@@ -107,8 +107,8 @@
     <string name="status_delivery_claimed">Livraison réclamée</string>
     <string name="status_claimed_short">Pilote demandeur</string>
     <string name="status_claimed">Revendiqué,</string>
-    <string name="status">Statut:</string>
     <string name="servings_suffix">Les portions</string>
     <string name="pickup_end_time_">Heure de fin de ramassage:</string>
     <string name="ready_at_prefix">Prêt à</string>
+    <string name="status">Statut:</string>
 </resources>

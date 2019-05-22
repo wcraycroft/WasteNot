@@ -24,11 +24,11 @@
     <string name="dairy">Dairy</string>
     <string name="produce">Produce</string>
     <string name="other">Other</string>
-    <string name="servings_suffix">Servings</string>
-    <string name="pickup_by_prefix">"Pick up by "</string>
-    <string name="ready_at_prefix">Ready at</string>
-    <string name="dropoff_by_prefix">Dropoff by</string>
-    <string name="pickup_around_prefix">Pick up around</string>
+    <string name="servings_suffix">%d servings</string>
+    <string name="pickup_by_prefix">"Pick up by %s"</string>
+    <string name="ready_at_prefix">Ready at %s</string>
+    <string name="dropoff_by_prefix">Dropoff by %s</string>
+    <string name="pickup_around_prefix">Pick up around %s</string>
     <string name="status_claimed">Claimed,\nRequesting Driver</string>
     <string name="status_unclaimed">Not Yet Claimed</string>
     <string name="status_delivery_claimed">Delivery Claimed</string>

@@ -53,7 +53,7 @@ public class DeliveryListFragment extends Fragment {
 
         // Populate list of donations
         // TODO: make call update in realtime
-        db.getAllDeliveries(new FirebaseDBHelper.DataStatus() {
+        db.getAllDeliveriesRealTime(new FirebaseDBHelper.DataStatus() {
             @Override
             public void DataIsRead(List<?> items) {
                 allDeliveriesList = (List<Delivery>) items;
@@ -77,19 +77,5 @@ public class DeliveryListFragment extends Fragment {
             }
         });
     }
-
-    /*
-    private void setListAdapter()
-    {
-        if (mContext != null) {
-            deliveryListAdapter = new DonationListAdapter(mContext, R.layout.list_item_donation, allDeliveriesList);
-            deliveriesListView.setAdapter(deliveryListAdapter);
-            Log.i(TAG, " test Linked adapter");
-        }
-        else {
-            Log.w(TAG, "Failed to link adapter (null context)");
-        }
-    }
-    */
 
 }
