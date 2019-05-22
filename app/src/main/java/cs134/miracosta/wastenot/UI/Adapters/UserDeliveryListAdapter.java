@@ -1,5 +1,6 @@
 package cs134.miracosta.wastenot.UI.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -23,22 +24,26 @@ import cs134.miracosta.wastenot.Model.Delivery;
 import cs134.miracosta.wastenot.R;
 
 /**
- * Helper class to provide custom adapter for the <code>Location</code> list.
+ * This ArrayAdapter class handles the inflation of a ListView of <code>Deliveries</code> for a
+ * specific user.
+ *
+ * @author Will Craycroft
  */
 public class UserDeliveryListAdapter extends ArrayAdapter<Delivery> {
 
     public static final String TAG = "WasteNot";
 
     private Context mContext;
-    private List<Delivery> mDeliveryList = new ArrayList<>();
+    private List<Delivery> mDeliveryList;
     private int mResourceId;
 
     /**
-     * Creates a new <code>DeliveryListAdapter</code> given a mContext, resource id and list of deliveries.
+     * Creates a new <code>UserDeliveryListAdapter</code> given a context, list item layout resource id
+     * and list of deliveries.
      *
-     * @param c The mContext for which the adapter is being used (typically an activity)
-     * @param rId The resource id (typically the layout file name)
-     * @param deliveries The list of deliveries to display
+     * @param c - The context of the calling activity
+     * @param rId - The list item layout resource id
+     * @param deliveries - The list of deliveries to display
      */
     public UserDeliveryListAdapter(Context c, int rId, List<Delivery> deliveries) {
         super(c, rId, deliveries);
@@ -48,12 +53,13 @@ public class UserDeliveryListAdapter extends ArrayAdapter<Delivery> {
     }
 
     /**
-     * Gets the view associated with the layout.
-     * @param pos The position of the Game selected in the list.
+     * Inflates the list and returns the adapter's View
+     * @param pos The position of the current Delivery
      * @param convertView The converted view.
-     * @param parent The parent - ArrayAdapter
-     * @return The new view with all content set.
+     * @param parent the ArrayAdapter reference
+     * @return The adapter view after all items are set.
      */
+    @SuppressLint("StringFormatInvalid")
     @Override
     public View getView(int pos, View convertView, ViewGroup parent)
     {

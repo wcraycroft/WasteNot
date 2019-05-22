@@ -1,5 +1,6 @@
 package cs134.miracosta.wastenot.UI.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -15,31 +16,31 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import cs134.miracosta.wastenot.Model.Delivery;
-import cs134.miracosta.wastenot.Model.Donation;
-import cs134.miracosta.wastenot.Model.Location;
 import cs134.miracosta.wastenot.R;
 
 /**
- * Helper class to provide custom adapter for the <code>Location</code> list.
+ * This ArrayAdapter class handles the inflation of a ListView of <code>Deliveries</code>.
+ *
+ * @author Will Craycroft
  */
 public class DeliveryListAdapter extends ArrayAdapter<Delivery> {
 
     public static final String TAG = "WasteNot";
 
     private Context mContext;
-    private List<Delivery> mDeliveryList = new ArrayList<>();
+    private List<Delivery> mDeliveryList;
     private int mResourceId;
 
     /**
-     * Creates a new <code>DeliveryListAdapter</code> given a mContext, resource id and list of deliveries.
+     * Creates a new <code>DeliveryListAdapter</code> given a context, list item layout resource id
+     * and list of deliveries.
      *
-     * @param c The mContext for which the adapter is being used (typically an activity)
-     * @param rId The resource id (typically the layout file name)
-     * @param deliveries The list of deliveries to display
+     * @param c - The context of the calling activity
+     * @param rId - The list item layout resource id
+     * @param deliveries - The list of deliveries to display
      */
     public DeliveryListAdapter(Context c, int rId, List<Delivery> deliveries) {
         super(c, rId, deliveries);
@@ -49,21 +50,24 @@ public class DeliveryListAdapter extends ArrayAdapter<Delivery> {
     }
 
     /**
-     * Gets the view associated with the layout.
-     * @param pos The position of the Game selected in the list.
+     * Inflates the list and returns the adapter's View
+     * @param pos The position of the current Delivery
      * @param convertView The converted view.
-     * @param parent The parent - ArrayAdapter
-     * @return The new view with all content set.
+     * @param parent the ArrayAdapter reference
+     * @return The adapter view after all items are set.
      */
+    @SuppressLint("StringFormatInvalid")
     @Override
     public View getView(int pos, View convertView, ViewGroup parent)
     {
         final Delivery selectedDelivery = mDeliveryList.get(pos);
 
+        // Inflate layout
         LayoutInflater inflater =
                 (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(mResourceId, null);
 
+        // Get View references
         LinearLayout deliveryItemLinearLayout = view.findViewById(R.id.deliveryItemLinearLayout);
         ImageView deliveryItemImageView = view.findViewById(R.id.deliveryItemImageView);
         TextView deliveryItemPickupCompanyNameTextView = view.findViewById(R.id.deliveryItemPickupCompanyNameTextView);

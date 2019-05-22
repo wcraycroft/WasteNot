@@ -24,6 +24,13 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.UserDeliveryListAdapter;
 
+/**
+ * This controller class handles the UserDeliveriesActivity, which shows the Driver a list of all
+ * their active Deliveries. The inflated list item has a button to handle completing the delivery,
+ * which will remove the Delivery from the DB.
+ *
+ * @author Will Craycroft
+ */
 public class UserDeliveriesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +42,10 @@ public class UserDeliveriesActivity extends AppCompatActivity
     List<Delivery> userDeliveriesList = new ArrayList<>();
     UserDeliveryListAdapter deliveryListAdapter;
 
+    /**
+     * Inflates view, instantiates DBHelper and gets all user Deliveries
+     * @param savedInstanceState - Bundle data from previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +74,10 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
     }
 
-    public void getUserDeliveries() {
+    /**
+     * Populates a list of the current user's active Deliveries from DB
+     */
+    private void getUserDeliveries() {
         final String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
         // Populate list of donations
@@ -87,6 +101,9 @@ public class UserDeliveriesActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Refreshes the list adapted in case of realtime DB callbacks.
+     */
     private void setListAdapter()
     {
         // Set list adapter
@@ -94,6 +111,40 @@ public class UserDeliveriesActivity extends AppCompatActivity
         myDeliveriesListView.setAdapter(deliveryListAdapter);
     }
 
+    /**
+     * Handles the deletion of a Delivery (Donation + Makes) once the user indicates they have
+     * completed the delivery. There is currently no confirmation needed from Claimer.
+     * @param v - the calling Button (from list item)
+     */
+    public void onClickDelivered(View v)
+    {
+        // Get Delivery from tag
+        Delivery delivery = (Delivery) v.getTag();
+        // Delete Delivery (Donation + Makes) from database
+        db.deleteDelivery(delivery.getDonation().getKey(), delivery.getMakesKey(), new FirebaseDBHelper.DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) { }
+
+            @Override
+            public void DataIsProcessed() {
+                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.delivery_registered), Toast.LENGTH_LONG).show();
+                // Refresh list
+                userDeliveriesList.clear();
+                deliveryListAdapter.notifyDataSetChanged();
+                getUserDeliveries();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    /**
+     * Navigation Drawer overrides
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -130,29 +181,5 @@ public class UserDeliveriesActivity extends AppCompatActivity
         return true;
     }
 
-    public void onClickDelivered(View v)
-    {
-        // Get Delivery from tag
-        Delivery delivery = (Delivery) v.getTag();
-        // Delete Delivery (Donation + Makes) from database
-        db.deleteDelivery(delivery.getDonation().getKey(), delivery.getMakesKey(), new FirebaseDBHelper.DataStatus() {
-            @Override
-            public void DataIsRead(List<?> items) { }
-
-            @Override
-            public void DataIsProcessed() {
-                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.delivery_registered), Toast.LENGTH_LONG).show();
-                // Refresh list
-                userDeliveriesList.clear();
-                deliveryListAdapter.notifyDataSetChanged();
-                getUserDeliveries();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(UserDeliveriesActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 }

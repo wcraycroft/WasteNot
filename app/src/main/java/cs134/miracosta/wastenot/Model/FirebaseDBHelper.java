@@ -1,16 +1,6 @@
 
-
-/**
- *
- *
- *
- *
- */
-
 package cs134.miracosta.wastenot.Model;
 
-import android.app.Activity;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -33,6 +23,15 @@ import javax.annotation.Nullable;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 
+/**
+ * The <code>FirebaseDBHelper</code> class handles all calls to the Cloud Firestore database linked
+ * to this project. The database consists of a Donation collection, a User collection and a Makes
+ * collection, which represents all active links between Users and Donations.
+ *
+ * @author Will Craycroft
+ * @author Ahmad Abbasi
+ */
+
 public class FirebaseDBHelper {
 
     public static final String TAG = "WasteNot";
@@ -47,17 +46,9 @@ public class FirebaseDBHelper {
     private CollectionReference mDonationDB;
     private CollectionReference mMakesDB;
 
-    // Public interface used to link asynchronous listeners to calling classes
-    public interface DataStatus {
-        void DataIsRead(List<?> items);
-        void DataIsProcessed();
-        void onError(String errorMessage);
-    }
 
     // Lists
-    private List<User> allUsersList = new ArrayList<>();
     private List<Donation> donationsList = new ArrayList<>();    // TODO: convert to final local variable
-    private List<String> allKeysList = new ArrayList<>();
     private List<String> donationKeysList = new ArrayList<>();
 
     private User focusedUser;
@@ -65,7 +56,22 @@ public class FirebaseDBHelper {
     private Makes focusedMakes;
     private String focusedKey;
 
-    // Constructor
+    /**
+     * This interface handles all asynchronous calls coming from the database.
+     *  - DataIsRead(): All data will be returned through this method.
+     *  - DataIsProcessed(): Called if no data needs to be returned.
+     *  - onError(): Called if an error is encountered and the database query could not be completed.
+     */
+    public interface DataStatus {
+        void DataIsRead(List<?> items);
+        void DataIsProcessed();
+        void onError(String errorMessage);
+    }
+
+    /**
+     * Creates a new <code>FirebaseDBHelper</code> instance and instantiate a reference to each
+     * collection.
+     */
     public FirebaseDBHelper()
     {
         // Instantiate references to each collection
@@ -79,7 +85,11 @@ public class FirebaseDBHelper {
      * FIRESTORE USER DATABASE METHODS
      ***************************************************/
 
-
+    /**
+     * Adds the passed User to the database, then updates their key field with the generated key.
+     * @param newUser - the User to be added
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void addUser(User newUser, final DataStatus dataStatus)
     {
         // Store reference to user to set key
@@ -109,7 +119,11 @@ public class FirebaseDBHelper {
         });
     }
 
-
+    /**
+     * Returns the User with the passed db key, via the DataStatus interface
+     * @param key - the User's database key
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getUserByKey(final String key, final DataStatus dataStatus)
     {
         // Get user from DB
@@ -132,6 +146,11 @@ public class FirebaseDBHelper {
         });
     }
 
+    /**
+     * Returns the User with the passed email, via the DataStatus interface
+     * @param email - the User's unique email
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getUserByEmail(String email, final DataStatus dataStatus)
     {
         mUserDB.whereEqualTo("email", email)
@@ -164,7 +183,12 @@ public class FirebaseDBHelper {
      * FIRESTORE DONATION DATABASE METHODS
      ***************************************************/
 
-    // Adds a new Donation to the Donation Collection and calls method to create a new Makes relationship
+    /**
+     * Adds this Donation to the Donation Collection and calls method to create a new Makes relationship
+     * @param newDonation - the Donation to be added
+     * @param userKey - the Donor user key
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void addDonation(final Donation newDonation, final String userKey, final DataStatus dataStatus)
     {
         // Add new Donation to DB
@@ -220,9 +244,11 @@ public class FirebaseDBHelper {
     }
 
     /**
-     * Call this method when a user claims a donation. It will update the appropriate info in database.
-     * This will also update the Donation object in the Donations collection, so if you make any changes
-     * like adding a pickup/dropoff time, you do not need to call another update() in addition to this method.
+     * This method is called when a Claimer claims a donation. It will update the Makes keys, as
+     * well as the Donation object in the Donations collection.
+     * @param claimedDonation - the Donation that has been claimed by a Claimer
+     * @param claimerKey - the Claimer's user key
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
      */
     public void claimDonation(final Donation claimedDonation, final String claimerKey, final DataStatus dataStatus)
     {
@@ -252,6 +278,13 @@ public class FirebaseDBHelper {
                 });
     }
 
+    /**
+     * This method is called when a Driver claims a Delivery. It will update the Makes keys, as well
+     * as the Donation object in the Donations collection
+     * @param driverEmail - the email address associated to the Driver user's account
+     * @param claimedDelivery - the Delivery to be updated
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void claimDelivery(String driverEmail, final Delivery claimedDelivery, final DataStatus dataStatus)
     {
         // get Driver's key
@@ -302,6 +335,11 @@ public class FirebaseDBHelper {
     }
 
 
+    /**
+     * Returns the Donation object (via DataStatus interface) with the passed key
+     * @param key - Donation database key
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getDonation(String key, final DataStatus dataStatus)
     {
         // Store key to be assigned later
@@ -326,8 +364,13 @@ public class FirebaseDBHelper {
     }
 
 
-
-    public void getDonationsByUserRealTime(Activity context, final String userKey, final DataStatus dataStatus) {
+    /**
+     * Sets up a realtime listener that will be called anytime a change is made to the Donations
+     * collection. Returns via interface a list of Donation linked in any way to the User
+     * @param userKey - the User key associated with returned Donations
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
+    public void getDonationsByUserRealTime(final String userKey, final DataStatus dataStatus) {
 
         mDonationDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -383,9 +426,10 @@ public class FirebaseDBHelper {
     }
 
 
-
     /**
-     *  This method returns (via interface) a list of all donations linked to a User (in any way)
+     * Returns (via interface) a list of all donations linked in any way to a User.
+     * @param userKey - the User key associated with returned Donations
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
      */
     public void getDonationsByUser(String userKey, final DataStatus dataStatus)
     {
@@ -426,8 +470,9 @@ public class FirebaseDBHelper {
 
     }
 
-    /** Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
-     *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+    /*
+     * Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
+     * Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
      */
     private void populateDonationKeysByUser(final String userKey, final DataStatus dataStatus)
     {
@@ -463,8 +508,13 @@ public class FirebaseDBHelper {
 
 
     /**
-     *  This method returns (via interface) a list of all donations with the passed status
-     *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+     *
+     */
+    /**
+     * This method returns (via interface) a list of all donations with the passed status
+     * Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
+     * @param status - the DonationStatus of the Donation
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
      */
     public void getDonationsByStatus(DonationStatus status, final DataStatus dataStatus)
     {
@@ -504,7 +554,7 @@ public class FirebaseDBHelper {
 
     }
 
-    /**
+    /*
      * Helper method which returns various sets of Donation keys from Makes DB based on the status of the Donation
      *  Status types: UNCLAIMED, DONATION_CLAIMED, DELIVERY_CLAIMED
      */
@@ -554,9 +604,13 @@ public class FirebaseDBHelper {
         });
     }
 
+    /***************************************************
+     * FIRESTORE DONATION DATABASE METHODS
+     ***************************************************/
+
     /**
-     *
-     * @param dataStatus
+     * Returns (via interface) a list of all active Deliveries, built from Donations and Makes DB
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
      */
     public void getAllDeliveries(final DataStatus dataStatus)
     {
@@ -614,7 +668,12 @@ public class FirebaseDBHelper {
 
     }
 
-    // Adds a realtime listener to getAllDeliveries
+
+    /**
+     * Instantiate a realtime listener that will be called anytime the a change is made to the Makes db.
+     * Returns all active Deliveries, including Donation and User information
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getAllDeliveriesRealTime(final DataStatus dataStatus)
     {
         mMakesDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -640,6 +699,11 @@ public class FirebaseDBHelper {
         });
     }
 
+    /**
+     * Returns (via interface) a list of all Deliveries claimed by the passed Driver (email).
+     * @param driverEmail - the Driver's email
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getUserDeliveries(String driverEmail, final DataStatus dataStatus)
     {
         getUserByEmail(driverEmail, new DataStatus() {
@@ -709,7 +773,13 @@ public class FirebaseDBHelper {
 
     }
 
-    // Adds a realtime listener to getUserDeliveries
+
+    /**
+     * Instantiate a realtime listener that will be called anytime the a change is made to the Makes db.
+     * Returns (via interface) a list of all Deliveries claimed by the passed Driver (email).
+     * @param driverEmail - the Driver's email
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void getUserDeliveriesRealTime(final String driverEmail, final DataStatus dataStatus) {
 
         mMakesDB.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -734,6 +804,10 @@ public class FirebaseDBHelper {
     }
 
 
+    /*
+     * Returns a list of all key lists associated with Deliveries.
+     * List order: 0:donation keys > 1:donor keys > 2:claimer keys> 3:makes keys.
+     */
     private void populateDeliveryKeys(final DataStatus dataStatus) {
 
         mMakesDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -778,6 +852,10 @@ public class FirebaseDBHelper {
         });
     }
 
+    /*
+     * Returns a list of all key lists associated with Deliveries claimed by the passed driver key
+     * List order: 0:donation keys > 1:donor keys > 2:claimer keys> 3:makes keys.
+     */
     private void populateUserDeliveryKeys(String driverKey, final DataStatus dataStatus) {
 
         Log.i(TAG, "Driver key = " + driverKey);
@@ -822,6 +900,10 @@ public class FirebaseDBHelper {
         });
     }
 
+    /*
+     * Builds a Delivery object from the passed keys. Returns via interface. Be careful with
+     * asynchronous calls here, they are not built in a predictable order.
+     */
     private void buildDelivery(String donationKey, String donorKey, String claimerKey, final String makesKey, final DataStatus dataStatus)
     {
         final Delivery outputDelivery = new Delivery();
@@ -887,6 +969,12 @@ public class FirebaseDBHelper {
     }
 
 
+    /**
+     * Deletes a Donation and Makes from the database
+     * @param donationKey - the donation to be deleted
+     * @param makesKey - the makes to be deleted
+     * @param dataStatus - DataStatus interface instance used to handle asynchronous calls.
+     */
     public void deleteDelivery(String donationKey, final String makesKey, final DataStatus dataStatus)
     {
         // Delete donation

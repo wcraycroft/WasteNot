@@ -1,5 +1,6 @@
 package cs134.miracosta.wastenot.UI.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -23,20 +24,26 @@ import java.util.List;
 import cs134.miracosta.wastenot.Model.Donation;
 import cs134.miracosta.wastenot.R;
 
+/**
+ * This ArrayAdapter class handles the inflation of a ListView of <code>Donations</code>.
+ *
+ * @author Will Craycroft
+ */
 public class DonationListAdapter extends ArrayAdapter<Donation> {
 
     public static final String TAG = "WasteNot";
 
     private Context mContext;
-    private List<Donation> mDonationsList = new ArrayList<>();
+    private List<Donation> mDonationsList;
     private int mResourceId;
 
     /**
-     * Creates a new <code>DonationsListAdapter</code> given a mContext, resource id and list of donations.
+     * Creates a new <code>DonationListAdapter</code> given a context, list item layout resource id
+     * and list of deliveries.
      *
-     * @param c The mContext for which the adapter is being used (typically an activity)
-     * @param rId The resource id (typically the layout file name)
-     * @param donations The list of donations to display
+     * @param c - The context of the calling activity
+     * @param rId - The list item layout resource id
+     * @param donations - The list of donations to display
      */
     public DonationListAdapter(Context c, int rId, List<Donation> donations) {
         super(c, rId, donations);
@@ -46,12 +53,13 @@ public class DonationListAdapter extends ArrayAdapter<Donation> {
     }
 
     /**
-     * Gets the view associated with the layout.
-     * @param pos The position of the Game selected in the list.
+     * Inflates the list and returns the adapter's View
+     * @param pos The position of the current Donation
      * @param convertView The converted view.
-     * @param parent The parent - ArrayAdapter
-     * @return The new view with all content set.
+     * @param parent the ArrayAdapter reference
+     * @return The adapter view after all items are set.
      */
+    @SuppressLint("StringFormatInvalid")
     @Override
     public View getView(int pos, View convertView, ViewGroup parent)
     {

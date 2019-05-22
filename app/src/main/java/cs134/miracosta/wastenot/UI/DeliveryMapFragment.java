@@ -36,6 +36,12 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.MapInfoAdapter;
 
+/**
+ * This controller class handles the DeliveryMapFragment , which displays a Google map containing
+ * the user location and all nearby Deliveries.
+ *
+ * @author Will Craycroft
+ */
 public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback {
 
     public static final String TAG = "WasteNot";
@@ -46,13 +52,16 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    // Default to MCC location
     private Location userLocation;
-    private double MCCLongitude = 33.190958;
-    private double MCCLatitude = -117.301889;
-
     List<Delivery> allDeliveriesList;
 
+    /**
+     * Inflates the Google Maps <code>SupportMapFragment</code> and instantiates <code>FirebaseDBHelper</code>
+     * @param inflater - Fragment LayoutInflater instance
+     * @param container - Containing ViewGroup
+     * @param savedInstanceState - Bundle data from previous instances (not used)
+     * @return - Fragment's view once it has been inflated
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +77,12 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
         return rootView;
     }
 
+    /**
+     * This method is called when the Fragment is attached to DeliveryActivity (not onCreateView).
+     * It provides a reference to the context needed for list adapters, toasts, etc.
+     * Also attempts to grab and store the user's location information.
+     * @param context - the Context of the attached Activity (DeliveryActivity)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -102,6 +117,11 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
         Log.v(TAG, "Latitude: " + userLocation.getLatitude());
     }
 
+    /**
+     * Called when map has successfully loaded. Adds user and delivery markes to the map, and centers
+     * camera on user location.
+     * @param googleMap - reference to the loaded <code>GoogleMap</code>
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.i(TAG, "Entering onMapReady");    // debug

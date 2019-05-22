@@ -19,6 +19,12 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.R;
 import cs134.miracosta.wastenot.UI.Adapters.DeliveryListAdapter;
 
+/**
+ * This controller class handles the DeliveryListFragment , which show a list of all Deliveries
+ * that are available for claim.
+ *
+ * @author Will Craycroft
+ */
 public class DeliveryListFragment extends Fragment {
 
     public static final String TAG = "WasteNot";
@@ -29,20 +35,29 @@ public class DeliveryListFragment extends Fragment {
     List<Delivery> allDeliveriesList;
     DeliveryListAdapter deliveryListAdapter;
 
+    /**
+     * Inflates the view.
+     * @param inflater - Fragment LayoutInflater instance
+     * @param container - Containing ViewGroup
+     * @param savedInstanceState - Bundle data from previous instances (not used)
+     * @return - Fragment's view once it has been inflated
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, " test Entering onCreateView for List");
         // Inflate view
         fragView = inflater.inflate(R.layout.fragment_delivery_list, container, false);
         deliveriesListView = fragView.findViewById(R.id.deliveriesListView);
-        Log.i(TAG, " test Inflated ListView");
 
         return fragView;
     }
 
 
-
+    /**
+     * This method is called when the Fragment is attached to DeliveryActivity (not onCreateView).
+     * It provides a reference to the context needed for list adapters, toasts, etc.
+     * @param context - the Context of the attached Activity (DeliveryActivity)
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

@@ -35,6 +35,12 @@ import cs134.miracosta.wastenot.Model.Location;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 
+/**
+ * This controller class handles the DeliveryDetails Activity, which displays delivery information
+ * passed to it through an intent.
+ *
+ * @author Will Craycroft
+ */
 public class DeliveryDetailsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
@@ -62,6 +68,10 @@ public class DeliveryDetailsActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private Toolbar toolbar;
 
+    /**
+     * Inflates the view and navigation bar. Grabs data from the intent and populates TextView.
+     * @param savedInstanceState - Bundle data from previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +189,47 @@ public class DeliveryDetailsActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Handle a driver claiming a donation. Calls DBHelper method which will change the states of the
+     * delivery and updates the relation in the Makes DB. When done, finishes this activity.
+     * @param v - The calling Button
+     */
+    public void claimDelivery(View v)
+    {
+        // Check if spinner data is valid
+        String[] pickupTimeArray = getResources().getStringArray(R.array.pickup_time_array);
+        if (pickupTime.equals(pickupTimeArray[0]) || pickupTime.equals(""))
+        {
+            Toast.makeText(this, getString(R.string.select_pickup_time), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Grab Pickup Time
+        delivery.getDonation().setPickupTime(pickupTime);
+        // Grab user email
+        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+        // Update DB
+        db.claimDelivery(email, delivery, new FirebaseDBHelper.DataStatus() {
+            @Override
+            public void DataIsRead(List<?> items) { }
+
+            @Override
+            public void DataIsProcessed() {
+                // Make toast and go back to delivery list
+                Toast.makeText(DeliveryDetailsActivity.this, getString(R.string.delivery_claimed_from)
+                        + delivery.getDonor().getCompanyName() + " "+getString(R.string.at)+" " + delivery.getDonation().getPickupTime()
+                        + ". "+getString(R.string.see_you)+"!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onError(String errorMessage) { }
+        });
+    }
+
+
+    /**
+     * Navigation bar overrides
+     */
 
     @Override
     public void onBackPressed() {
@@ -217,37 +268,6 @@ public class DeliveryDetailsActivity extends AppCompatActivity
         return true;
     }
 
-    public void claimDelivery(View v)
-    {
-        // Check if spinner data is valid
-        String[] pickupTimeArray = getResources().getStringArray(R.array.pickup_time_array);
-        if (pickupTime.equals(pickupTimeArray[0]) || pickupTime.equals(""))
-        {
-            Toast.makeText(this, getString(R.string.select_pickup_time), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // Grab Pickup Time
-        delivery.getDonation().setPickupTime(pickupTime);
-        // Grab user email
-        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-        // Update DB
-        db.claimDelivery(email, delivery, new FirebaseDBHelper.DataStatus() {
-            @Override
-            public void DataIsRead(List<?> items) { }
-
-            @Override
-            public void DataIsProcessed() {
-                // Make toast and go back to delivery list
-                Toast.makeText(DeliveryDetailsActivity.this, getString(R.string.delivery_claimed_from)
-                        + delivery.getDonor().getCompanyName() + " "+getString(R.string.at)+" " + delivery.getDonation().getPickupTime()
-                        + ". "+getString(R.string.see_you)+"!", Toast.LENGTH_LONG).show();
-                finish();
-            }
-
-            @Override
-            public void onError(String errorMessage) { }
-        });
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -24,6 +24,13 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 
+/**
+ * This controller class handles the DonationListActivity, which shows the Donor a list of all their
+ * current active Donations. A New Donation button will start a NewDonation Activity. In the future,
+ * list item clicks will take user to DonationDetails.
+ *
+ * @author Will Craycroft
+ */
 public class DonationListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,10 +40,16 @@ public class DonationListActivity extends AppCompatActivity
     private List<Donation> donationsList;
     private DonationListAdapter donationsListAdapter;
     private User user;
+
     // View elements
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private ListView donationsListView;
+
+    /**
+     * Inflates view, instantiates DBHelper and populates all User donations.
+     * @param savedInstanceState - Bundle data from previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +76,7 @@ public class DonationListActivity extends AppCompatActivity
         getUserDonations();
     }
 
+    // Gets user Donations from DB, then updates adapter
     private void getUserDonations()
     {
         String userEmail = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
@@ -71,7 +85,7 @@ public class DonationListActivity extends AppCompatActivity
             @Override
             public void DataIsRead(List<?> items) {
                 user = (User) items.get(0);
-                db.getDonationsByUserRealTime(DonationListActivity.this, user.getKey(), new FirebaseDBHelper.DataStatus() {
+                db.getDonationsByUserRealTime(user.getKey(), new FirebaseDBHelper.DataStatus() {
                     @Override
                     public void DataIsRead(List<?> items) {
                         donationsList = (List<Donation>) items;
@@ -97,12 +111,33 @@ public class DonationListActivity extends AppCompatActivity
         });
     }
 
+    // Helper method which also serves to refresh List when a realtime update is recieved from DB
     private void setListAdapter()
     {
         donationsListAdapter = new DonationListAdapter(this, R.layout.list_item_donation, donationsList);
         donationsListView.setAdapter(donationsListAdapter);
     }
 
+    /**
+     * Starts a NewDonationActivity, and send it User data in intent. Note if user clicks this before
+     * user info is retrieved from DB, user will still be null. Prompt user to try again...
+     * @param v - Reference to the calling Button
+     */
+    public void newDonation(View v)
+    {
+        if (user == null)
+        {
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
+        newDonationIntent.putExtra("User", user);
+        startActivity(newDonationIntent);
+    }
+
+    /**
+     * Navigation Drawer overrides.
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -139,15 +174,4 @@ public class DonationListActivity extends AppCompatActivity
         return true;
     }
 
-    public void newDonation(View v)
-    {
-        if (user == null)
-        {
-            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent newDonationIntent = new Intent(this, NewDonationActivity.class);
-        newDonationIntent.putExtra("User", user);
-        startActivity(newDonationIntent);
-    }
 }

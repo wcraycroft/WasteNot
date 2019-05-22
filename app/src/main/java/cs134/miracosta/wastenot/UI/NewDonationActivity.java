@@ -28,6 +28,13 @@ import cs134.miracosta.wastenot.Model.FirebaseDBHelper;
 import cs134.miracosta.wastenot.Model.User;
 import cs134.miracosta.wastenot.R;
 
+/**
+ * This controller class handles the NewDonationActivity, which prompt the Donor for all information
+ * stored for a Donation. When add button is pressed, it will validate data, then add the Donation
+ * to the DB before finishing.
+ *
+ * @author Will Craycroft
+ */
 public class NewDonationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
@@ -49,6 +56,10 @@ public class NewDonationActivity extends AppCompatActivity
     private String foodType, servings, readyTime, pickupEndTime;
     private boolean fitInCar;
 
+    /**
+     * Inflates view, instantiates DBHelper and get User data from intent.
+     * @param savedInstanceState - Bundle data from previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +100,7 @@ public class NewDonationActivity extends AppCompatActivity
         user = intent.getParcelableExtra("User");
     }
 
+    // Spinner setup helper method
     private void setupSpinner(Spinner spinner, int arrayId)
     {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -99,41 +111,11 @@ public class NewDonationActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.nav_donate:
-                break;
-            case R.id.nav_claim:
-                startActivity(new Intent(this, ClaimsListActivity.class));
-                finish();
-                break;
-            case R.id.nav_deliver:
-                startActivity(new Intent(this, DeliveryActivity.class));
-                finish();
-                break;
-            case R.id.nav_logout:
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                break;
-        }
-
-        finish();
-        return true;
-    }
-
+    /**
+     * This method attempts to add this Donation to the database. Validates all input Spinners and
+     * EditTexts, then make a call to DBHelper. If successful added, finishes activity.
+     * @param v - reference to the calling Button
+     */
     public void addDonation(View v)
     {
         // Data to be validated
@@ -195,6 +177,46 @@ public class NewDonationActivity extends AppCompatActivity
                 Toast.makeText(NewDonationActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+
+    /**
+     * Navigation Drawer override methods.
+     */
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.nav_donate:
+                break;
+            case R.id.nav_claim:
+                startActivity(new Intent(this, ClaimsListActivity.class));
+                finish();
+                break;
+            case R.id.nav_deliver:
+                startActivity(new Intent(this, DeliveryActivity.class));
+                finish();
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                break;
+        }
+
+        finish();
+        return true;
     }
 
 

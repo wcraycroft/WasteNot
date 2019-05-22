@@ -5,9 +5,9 @@ package cs134.miracosta.wastenot.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-import java.util.Objects;
-
+/**
+ * @author Ahmad Abbasi
+ */
 public class User implements Parcelable
 {
 
@@ -16,7 +16,6 @@ public class User implements Parcelable
     private String mFirstName;
     private String mLastName;
     private String mEmail;
-    //private String mPassword;   // Don't want to store user passwords on public database (I made Register pass it locally, should still work)
     private String mCompanyName;
     private Location mLocation;
 
@@ -24,85 +23,6 @@ public class User implements Parcelable
     public User() {
     }
 
-    // Commented out duplicated getters/setters since they were creating duplicate fields in database
-
-    /*
-    public User(String mKey, String userType, String mFirstName, String mLastName, String mEmail, String mPassword, String mCompanyName, Location mLocation)
-    {
-        this.mKey = mKey;
-        this.userType = userType;
-        this.mFirstName = mFirstName;
-        this.mLastName = mLastName;
-        this.mEmail = mEmail;
-        this.mPassword = mPassword;
-        this.mCompanyName = mCompanyName;
-        this.mLocation = mLocation;
-    }
-
-
-
-
-    public String getmKey()
-    {
-        return mKey;
-    }
-
-    public void setmKey(String mKey)
-    {
-        this.mKey = mKey;
-    }
-
-    public String getmFirstName()
-    {
-        return mFirstName;
-    }
-
-    public void setmFirstName(String mFirstName)
-    {
-        this.mFirstName = mFirstName;
-    }
-
-    public String getmLastName()
-    {
-        return mLastName;
-    }
-
-    public void setmLastName(String mLastName)
-    {
-        this.mLastName = mLastName;
-    }
-
-    public String getmEmail()
-    {
-        return mEmail;
-    }
-
-    public void setmEmail(String mEmail)
-    {
-        this.mEmail = mEmail;
-    }
-
-    public String getmCompanyName()
-    {
-        return mCompanyName;
-    }
-
-    public void setmCompanyName(String mCompanyName)
-    {
-        this.mCompanyName = mCompanyName;
-    }
-
-    public Location getmLocation()
-    {
-        return mLocation;
-    }
-
-    public void setmLocation(Location mLocation)
-    {
-        this.mLocation = mLocation;
-    }
-
-    */
 
     public User(String userType, String firstName, String lastName, String email, String companyName, Location location) {
         this.userType = userType;
@@ -184,16 +104,6 @@ public class User implements Parcelable
         mLocation = location;
     }
 
-    /*public String getmPassword()
-    {
-        return mPassword;
-    }
-
-    public void setmPassword(String mPassword)
-    {
-        this.mPassword = mPassword;
-    }
-    */
 
     @Override
     public String toString() {

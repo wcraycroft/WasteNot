@@ -13,13 +13,14 @@ import java.util.Locale;
 
 
 /**
- * The <code>Location</code> class represents a place where one can get a caffeine fix, including
- * its name, address, phone number and latitude/longitude location.
+ * The <code>Location</code> class represents the location of a Donor or Claimer. It will attempt to
+ * find the location's latitude and longitude using Geocoder.
  *
  * @author Will Craycroft
+ * @author Ahmad Abbasi
  */
-
 public class Location implements Parcelable {
+
     private Context mContext;
     private String mAddress;
     private String mCity;
@@ -28,25 +29,35 @@ public class Location implements Parcelable {
     private double mLatitude;
     private double mLongitude;
 
+    /**
+     * Default constructor. Used by CloudFirestore POJO builder to created a Location object
+     * from database.
+     */
     public Location() {
 
     }
 
+    /**
+     * Returns the Parcelable Creator for this class.
+     * @return - the Location <code>Creator</code> object
+     */
     public static Creator<Location> getCREATOR()
     {
         return CREATOR;
     }
 
-    public Location(String address, String city, String state, String zipCode) {
-        mAddress = address;
-        mCity = city;
-        mState = state;
-        mZipCode = zipCode;
-        mLatitude = 0.0;
-        mLongitude = 0.0;
-    }
-
     // This constructor will use the passed in context to set the latitude and longitude using Geocoder
+
+    /**
+     * Creates a new Location instance, set all fields, and attempts to find the latitude and logitude
+     * for this location.
+     *
+     * @param context - the calling activity's context. Needed to call Geocoder's LatLng lookup.
+     * @param address - the street address
+     * @param city - the City
+     * @param state - the State
+     * @param zipCode - the Zip Code
+     */
     public Location(Context context, String address, String city, String state, String zipCode) {
         mContext = context;
         mAddress = address;
@@ -56,6 +67,10 @@ public class Location implements Parcelable {
         setLatLng(context);
     }
 
+    /**
+     * Parcelable constructor. Builds a Location object from the passed Parcel.
+     * @param in - the Parcel containing Location information
+     */
     protected Location(Parcel in) {
         mAddress = in.readString();
         mCity = in.readString();
@@ -65,30 +80,58 @@ public class Location implements Parcelable {
         mLongitude = in.readDouble();
     }
 
+    /**
+     * Returns the street address of this Location
+     * @return - the street address
+     */
     public String getAddress() {
         return mAddress;
     }
 
+    /**
+     * Sets the street address of this Location
+     * @param address = the street address
+     */
     public void setAddress(String address) {
         mAddress = address;
     }
 
+    /**
+     * Returns the city of this Location
+     * @return - the city
+     */
     public String getCity() {
         return mCity;
     }
 
+    /**
+     * Sets the Location's city
+     * @param city - the city
+     */
     public void setCity(String city) {
         mCity = city;
     }
 
+    /**
+     * Returns the Location's state (abbreviated or full)
+     * @return - the State
+     */
     public String getState() {
         return mState;
     }
 
+    /**
+     * Sets the Location's state (abbreviated or full)
+     * @param state - the State
+     */
     public void setState(String state) {
         mState = state;
     }
 
+    /**
+     * Returns the Location's zip code
+     * @return - the zip code
+     */
     public String getZipCode() {
         return mZipCode;
     }
@@ -97,31 +140,53 @@ public class Location implements Parcelable {
         mZipCode = zipCode;
     }
 
+    /**
+     * Returns the locations Latitude
+     * @return - latitude
+     */
     public double getLatitude() {
         return mLatitude;
     }
 
+    /**
+     * Sets the Location's latitude
+     * @param latitude - the latitude
+     */
     public void setLatitude(double latitude) {
         mLatitude = latitude;
     }
 
+    /**
+     * Returns the Location's longitude
+     * @return
+     */
     public double getLongitude() {
         return mLongitude;
     }
 
+    /**
+     * Sets the Location's longitude
+     * @param longitude - the longitude
+     */
     public void setLongitude(double longitude) {
         mLongitude = longitude;
     }
 
+    /**
+     * Returns a String representing the full address. Safe to use with Geocoder.
+     * @return - the Full Address
+     */
     public String getFullAddress()
     {
         return mAddress + "\n" + mCity + ", " + mState + "  " + mZipCode;
     }
 
+
     /**
-     * Helper method uses google API to convert address into LatLng
-     * Note this requires a Context so it has to be called externally or pass it a context through
-     * the appropriate constructor
+     * Helper method uses google API to find an address' latitude and longitude
+     * Note this requires a valid Context so it has to be called externally or pass it a context through
+     * the appropriate constructor.
+     * @param c - the Activity context used to instantiate Geocoder
      */
     public void setLatLng(Context c)
     {
@@ -143,6 +208,10 @@ public class Location implements Parcelable {
         }
     }
 
+    /**
+     * Returns a String representation of the Location object.
+     * @return - String representation of the Location object.
+     */
     @Override
     public String toString() {
         return "Location{" +
@@ -161,6 +230,11 @@ public class Location implements Parcelable {
         return 0;
     }
 
+    /**
+     * Writes all field data to a passed Parcel.
+     * @param parcel - the destination Parcel
+     * @param i - Parcel code (not used)
+     */
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mAddress);
@@ -171,6 +245,9 @@ public class Location implements Parcelable {
         parcel.writeDouble(mLongitude);
     }
 
+    /**
+     * Overrides the Creator's create method to send it a Location object
+     */
     public static final Creator<Location> CREATOR = new Creator<Location>() {
         @Override
         public Location createFromParcel(Parcel in) {

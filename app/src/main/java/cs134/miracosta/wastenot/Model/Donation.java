@@ -1,24 +1,27 @@
 
-// Picasso Library for open source images
-
 package cs134.miracosta.wastenot.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import cs134.miracosta.wastenot.Model.Enums.DonationStatus;
 import cs134.miracosta.wastenot.Model.Enums.FoodType;
-import cs134.miracosta.wastenot.R;
+
+/**
+ * The <code>Donation</code> class contains information specific to a food donation, including all
+ * food details, pickup and dropoff times, the database key, and the status of the donation.
+ *
+ * @author Will Craycroft
+ */
 
 public class Donation implements Parcelable
 {
-
+    // Member variables
     private String mKey;
     private DonationStatus mStatus;
-    private FoodType mFoodType;    // Enum class
+    private FoodType mFoodType;
     private int mServings;
     private boolean fitInCar;
     private String mOtherInfo;
@@ -28,13 +31,14 @@ public class Donation implements Parcelable
     private String mDropoffEndTime;
 
     /**
-     *
-     * @param foodType
-     * @param servings
-     * @param fitInCar
-     * @param otherInfo
-     * @param readyTime
-     * @param pickupEndTime
+     * Full constructor sets all <code>Donation</code> fields to the passed values, except for the
+     * key, which will be set later by the database.
+     * @param foodType - The type of food (enum)
+     * @param servings - The approximate number of servings
+     * @param fitInCar - True if donation will fit in a single car
+     * @param otherInfo - Other information entered by user
+     * @param readyTime - Time the donation will be ready for be picked up from Donor
+     * @param pickupEndTime - Latest Time the donation can be picked up from Donor
      */
     public Donation(FoodType foodType, int servings, boolean fitInCar, String otherInfo, String readyTime, String pickupEndTime)
     {
@@ -48,10 +52,18 @@ public class Donation implements Parcelable
         mPickupEndTime = pickupEndTime;
     }
 
+    /**
+     * Default constructor. Used by Cloud Firestore in conjunction with setters to build objects
+     * from database.
+     */
     public Donation() {
     }
 
-
+    /**
+     * Parcelable Constructor. Reads all fields from the passed Parcel object.
+     * Note: converts food type back to enum (sent as String)
+     * @param in - The Parcel to be read from
+     */
     protected Donation(Parcel in) {
         mKey = in.readString();
         mServings = in.readInt();
@@ -90,6 +102,9 @@ public class Donation implements Parcelable
         }
     }
 
+    /**
+     * Overrides the Parcel Creator's method to create a Donation from Parcel
+     */
     public static final Creator<Donation> CREATOR = new Creator<Donation>() {
         @Override
         public Donation createFromParcel(Parcel in) {
@@ -102,86 +117,170 @@ public class Donation implements Parcelable
         }
     };
 
+    /**
+     * Returns the database key for this <code>Donation</code>.
+     * @return - the database key
+     */
     public String getKey() {
         return mKey;
     }
 
+    /**
+     * Sets the database key for this <code>Donation</code>
+     * @param key - the database key
+     */
     public void setKey(String key) {
         mKey = key;
     }
 
+    /**
+     * Returns the status of the <code>Donation</code> (claimed, unclaimed or delivery claimed). See enum.
+     * @return - the <code>DonationStatus</code> for this <code>Donation</code>
+     */
     public DonationStatus getStatus() {
         return mStatus;
     }
 
+    /**
+     * Sets the status of the <code>Donation</code>
+     * @param status - the <code>DonationStatus</code> for this <code>Donation</code>
+     */
     public void setStatus(DonationStatus status) {
         mStatus = status;
     }
 
+    /**
+     * Returns the food type for this Donation
+     * @return - the <code>FoodType</code> for this <code>Donation</code>
+     */
     public FoodType getFoodType() {
         return mFoodType;
     }
 
+    /**
+     * Sets the food type for this Donation
+     * @param foodType - the <code>FoodType</code> for this <code>Donation</code>
+     */
     public void setFoodType(FoodType foodType) {
         mFoodType = foodType;
     }
 
+    /**
+     * Gets the approximate number of servings of this Donation
+     * @return - the number of servings
+     */
     public int getServings() {
         return mServings;
     }
 
+    /**
+     * Sets the number of servings of this Donation
+     * @param servings - the number of servings
+     */
     public void setServings(int servings) {
         mServings = servings;
     }
 
+    /**
+     * Returns true if this Donation can fit in one car
+     * @return - True if Donation fits in one car
+     */
     public boolean isFitInCar() {
         return fitInCar;
     }
 
+    /**
+     * Set whether or not this Donation can fit in one car
+     * @param fitInCar - True if Donation fits in one car
+     */
     public void setFitInCar(boolean fitInCar) {
         this.fitInCar = fitInCar;
     }
 
+    /**
+     * Returns a String containing any other information the Donor entered
+     * @return - other Donation information
+     */
     public String getOtherInfo() {
         return mOtherInfo;
     }
 
+    /**
+     * Sets any other information the Donor entered as a String
+     * @param otherInfo - other Donation information
+     */
     public void setOtherInfo(String otherInfo) {
         this.mOtherInfo = otherInfo;
     }
 
+    /**
+     * Returns the time at which the Donation will be ready for pickup
+     * @return - pickup ready time
+     */
     public String getReadyTime() {
         return mReadyTime;
     }
 
+    /**
+     * Sets the time at which the Donation will be ready for pickup
+     * @param readyTime - pickup ready time
+     */
     public void setReadyTime(String readyTime) {
         this.mReadyTime = readyTime;
     }
 
+    /**
+     * Returns the latest time at which the Donation can be picked up
+     * @return - the pickup end time
+     */
     public String getPickupEndTime() {
         return mPickupEndTime;
     }
 
+    /**
+     * Sets the latest time at which the Donation can be picked up
+     * @param pickupEndTime - the pickup end time
+     */
     public void setPickupEndTime(String pickupEndTime) {
         this.mPickupEndTime = pickupEndTime;
     }
 
+    /**
+     * Returns the time at which the Driver has requested to pickup the Donation
+     * @return - the pickup time
+     */
     public String getPickupTime() {
         return mPickupTime;
     }
 
+    /**
+     * Sets the time at which the Driver has requested to pickup the Donation
+     * @param pickupTime - the pickup time
+     */
     public void setPickupTime(String pickupTime) {
         mPickupTime = pickupTime;
     }
 
+    /**
+     * Returns the latest time at which the Donation can be delivered to the Claimer
+     * @return - dropoff end time
+     */
     public String getDropoffEndTime() {
         return mDropoffEndTime;
     }
 
+    /**
+     * Sets the latest time at which the Donation can be delivered to the Claimer
+     * @param dropoffEndTime - dropoff end time
+     */
     public void setDropoffEndTime(String dropoffEndTime) {
         mDropoffEndTime = dropoffEndTime;
     }
 
+    /**
+     * Returns a String representation of this Donation, including all field values
+     * @return - a String representation of this Donation
+     */
     @Override
     public String toString() {
         return "Donation{" +
@@ -198,6 +297,11 @@ public class Donation implements Parcelable
                 '}';
     }
 
+    /**
+     * Returns true if the passed Object is a Donation and all fields are equal to this Donation
+     * @param o
+     * @return - true if the Donation fields are equal to the passed Object
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -216,15 +320,16 @@ public class Donation implements Parcelable
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(mKey, mStatus, mFoodType, mServings, fitInCar, mOtherInfo, mReadyTime, mPickupEndTime, mPickupTime, mDropoffEndTime);
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
 
+    /**
+     * Writes this Donation to the destination Parcel object.
+     * Note: Sends the food type as a String (see Parcel constructor).
+     * @param dest - the destination Parcel
+     * @param flags - Parcel flags (not used)
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mKey);
