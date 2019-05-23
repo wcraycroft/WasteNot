@@ -12,10 +12,15 @@ import java.util.Objects;
 
 public class Delivery {
 
+    /** The Donation to be delivered*/
     private Donation mDonation;
+    /** The Donor's user key */
     private User mDonor;
+    /** The Claimer's user key */
     private User mClaimer;
+    /** The Driver's user key*/
     private User mDriver;
+    /** The database key for the Makes relationship*/
     private String mMakesKey;
 
     /**

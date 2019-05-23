@@ -87,6 +87,7 @@ public class DeliveryMapFragment extends Fragment implements OnMapReadyCallback 
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        //open
         locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override

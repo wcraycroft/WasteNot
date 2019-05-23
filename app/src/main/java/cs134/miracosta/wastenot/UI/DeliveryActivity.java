@@ -28,6 +28,7 @@ public class DeliveryActivity extends AppCompatActivity
 
     private boolean toggleMap;
     // View elements
+    /***/
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private DeliveryMapFragment mapFragment;

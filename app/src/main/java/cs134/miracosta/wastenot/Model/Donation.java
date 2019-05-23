@@ -19,15 +19,25 @@ import cs134.miracosta.wastenot.Model.Enums.FoodType;
 public class Donation implements Parcelable
 {
     // Member variables
+    /** The Donation database key*/
     private String mKey;
+    /** The status of this donation (UNCLAIMED, CLAIMED, DELIVERY_CLAIMED*/
     private DonationStatus mStatus;
+    /** The food type of this donation (see enum)*/
     private FoodType mFoodType;
+    /** The approximate number of servings*/
     private int mServings;
+    /** True if the donation will fit in one car*/
     private boolean fitInCar;
+    /** Other information entered by user*/
     private String mOtherInfo;
+    /** Time the donation will be ready for be picked up from Donor*/
     private String mReadyTime;
+    /** The Latest Time the donation can be picked up from Donor*/
     private String mPickupEndTime;
+    /** Time the donation will be picked up from Donor*/
     private String mPickupTime;
+    /** The Latest Time the donation can be picked up from Donor */
     private String mDropoffEndTime;
 
     /**
@@ -35,7 +45,7 @@ public class Donation implements Parcelable
      * key, which will be set later by the database.
      * @param foodType - The type of food (enum)
      * @param servings - The approximate number of servings
-     * @param fitInCar - True if donation will fit in a single car
+     * @param fitInCar - True if the donation will fit in one car
      * @param otherInfo - Other information entered by user
      * @param readyTime - Time the donation will be ready for be picked up from Donor
      * @param pickupEndTime - Latest Time the donation can be picked up from Donor
