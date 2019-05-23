@@ -133,7 +133,7 @@ public class Delivery {
                 Objects.equals(mDonor, delivery.mDonor) &&
                 Objects.equals(mClaimer, delivery.mClaimer) &&
                 Objects.equals(mDriver, delivery.mDriver) &&
-                Objects.equals(mMakesKey, delivery.mMakesKey);
+                mMakesKey.equals(delivery.mMakesKey);
     }
 
     /**

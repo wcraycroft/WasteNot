@@ -46,7 +46,6 @@ public class FirebaseDBHelper {
     private CollectionReference mDonationDB;
     private CollectionReference mMakesDB;
 
-
     // Lists
     private List<Donation> donationsList = new ArrayList<>();    // TODO: convert to final local variable
     private List<String> donationKeysList = new ArrayList<>();
@@ -1003,6 +1002,23 @@ public class FirebaseDBHelper {
                 {
                     dataStatus.onError(task.getException().getMessage());
                     Log.w(TAG, "Error deleting Donation.", task.getException());
+                }
+            }
+        });
+    }
+
+    public void deleteUser(String deletedKey, final DataStatus dataStatus)
+    {
+        mUserDB.document(deletedKey).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful()) {
+                    Log.i(TAG, "Document was deleted successfully.");
+                    dataStatus.DataIsProcessed();
+                }
+                else {
+                    Log.w(TAG, "Error deleting user.", task.getException());
                 }
             }
         });
