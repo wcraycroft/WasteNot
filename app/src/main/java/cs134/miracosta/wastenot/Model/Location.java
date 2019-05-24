@@ -21,12 +21,19 @@ import java.util.Locale;
  */
 public class Location implements Parcelable {
 
+    /** The calling method's context, used to look up location data. */
     private Context mContext;
+    /** The location address */
     private String mAddress;
+    /** The location city */
     private String mCity;
+    /** The location state */
     private String mState;
+    /** The location zip code */
     private String mZipCode;
+    /** The location's latitude */
     private double mLatitude;
+    /** The location's longitude */
     private double mLongitude;
 
     /**

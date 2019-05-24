@@ -97,15 +97,21 @@ public class DeliveryActivity extends AppCompatActivity
 
 
     /**
-     * Navigation Drawer overrides
+     * Toolbar menu override which inflates the toolbar with a custom layout
+     * @param menu - The toolbar menu item
+     * @return - True if the event was handled
      */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.delivery_toolbar_menu, menu);
         return true;
     }
 
+    /**
+     * Toolbar Override. Handles the item clicks for any menu item in the toolbar.
+     * @param item - the toolbar item that was clicked
+     * @return - True if the event was handled
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -132,6 +138,10 @@ public class DeliveryActivity extends AppCompatActivity
         return false;
     }
 
+    /**
+     * Overrides the Back button press while the Navigation drawer is open. Closes the navigation
+     * drawer rather than the activity.
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -141,6 +151,11 @@ public class DeliveryActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Navigation Drawer Override. Handles the item clicks for any list item in the drawer.
+     * @param item - the drawer item that was clicked
+     * @return - True if the event was handled
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

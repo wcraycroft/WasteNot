@@ -35,9 +35,9 @@ public class Donation implements Parcelable
     private String mReadyTime;
     /** The Latest Time the donation can be picked up from Donor*/
     private String mPickupEndTime;
-    /** Time the donation will be picked up from Donor*/
+    /** Time the Driver has selected for pickup */
     private String mPickupTime;
-    /** The Latest Time the donation can be picked up from Donor */
+    /** The Latest Time the donation can be dropped off at Claimer */
     private String mDropoffEndTime;
 
     /**

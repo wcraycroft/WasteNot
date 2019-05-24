@@ -11,10 +11,15 @@ import java.util.Objects;
  */
 public class Makes {
 
+    /** The Makes DB key */
     private String mKey;
+    /** The Donation's DB key */
     private String mDonationKey;
+    /** The Donor's DB key */
     private String mDonorKey;
+    /** The Claimer's DB key (null if not yet claimed) */
     private String mClaimerKey;
+    /** The Driver's DB key (null if not yet claimed) */
     private String mDriverKey;
 
     /**

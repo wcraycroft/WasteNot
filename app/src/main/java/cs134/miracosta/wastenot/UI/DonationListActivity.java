@@ -136,7 +136,8 @@ public class DonationListActivity extends AppCompatActivity
     }
 
     /**
-     * Navigation Drawer overrides.
+     * Overrides the Back button press while the Navigation drawer is open. Closes the navigation
+     * drawer rather than the activity.
      */
     @Override
     public void onBackPressed() {
@@ -147,6 +148,11 @@ public class DonationListActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Navigation Drawer Override. Handles the item clicks for any list item in the drawer.
+     * @param item - the drawer item that was clicked
+     * @return - True if the event was handled
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

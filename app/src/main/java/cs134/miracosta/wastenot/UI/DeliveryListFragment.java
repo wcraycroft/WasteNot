@@ -31,9 +31,9 @@ public class DeliveryListFragment extends Fragment {
     private ListView deliveriesListView;
     private View fragView;
     private Context mContext;
-    FirebaseDBHelper db;
-    List<Delivery> allDeliveriesList;
-    DeliveryListAdapter deliveryListAdapter;
+    private FirebaseDBHelper db;
+    private List<Delivery> allDeliveriesList;
+    private DeliveryListAdapter deliveryListAdapter;
 
     /**
      * Inflates the view.

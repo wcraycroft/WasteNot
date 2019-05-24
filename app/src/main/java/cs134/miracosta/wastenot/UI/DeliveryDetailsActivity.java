@@ -228,9 +228,9 @@ public class DeliveryDetailsActivity extends AppCompatActivity
 
 
     /**
-     * Navigation bar overrides
+     * Overrides the Back button press while the Navigation drawer is open. Closes the navigation
+     * drawer rather than the activity.
      */
-
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -240,6 +240,11 @@ public class DeliveryDetailsActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Navigation Drawer Override. Handles the item clicks for any list item in the drawer.
+     * @param item - the drawer item that was clicked
+     * @return - True if the event was handled
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -269,12 +274,23 @@ public class DeliveryDetailsActivity extends AppCompatActivity
     }
 
 
+    /**
+     * Spinner override. Used to store the item selected by the spinner dropdown
+     * @param parent - the parent AdapterView
+     * @param view - reference to the Spinner list item
+     * @param position - the position of the item in the list
+     * @param id - the id of the item
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Grab pickup time from Spinner
         pickupTime = parent.getItemAtPosition(position).toString();
     }
 
+    /**
+     * Spinner override. Used if no item is selected.
+     * @param parent
+     */
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
